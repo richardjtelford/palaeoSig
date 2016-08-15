@@ -1,0 +1,28 @@
+export(anamorph, Hill.N2.core, jointsig, mat.h, multi.mat, obs.cor, plot.js,
+       plot.obscor,identify.obscor, plot.palaeoSig, plot.RNE, randomTF, 
+       ModelMaker, randomTFmm, rne, centipede.plot, coverage.plot, agelme,
+       abundances,cor.mat.fun,make.env,species,make.set
+       )
+
+import(vegan)
+importFrom(rioja, Merge)
+importFrom(rioja, WA)
+importFrom(rioja, Hill.N2)
+importFrom(rioja, MAT)
+importFrom(mgcv, gam)
+importFrom(mgcv, s)
+importFrom(TeachingDemos,spread.labs)
+importFrom(MASS, mvrnorm)
+
+S3method(plot, js)
+S3method(plot, palaeoSig)
+S3method(plot, RNE)
+S3method(plot, obscor)
+S3method(plot, fittedAgelme)
+
+S3method(predict, agelme)
+
+S3method(identify, obscor)
+
+
+
