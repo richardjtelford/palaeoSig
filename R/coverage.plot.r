@@ -16,14 +16,16 @@
 #' data("RLGH", package = "rioja")
 #' coverage_plot(spp = SWAP$spec, fos=RLGH$spec, n2_rare = 5, label = 0)
 #' 
-#' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join
+#' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join summarise_all
 #' @importFrom tidyr spread gather replace_na
 #' @importFrom tibble enframe
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes geom_point geom_abline labs scale_colour_brewer
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom forcats fct_explicit_na
+#' @importFrom forcats fct_explicit_na fct_relevel
+#' @importFrom utils data
+#' @importFrom stats coef
 #' @export
 
 coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL){ 
@@ -42,19 +44,20 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL){
   max_n2 <- mod_fos %>% 
     group_by(data) %>% 
     summarise_all(max) %>% 
-    gather(key = Taxon, value = max, -data) %>% 
-    spread(key = data, value = max) %>% 
+    gather(key = "Taxon", value = "max", -.data$data) %>% 
+    spread(key = .data$data, value = .data$max) %>% 
     replace_na(list(spp = 0, fos = 0)) %>% 
     inner_join(N2, by = "Taxon") %>% 
-    mutate(n2_cut = cut(n2,
+    mutate(n2_cut = cut(.data$n2,
                         breaks = c(0, n2_rare, Inf),
                         labels = paste("N2", c("<=", ">"), n2_rare)), 
-           n2_cut = fct_explicit_na(n2_cut, na_level = "-"),
-           n2_cut = fct_relevel(n2_cut, "-"))
+           n2_cut = fct_explicit_na(.data$n2_cut, na_level = "-"),
+           n2_cut = fct_relevel(.data$n2_cut, "-"))
   
   
   #plot
-  g <- ggplot(max_n2, aes(x = .data$spp, y = .data$fos, colour = .data$n2_cut)) +
+  g <- ggplot(max_n2, aes(x = .data$spp, y = .data$fos, 
+                          colour = .data$n2_cut)) +
     geom_abline() +
     geom_point() + 
     scale_colour_brewer(palette = "Set1") + 

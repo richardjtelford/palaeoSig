@@ -16,17 +16,17 @@
 #' centipede_plot(mod, spp = SWAP$spec, minN2 = 20)
 #' @importFrom ggplot2 ggplot geom_point geom_errorbar aes coord_flip
 #' @importFrom dplyr filter inner_join mutate
-#' @importFrom tibble tibble enframe
+#' @importFrom tibble as_tibble enframe
 #' @importFrom magrittr %>%
 #' @importFrom forcats fct_reorder
-#' @importFrom assertr verify
+#' @importFrom assertr verify has_all_names
 #' @importFrom rioja Hill.N2
 #' @importFrom rlang .data
 #' @export
 
 centipede_plot <- function(x, spp, minN2 = 1,  mult = 1) {
   #check WA object
-  stopifnot(inherits(mod, "WA"))
+  stopifnot(inherits(x, "WA"))
   
   #calculate N2
   N2 <- Hill.N2(spp) %>% 
