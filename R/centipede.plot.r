@@ -21,6 +21,7 @@
 #' @importFrom forcats fct_reorder
 #' @importFrom assertr verify
 #' @importFrom rioja Hill.N2
+#' @importFrom rlang .data
 #' @export
 
 centipede_plot <- function(x, spp, minN2 = 1,  mult = 1) {
@@ -36,16 +37,17 @@ centipede_plot <- function(x, spp, minN2 = 1,  mult = 1) {
     as_tibble(rownames = "Taxon") %>%
     verify(has_all_names("Optima", "Tolerances")) %>% 
     inner_join(N2, by = "Taxon") %>% 
-    filter(n2 >= minN2) %>%
+    filter(.data$n2 >= minN2) %>%
     mutate(
-      Taxon = factor(Taxon),
-      Taxon = fct_reorder(Taxon, Optima),
-      ymin = Optima - Tolerances * mult,
-      ymax = Optima + Tolerances * mult
+      Taxon = factor(.data$Taxon),
+      Taxon = fct_reorder(.data$Taxon, .data$Optima),
+      ymin = .data$Optima - .data$Tolerances * mult,
+      ymax = .data$Optima + .data$Tolerances * mult
     )
   
   #plot
-  g <- ggplot(opt_tol, aes(x = Taxon, y = Optima, ymin = ymin, ymax = ymax)) +
+  g <- ggplot(opt_tol, aes(x = .data$Taxon, y = .data$Optima, 
+                           ymin = .data$ymin, ymax = .data$ymax)) +
     geom_errorbar() +
     geom_point() +
     coord_flip()
