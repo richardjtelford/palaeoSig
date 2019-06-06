@@ -1,15 +1,54 @@
-#library(rioja)
-#data(SWAP)
-#mod<-WA(SWAP$spec, SWAP$pH, tolDW=TRUE)
-#coef(mod)
-#centipede.plot(mod, keep=colSums(SWAP$spec>0)>40, pch=20, cex.axis=.7)
+#' centipede_plot
+#' @description Plot of species WA optima and tolerance
+#' @param x A tolerance weighted weighted-average model from \code{\link[rioja]{WA}} 
+#' @param spp data.frame of species data used to train the WA model
+#' @param minN2 numeric giving minimum N2 for inclusion in plot
+#' @param mult numeric multiplier for the tolerances
+#' @details Extracts and sorts \code{\link[rioja]{WA}} optima and tolerances and generates a ggplot. Tends only to work well when there are a reasonable number of taxa, otherwise it is difficult to read the names on the axis. Rare taxa can be exluded with the  \code{minN2} argument. The \code{tol.cut} argument in \code{\link[rioja]{WA}} may need to be set to prevent very small tolerances in rare taxa. 
+#' This function is very similar to the \code{\link[analogue]{caterpillar}} plot, but produces a ggplot
+#' @return A \code{\link[ggplot2]{ggplot}} object.
+#' 
+#' @examples 
+#' library(rioja)
+#' data(SWAP)
+#' mod <- WA(SWAP$spec, SWAP$pH, tolDW=TRUE)
+#' coef(mod)
+#' centipede_plot(mod, spp = SWAP$spec, minN2 = 20)
+#' @importFrom ggplot2 ggplot geom_point geom_errorbar aes coord_flip
+#' @importFrom dplyr filter inner_join mutate
+#' @importFrom tibble tibble enframe
+#' @importFrom magrittr %>%
+#' @importFrom forcats fct_reorder
+#' @importFrom assertr verify
+#' @importFrom rioja Hill.N2
+#' @export
 
-
-centipede.plot<-function(x,keep = TRUE, xlab="", xlim, ...){
-   co<-coef(x)[keep,]
-   co<-co[order(co[,"Optima"]),]
-   if(missing(xlim))xlim<-range(c(co[,"Optima"]-co[,"Tolerances"], co[,"Optima"]+co[,"Tolerances"]))
-   plot(co[,"Optima"], 1:nrow(co), xlab=xlab, yaxt="n",ylab="",xlim=xlim,...)
-   arrows(x0=co[,"Optima"]-co[,"Tolerances"], y0=1:nrow(co), x1=co[,"Optima"]+co[,"Tolerances"], y1=1:nrow(co), length=0)
-   axis(2, at=1:nrow(co), labels=rownames(co),las=2, ...)
+centipede_plot <- function(x, spp, minN2 = 1,  mult = 1) {
+  #check WA object
+  stopifnot(inherits(mod, "WA"))
+  
+  #calculate N2
+  N2 <- Hill.N2(spp) %>% 
+    enframe(name = "Taxon", value = "n2")
+  
+  #extract optima & tolerance
+  opt_tol <- coef(x) %>%
+    as_tibble(rownames = "Taxon") %>%
+    verify(has_all_names("Optima", "Tolerances")) %>% 
+    inner_join(N2, by = "Taxon") %>% 
+    filter(n2 >= minN2) %>%
+    mutate(
+      Taxon = factor(Taxon),
+      Taxon = fct_reorder(Taxon, Optima),
+      ymin = Optima - Tolerances * mult,
+      ymax = Optima + Tolerances * mult
+    )
+  
+  #plot
+  g <- ggplot(opt_tol, aes(x = Taxon, y = Optima, ymin = ymin, ymax = ymax)) +
+    geom_errorbar() +
+    geom_point() +
+    coord_flip()
+ 
+  return(g)
 }
