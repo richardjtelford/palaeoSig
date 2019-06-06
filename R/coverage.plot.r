@@ -1,18 +1,74 @@
-coverage.plot<-function(mod,fos, rare=5, identify=FALSE){ 
-  modfos<-Merge(mod, fos, split=TRUE)
-  modmax<-sapply(modfos$mod,max)
-  fosmax<-sapply(modfos$fos,max)
-  n2<-Hill.N2(modfos$mod)
-  n2[is.infinite(n2)]<-0
-  cols<-rep(1,length(modmax))
-  cols[n2<rare]<-4
-  cols[n2==0]<-2
+#'coverage_plot
+#'
+#'@description  A simple diagnostic plot showing the coverage of fossil taxa in modern calibration set
+#'
+#'@param spp data.frame of modern species abundances
+#'@param fos data.frame of fossil species abundances
+#'@param n2_rare numeric value of Hill's N2 below which species are highlighted as rare
+#'@param label numeric label taxa where maximum fossil abundance - maximum modern abundance > label. Defaults to NULL which does not add labels
+#'
+#' @details   Finds the maximum abundance of fossil taxa and plots this against the maximum abundance the taxa in the modern calibration set. Taxa with a Hill's N2 less than \code{rare} in the calibration set are highlighted in blue. Taxa absent from the calibration set are highlighed in red. If there are many taxa above the 1:1 line, or important fossil taxa have a low N2 in the calibration set, reconstructions should be interpreted with caution.
+#' 
+#' @return A \code{\link[ggplot2]{ggplot}} object.
+#'   
+#' @examples 
+#' data("SWAP", package = "rioja")
+#' data("RLGH", package = "rioja")
+#' coverage_plot(spp = SWAP$spec, fos=RLGH$spec, n2_rare = 5, label = 0)
+#' 
+#' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join
+#' @importFrom tidyr spread gather replace_na
+#' @importFrom tibble enframe
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#' @importFrom ggplot2 ggplot aes geom_point geom_abline labs scale_colour_brewer
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom forcats fct_explicit_na
+#' @export
 
-  plot(modmax,fosmax, xlab="Calibration set maximum abundance %", ylab="Fossil data maximum abundance %", col=cols, pch=ifelse(n2<=rare, 16,1))
-  abline(0,1, col=2) #add a 1:1 line.
-  if(identify)identify(modmax,fosmax, labels=names(modmax), cex=0.7)
-  return(invisible(data.frame(modmax=modmax, fosmax=fosmax, n2=n2)))
+coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL){ 
+  mod_fos <- bind_rows(spp = spp, fos = fos, .id = "data") 
+  
+  #calculate N2
+  N2 <- mod_fos %>% 
+    filter(.data$data == "spp") %>% 
+    select(-.data$data) %>% 
+    Hill.N2() %>% 
+    enframe(name = "Taxon", value = "n2") %>% 
+    #missing spp get n2 = Inf. replace with NA
+    mutate(n2 = if_else(is.infinite(.data$n2), NA_real_, .data$n2))
+  
+  #find max and join to N2
+  max_n2 <- mod_fos %>% 
+    group_by(data) %>% 
+    summarise_all(max) %>% 
+    gather(key = Taxon, value = max, -data) %>% 
+    spread(key = data, value = max) %>% 
+    replace_na(list(spp = 0, fos = 0)) %>% 
+    inner_join(N2, by = "Taxon") %>% 
+    mutate(n2_cut = cut(n2,
+                        breaks = c(0, n2_rare, Inf),
+                        labels = paste("N2", c("<=", ">"), n2_rare)), 
+           n2_cut = fct_explicit_na(n2_cut, na_level = "-"),
+           n2_cut = fct_relevel(n2_cut, "-"))
+  
+  
+  #plot
+  g <- ggplot(max_n2, aes(x = .data$spp, y = .data$fos, colour = .data$n2_cut)) +
+    geom_abline() +
+    geom_point() + 
+    scale_colour_brewer(palette = "Set1") + 
+    labs(x = "Maximum modern %", y = "Maximum fossil %", colour = "N2")
+  
+  if(!is.null(label)){
+    to_label <- max_n2 %>% 
+      filter(.data$fos - .data$spp > label)
+    g <- g +
+      geom_text_repel(data = to_label, 
+                      mapping = aes(label = .data$Taxon), 
+                      show.legend = FALSE, 
+                      colour = "black", size = 3)
+  }
+  
+  return(g)
 }
-
-#data(RLGH)
-#coverage.plot(mod=SWAP$spec, fos=RLGH$spec, identify=FALSE)
