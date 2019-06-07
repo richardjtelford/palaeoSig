@@ -60,8 +60,10 @@
   age.res <- list(
     tdf = c(sum(fit.con$hat), sum(fit.mu$hat)),
     weights = fit.w,
-    #     Constant=data.frame(Depth=xp,Calage=y+min(bpup),Estage=yp,Lowlim=yp1,Upplim=yp2,tsd=sd2,Csd=sd,Rsd=v1),
-#     Muvar=data.frame(Depth=xpm,Calage=y+min(bpup),Estage=ypm,Lowlim=ypm1,Upplim=ypm2,Tsd=sdm2,Csd=sd,Rsd=vm),
+    #     Constant=data.frame(Depth=xp,Calage=y+min(bpup),
+    #            Estage=yp,Lowlim=yp1,Upplim=yp2,tsd=sd2,Csd=sd,Rsd=v1),
+#     Muvar=data.frame(Depth=xpm,Calage=y+min(bpup),
+                #Estage=ypm,Lowlim=ypm1,Upplim=ypm2,Tsd=sdm2,Csd=sd,Rsd=vm),
      RES <- data.frame(
        Constvar = sum(fit.con[[2]] ^ 2) / 1000,
        Muvar = sum(fit.mu[[2]] ^ 2) / 1000),

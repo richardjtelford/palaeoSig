@@ -16,8 +16,8 @@ plot.obscor<-function (x, xlab, ylab, f=5, which=1, label="env",abun="abun.calib
 
 
   if(which==1){
-    if(missing(xlab))xlab= "WA optima"
-    if(missing(ylab))ylab = "RDA scores"            
+    if(missing(xlab))xlab <- "WA optima"
+    if(missing(ylab))ylab <- "RDA scores"            
     if(w=="unweighted")a<-rep(1, nrow(x$ob$x))
     else{
       a<-x$ob$x[[w]]
@@ -25,7 +25,7 @@ plot.obscor<-function (x, xlab, ylab, f=5, which=1, label="env",abun="abun.calib
     }
     plot(x = x$ob$x$Optima, y = x$ob$x$RDA1, cex = a, xlab = xlab, ylab = ylab, ...)
   }else if(which==2){
-    if(missing(xlab))xlab = ifelse(w=="unweighted","Correlation","Weighted correlation")
+    if(missing(xlab))xlab <- ifelse(w=="unweighted","Correlation","Weighted correlation")
     sim<-x$sim[[w]]
     ob<-x$ob$res[w]
     hist(sim, xlim = range(c(sim,ob)), xlab = xlab, col = "grey80", border = NA, ...)
