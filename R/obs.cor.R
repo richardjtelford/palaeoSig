@@ -22,12 +22,15 @@
 #N2 of fossil/training/joint
 
 
-obs.cor<-function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
+obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
   spp <- spp[, colSums(spp > 0) >= min.occur]
   fos <- fos[, colSums(fos > 0) >= min.occur]
   
   spp <- spp[, order(colnames(spp))]
   fos <- fos[, order(colnames(fos))]
+  
+  shared_fos <- names(fos) %in% names(spp)
+  shared_spp <- names(spp) %in% names(fos)
   
   mod <- WA(spp, env)
   pred <- predict(mod, fos)$fit[, 1]
@@ -35,23 +38,17 @@ obs.cor<-function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
   optima <- coef(mod)
   sco <- scores(RDA, display = "spec", choice = 1)
   
-  abun.fos <- colMeans(fos)[intersect(names(fos), names(spp))]
-  abun.calib <- colMeans(spp)[intersect(names(spp), names(fos))]
-  abun.joint <- abun.fos * abun.calib
-  n2.fos <- Hill.N2(fos, margin = 2)[names(fos) %in% names(spp)]
-  n2.calib <- Hill.N2(spp, margin = 2)[names(spp) %in% names(fos)]
-  n2.joint <- n2.fos * n2.calib
-  abundances <- data.frame(
-      abun.fos = abun.fos,
-      abun.calib = abun.calib,
-      abun.joint = abun.joint,
-      n2.fos = n2.fos,
-      n2.calib = n2.calib,
-      n2.joint = n2.joint
-    )
-  
-    optima <- optima[intersect(rownames(optima), rownames(sco)), , drop = FALSE]
-    sco <- sco[intersect(rownames(sco), rownames(optima)), , drop = FALSE]
+  abundances <- tibble(
+    abun.fos = colMeans(fos[, shared_fos]),
+    abun.calib = colMeans(spp[, shared_spp]),
+    abun.joint = abun.fos * abun.calib,
+    n2.fos = Hill.N2(fos[, shared_fos], margin = 2),
+    n2.calib = Hill.N2(spp[, shared_spp], margin = 2),
+    n2.joint = n2.fos * n2.calib
+  )
+
+    optima <- optima[shared_spp, , drop = FALSE]
+    sco <- sco[shared_fos, , drop = FALSE]
     x <- data.frame(optima, sco, abundances)
     wcs <- sapply(abundances,function(abun)abs(cov.wt(x[, 1:2], wt = abun, cor = TRUE)$cor[1, 2]))
     
