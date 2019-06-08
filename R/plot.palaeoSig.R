@@ -52,7 +52,11 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p.val =
     linetype = c("dashed", "dotted", rep("solid", length(variable_names))),
     colour = c("black", "red", rep("black", length(variable_names)))
   )
-    
+  
+  autoplot_sig(sim_bin, lines_to_add, xlab = "Proportion variance explained")
+}    
+
+autoplot_sig <- function(sim_bin, lines_to_add, xlab ){
   g <- ggplot(sim_bin, aes(x = .data$mid_point, y = .data$n)) +
     geom_col(fill = "grey70", width = width) +
     geom_linerange(data = lines_to_add, 
@@ -66,7 +70,7 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p.val =
     scale_colour_identity() +
     scale_linetype_identity() +
     xlim(0, NA) +
-    labs(x = "Proportion variance explained", y = "Frequency")
+    labs(x = xlab, y = "Frequency")
   
   return(g)
 }
