@@ -29,14 +29,22 @@ plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, .
 #' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text scale_colour_identity scale_linetype_identity labs
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
+#' @importFrom stats quantile
+#' @importFrom ggrepel geom_text_repel
 
 autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p.val = 0.05){
   if (missing(variable_names)) {
     variable_names <- names(x$EX)
   }
   
-  breaks <- seq(min(x$sim.ex), max(x$sim.ex), length = nbins + 1)
-  id <- cut(x$sim.ex, breaks = breaks, include.lowest = TRUE)
+  x_fort <- fortify_palaeosig(sim = x$sim)
+  autoplot_sig(x_fort, xlab = "Proportion variance explained")
+  }  
+  
+fortify_palaeosig <- function(sim, variable_names){  
+  
+  breaks <- seq(min(sim), max(sim), length = nbins + 1)
+  id <- cut(sim, breaks = breaks, include.lowest = TRUE)
   
   sim_bin <- tibble(  
     mid_point = (breaks[-length(breaks)] + breaks[-1]) / 2,
@@ -53,20 +61,21 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p.val =
     colour = c("black", "red", rep("black", length(variable_names)))
   )
   
-  autoplot_sig(sim_bin, lines_to_add, xlab = "Proportion variance explained")
+  result <- lst(sim_bin, lines_to_add, width)
+  return(result)
+
 }    
 
-autoplot_sig <- function(sim_bin, lines_to_add, xlab ){
-  g <- ggplot(sim_bin, aes(x = .data$mid_point, y = .data$n)) +
-    geom_col(fill = "grey70", width = width) +
-    geom_linerange(data = lines_to_add, 
+autoplot_palaeosig <- function(x, xlab ){
+  g <- ggplot(x$sim_bin, aes(x = .data$mid_point, y = .data$n)) +
+    geom_col(fill = "grey70", width = x$width) +
+    geom_linerange(data = x$lines_to_add, 
                   aes(x = .data$value, ymin = 0, ymax = .data$max, linetype = .data$linetype, colour = .data$colour), 
                   inherit.aes = FALSE) +
-    geom_text(data = lines_to_add, 
+    geom_text_repel(data = x$lines_to_add, 
                    aes(x = .data$value, y = .data$max, label = .data$label,
                        colour = .data$colour),
-           # method = "top.qp",
-            angle = 90, hjust = 0) +
+            angle = 90, hjust = 0, direction = "x") +
     scale_colour_identity() +
     scale_linetype_identity() +
     xlim(0, NA) +

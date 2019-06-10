@@ -1,13 +1,11 @@
-#plot.obscor <-
-#function(x, xlab="WA optima", ylab="RDA scores", f=1,...){
-#  plot(x=x$x$Optima,y=x$x$RDA1, cex=x$x$abun*f, xlab=xlab, ylab=ylab,...)
-#}
-
-
+#' @importFrom graphics plot
+#' @importFrom stats quantile
+#' @export
 
 plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, label = "env", 
-                        abun = "abun.calib", p.val = 0.95, ...) {
-    weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos", "n2.calib", "n2.joint", "unweighted")
+                        abun = "abun.calib", p.val = 0.05, ...) {
+    weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
+                    "n2.calib", "n2.joint", "unweighted")
     w <- pmatch(abun, weightings)
     if (is.na(w)) {
         stop("Unknown abundance weighting")
@@ -40,9 +38,47 @@ plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, label = "env",
     hist(sim, xlim = range(c(sim, ob)), xlab = xlab, 
          col = "grey80", border = NA, ...)
     abline(v = ob, col = 1)
-    abline(v = quantile(sim, prob = p.val), col =  2, lty=3)
+    abline(v = quantile(sim, prob = 1 - p.val), col =  2, lty = 3)
     
     text(ob, par()$usr[4] * 0.9, label = label, srt = 90, pos = 2)
     box()
   }else stop("which==what")
 }
+
+
+#' @importFrom ggplot2 autoplot
+#' @importFrom stats quantile
+#' @export
+
+autoplot.obscor <- function(x, which = 1, label = "env", 
+                        abun = "abun.calib", p.val = 0.05, ...) {
+  
+  weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
+                  "n2.calib", "n2.joint", "unweighted")
+  w <- pmatch(abun, weightings)
+  if (is.na(w)) {
+    stop("Unknown abundance weighting")
+  }
+  abun <- weightings[w]
+  
+  
+  
+  if(which == 1){
+    
+    x$ob$x %>% 
+      mutate(unweighted = 1) %>% 
+      ggplot(aes(x = Optima, y = RDA1, size = .data[[abun]])) +
+      geom_point(alpha  =0.3) +
+      scale_size_area() +
+      labs(x = "WA optima", y = "RDA scores", size = "Abundance")
+
+  } else if(which == 2){
+      xlab <- ifelse(w == "unweighted", "Correlation", "Weighted correlation")
+
+    sim <- x$sim[[w]]
+    ob <- x$ob$res[w]
+
+    autoplot_sig(sim_bin, lines_to_label, width,  xlab = xlab)
+  }else stop("Unknown plot")
+}
+
