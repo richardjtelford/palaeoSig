@@ -1,4 +1,4 @@
-#' @importFrom graphics plot
+#' @importFrom graphics plot hist abline box
 #' @importFrom stats quantile
 #' @export
 
@@ -46,8 +46,11 @@ plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, label = "env",
 }
 
 
-#' @importFrom ggplot2 autoplot
+#' @importFrom ggplot2 autoplot ggplot geom_point scale_size_area
 #' @importFrom stats quantile
+#' @importFrom rlang .data
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
 #' @export
 
 autoplot.obscor <- function(x, which = 1, label = "env", 
@@ -61,13 +64,11 @@ autoplot.obscor <- function(x, which = 1, label = "env",
   }
   abun <- weightings[w]
   
-  
-  
   if(which == 1){
     
     x$ob$x %>% 
       mutate(unweighted = 1) %>% 
-      ggplot(aes(x = Optima, y = RDA1, size = .data[[abun]])) +
+      ggplot(aes(x = .data$Optima, y = .data$RDA1, size = .data[[abun]])) +
       geom_point(alpha  =0.3) +
       scale_size_area() +
       labs(x = "WA optima", y = "RDA scores", size = "Abundance")
@@ -79,6 +80,6 @@ autoplot.obscor <- function(x, which = 1, label = "env",
     ob <- x$ob$res[w]
 
     autoplot_sig(sim_bin, lines_to_label, width,  xlab = xlab)
-  }else stop("Unknown plot")
+  } else stop("Unknown plot")
 }
 

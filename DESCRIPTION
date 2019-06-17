@@ -17,7 +17,8 @@ Imports: TeachingDemos, rioja, mgcv, MASS,
     vegan,
     rlang,
     ggrepel, 
-    tidyr
+    tidyr,
+    purrr
 Description: Tests if quantitative palaeoenvironmental reconstructions are statistically significant.
 License: GPL-3
 LazyLoad: yes

@@ -1,4 +1,4 @@
-#' @importFrom stats predict lm gnorm approxfun
+#' @importFrom stats predict lm qnorm approxfun
 #' @importFrom graphics plot lines points
 #' @export
 

@@ -1,3 +1,5 @@
+#' @export
+
 jointsig <- function(spp, fos, var1, var2, 
                      method = "randomTF", n = 99, r = 32, ...){
   if (r %% 4 != 0)

@@ -1,3 +1,5 @@
+#' @export
+
 `multi.mat` <- function (training.spp, envs, core.spp, noanalogues=10,
                          method = "sq-chord", run = "both"){
   ests <- function(d.mat, nRow, nSamp){

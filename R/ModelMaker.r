@@ -1,9 +1,11 @@
+#' @importFrom stats runif
+
 ModelMaker <- function(spp, env, n = 99, fun, autosim, ...) {
   #reconstruct random variables
   if (!is.list(env))
     env <- list(env = env)
   rownames(spp) <- 1:nrow(spp)
-  if (identical(names(formals(MAT)), names(formals(fun)))) {
+  if (identical(MAT, fun)) {
     stop("There is no advantage to using ModelMaker with MAT")
   }
   if (missing(autosim))

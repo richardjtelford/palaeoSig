@@ -1,4 +1,7 @@
-`make.dist` <- function (TS, method) {
+#' @importFrom stats dist
+
+
+make.dist <- function (TS, method) {
   if (method == "sq-euclidean"){
       dist.mat <- dist(TS, method = "euclidean", 
                        diag = TRUE, upper = TRUE)^2

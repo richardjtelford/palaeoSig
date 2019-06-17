@@ -1,6 +1,7 @@
 # change name of a and g to alpha and gamma
 # alpha und gamma k?nnen f?r alle Arten unterschiedlich sein
 # statt spacing k?nnte man auch ein Argument fun einf?hren, f?r regular eine Funktion schreiben und sonst runif oder rnorm
+#' @export
 
 "make.species" <- function(nspp = 30, Amax, srange, 
                            fun, xpar, alpha = 4, gamma = 4)     
@@ -23,6 +24,10 @@
   list(spp = spp)
 }
 
+#' @importFrom stats pnorm
+#' @importFrom MASS mvrnorm
+#' @export
+#' 
 species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
                     ndim, sdistr,  ocor, odistr){
 
@@ -43,10 +48,10 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
   }
   if(missing(fun)) { 
   spp <- lapply(1:ndim, function(x) {                                      
-    spp <- 'make.species'(nspp = nspp, Amax = Amax, srange = srange[,x],
+    spp <- 'make.species'(nspp = nspp, Amax = Amax, srange = srange[, x],
                           xpar = xpar[x, ], alpha =  alpha[, x], 
-                          gamma = gamma[,x])
-    spp<-spp$spp[sample(1:nspp),]
+                          gamma = gamma[, x])
+    spp <- spp$spp[sample(1:nspp), ]
     })} 
   else{
     spp <- lapply(1:ndim, function(x) {                  
@@ -100,6 +105,7 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
 
 
 #-------------------------------------------------------------------------------
+#' @export
 cor.mat.fun <- function(ndim, cors) {   
   cor.mat <- diag(ndim)
   if (!missing(cors)) {
@@ -112,7 +118,7 @@ cor.mat.fun <- function(ndim, cors) {
 }
 
 
-
+#' @export
 make.env <- function(n, elen, emean, edistr, ecor, ndim) {
   if (missing(ecor)) {
     ecor <- diag(ndim)
@@ -195,7 +201,7 @@ make.abundances <- function (env,param){
   t(mat - 1)
 }
 
-
+#' @export
 abundances <- function(env, spp, nc) {
   ndim <- ncol(env)
   spp <- matrix(ncol = 5 * ndim, unlist(spp))
@@ -216,7 +222,7 @@ abundances <- function(env, spp, nc) {
 
 
 #
-
+#' @export
 make.set <- function(ndim, n, elen, emean, edistr, ecor, cnt, spec, env, ...) {
   if (missing(spec))
     spec <- species (ndim, ...)

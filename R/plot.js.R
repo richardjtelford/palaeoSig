@@ -1,3 +1,6 @@
+#' @importFrom graphics polygon
+#' @export
+
 plot.js <- function(x, names.v1, names.v2, ...) {
   EX <- x$EX
   v1 <- x$v1

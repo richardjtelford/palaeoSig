@@ -2,6 +2,8 @@
 #' @importFrom rioja MAT
 #' @importFrom purrr map map_dbl
 #' @importFrom tibble lst
+#' @importFrom vegan rda
+#' @importFrom stats formula predict
 #' @export
 
 randomTF <- function(spp, env, fos, n = 99, fun, col,
@@ -103,7 +105,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
       EX = map_dbl(obs, "EX"),
       eig1 = map_dbl(obs, "EIG1"),
       sim.ex = sim.ex,
-      sig = map_dbl(EX, function(E) mean(E <= c(E, sim.ex)))
+      sig = map_dbl(.data$EX, function(E) mean(E <= c(E, sim.ex)))
     )
   class(res) <- "palaeoSig"
   return(res)

@@ -1,6 +1,8 @@
 #' @importFrom graphics hist lines text strwidth
 #' @importFrom stats quantile
 #' @importFrom TeachingDemos spread.labs
+#' @method plot palaeoSig
+#' @export
 #' 
 plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, ...){
   if (missing(vnames)) {
@@ -31,17 +33,25 @@ plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, .
 #' @importFrom rlang .data
 #' @importFrom stats quantile
 #' @importFrom ggrepel geom_text_repel
+#' @method autoplot palaeoSig
+#' @export
 
-autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p.val = 0.05){
+autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val = 0.05){
   if (missing(variable_names)) {
     variable_names <- names(x$EX)
   }
   
-  x_fort <- fortify_palaeosig(sim = x$sim)
+  x_fort <- fortify_palaeosig(
+    sim = x$sim, 
+    variable_names = variable_names, 
+    p_val = p_val
+    )
   autoplot_sig(x_fort, xlab = "Proportion variance explained")
   }  
   
-fortify_palaeosig <- function(sim, variable_names){  
+#' @importFrom tibble tibble lst
+
+fortify_palaeosig <- function(sim, variable_names, p_val){  
   
   breaks <- seq(min(sim), max(sim), length = nbins + 1)
   id <- cut(sim, breaks = breaks, include.lowest = TRUE)
@@ -54,8 +64,8 @@ fortify_palaeosig <- function(sim, variable_names){
   width <- diff(sim_bin$mid_point[1:2])
   
   lines_to_add <- tibble(
-    label = c("PC1", paste("p =", p.val), variable_names), 
-    value = c(x$MAX, quantile(x$sim.ex, probs = 1 - p.val), x$EX), 
+    label = c("PC1", paste("p =", p_val), variable_names), 
+    value = c(x$MAX, quantile(x$sim.ex, probs = 1 - p_val), x$EX), 
     max = max(sim_bin$n) * top, 
     linetype = c("dashed", "dotted", rep("solid", length(variable_names))),
     colour = c("black", "red", rep("black", length(variable_names)))

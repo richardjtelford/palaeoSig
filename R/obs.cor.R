@@ -21,6 +21,12 @@
 #product of fossil and training abundance
 #N2 of fossil/training/joint
 
+#' @importFrom vegan rda scores
+#' @importFrom rioja WA
+#' @importFrom tibble tibble
+#' @importFrom rlang .data
+#' @importFrom stats cov.wt predict coef
+#' @export
 
 obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
   spp <- spp[, colSums(spp > 0) >= min.occur]
@@ -41,16 +47,18 @@ obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
   abundances <- tibble(
     abun.fos = colMeans(fos[, shared_fos]),
     abun.calib = colMeans(spp[, shared_spp]),
-    abun.joint = abun.fos * abun.calib,
+    abun.joint = .data$abun.fos * .data$abun.calib,
     n2.fos = Hill.N2(fos[, shared_fos], margin = 2),
     n2.calib = Hill.N2(spp[, shared_spp], margin = 2),
-    n2.joint = n2.fos * n2.calib
+    n2.joint = .data$n2.fos * .data$n2.calib
   )
 
     optima <- optima[shared_spp, , drop = FALSE]
     sco <- sco[shared_fos, , drop = FALSE]
     x <- data.frame(optima, sco, abundances)
-    wcs <- sapply(abundances,function(abun)abs(cov.wt(x[, 1:2], wt = abun, cor = TRUE)$cor[1, 2]))
+    wcs <- sapply(abundances, function(abun){
+      abs(cov.wt(x[, 1:2], wt = abun, cor = TRUE)$cor[1, 2])
+      })
     
     res.obs <- list(x = x, res = c(wcs, unweighted = abs(cor(x[, 1:2])[1, 2])))
 
@@ -68,7 +76,10 @@ obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1){
         c(wcs, unweighted = abs(cor(x[, 1:2])[1, 2]))
     })
   res.sim <- as.data.frame(t(res.sim))
-  sigs <- mapply(function(ob, sim)mean(ob <= c(ob, sim)), ob = res.obs$res, sim = res.sim)
+  sigs <- mapply(
+    function(ob, sim){mean(ob <= c(ob, sim))}, 
+    ob = res.obs$res, 
+    sim = res.sim)
     
   res <- list(ob = res.obs, sim = res.sim, sigs = sigs)
   class(res) <- "obscor"

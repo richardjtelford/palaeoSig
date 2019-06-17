@@ -1,3 +1,6 @@
+#' @importFrom stats dist
+#' @export
+
 `mat.h` <- function(y, x, noanalogues, geodist, thresh){
   if (!inherits(y, "dist")) {
     if (is.data.frame(y) || !(ncol(y) == nrow(y) & sum(diag(y)) == 0)) {
