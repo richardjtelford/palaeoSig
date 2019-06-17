@@ -44,14 +44,19 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val =
   x_fort <- fortify_palaeosig(
     sim = x$sim, 
     variable_names = variable_names, 
-    p_val = p_val
+    p_val = p_val,
+    nbins = nbins,
+    top = top,
+    PC1 = x$MAX,
+    EX = x$EX
     )
-  autoplot_sig(x_fort, xlab = "Proportion variance explained")
+  
+  autoplot_sig(x_fort, xlab = "Proportion variance explained", xmin = 0)
   }  
   
 #' @importFrom tibble tibble lst
 
-fortify_palaeosig <- function(sim, variable_names, p_val){  
+fortify_palaeosig <- function(sim, variable_names, p_val, nbins, top, PC1 = NA, EX){  
   
   breaks <- seq(min(sim), max(sim), length = nbins + 1)
   id <- cut(sim, breaks = breaks, include.lowest = TRUE)
@@ -65,18 +70,19 @@ fortify_palaeosig <- function(sim, variable_names, p_val){
   
   lines_to_add <- tibble(
     label = c("PC1", paste("p =", p_val), variable_names), 
-    value = c(x$MAX, quantile(x$sim.ex, probs = 1 - p_val), x$EX), 
+    value = c(PC1, quantile(sim, probs = 1 - p_val), EX), 
     max = max(sim_bin$n) * top, 
     linetype = c("dashed", "dotted", rep("solid", length(variable_names))),
     colour = c("black", "red", rep("black", length(variable_names)))
-  )
+  ) %>% 
+    filter(!is.na(value))
   
   result <- lst(sim_bin, lines_to_add, width)
   return(result)
 
 }    
 
-autoplot_palaeosig <- function(x, xlab ){
+autoplot_sig <- function(x, xlab, xmin){
   g <- ggplot(x$sim_bin, aes(x = .data$mid_point, y = .data$n)) +
     geom_col(fill = "grey70", width = x$width) +
     geom_linerange(data = x$lines_to_add, 
@@ -85,10 +91,10 @@ autoplot_palaeosig <- function(x, xlab ){
     geom_text_repel(data = x$lines_to_add, 
                    aes(x = .data$value, y = .data$max, label = .data$label,
                        colour = .data$colour),
-            angle = 90, hjust = 0, direction = "x") +
+            angle = 90, hjust = .5, vjust = 0, direction = "x") +
     scale_colour_identity() +
     scale_linetype_identity() +
-    xlim(0, NA) +
+    xlim(xmin, NA) +
     labs(x = xlab, y = "Frequency")
   
   return(g)

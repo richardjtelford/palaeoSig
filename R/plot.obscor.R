@@ -1,5 +1,6 @@
 #' @importFrom graphics plot hist abline box
 #' @importFrom stats quantile
+#' @method plot obscor
 #' @export
 
 plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, label = "env", 
@@ -51,10 +52,11 @@ plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, label = "env",
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
+#' @method autoplot obscor
 #' @export
 
 autoplot.obscor <- function(x, which = 1, label = "env", 
-                        abun = "abun.calib", p.val = 0.05, ...) {
+                        abun = "abun.calib", p_val = 0.05, nbins = 20, top = 0.7, ...) {
   
   weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
                   "n2.calib", "n2.joint", "unweighted")
@@ -79,7 +81,18 @@ autoplot.obscor <- function(x, which = 1, label = "env",
     sim <- x$sim[[w]]
     ob <- x$ob$res[w]
 
-    autoplot_sig(sim_bin, lines_to_label, width,  xlab = xlab)
+    x_fort <- fortify_palaeosig(
+      sim = x$sim[, abun], 
+      variable_names = "variable_names", 
+      p_val = p_val,
+      nbins = nbins,
+      top = top,
+      EX = x$ob$res[abun]
+    )
+    
+    autoplot_sig(x_fort, xlab = xlab, xmin = NA)
+    
+    
   } else stop("Unknown plot")
 }
 
