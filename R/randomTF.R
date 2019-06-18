@@ -7,12 +7,23 @@
 #' @export
 
 randomTF <- function(spp, env, fos, n = 99, fun, col,
-                     condition, autosim, ord = rda, ...){
+                     condition, autosim, ord = rda, 
+                     permute = FALSE, ...){
   #reconstruct random variables
-  if (!is.list(env)){
-    env <- list(env = env)
+  if (!is.data.frame(env)){
+    env <- data.frame(env = env)
   }
   rownames(spp) <- 1:nrow(spp)
+
+  #permute and autosim don't play together
+  if(isTRUE(permute) & !missing(autosim)){
+    stop("permute does not make sense if autosim is provided")
+  }
+  
+  #check only one variable if permute is true
+  if(isTRUE(permute) & length(env) > 1){
+    stop("permute is only possible with one environmental variable")
+  }
   
   #if MAT, for speed, drop training set samples that are never analogues.
   if (identical(fun, MAT)) {
@@ -61,14 +72,21 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   })
 
   # simulations using random data  
-  if (missing(autosim)) {
-    rnd <- matrix(runif(nrow(spp) * n), ncol = n)
-  }
-  else {
+  #make random environmental variables
+  if (!missing(autosim)) {
+    #check autosim has correct size
+    if(nrow(autosim) != nrow(env)){
+      stop("autosim must have same number of rows as env")
+    }
     rnd <- autosim
-  }
+  } else if(isTRUE(permute)){
+      rnd <- replicate(n = n, sample(env[[1]]), simplify = TRUE)
+  }else{
+      rnd <- matrix(runif(nrow(spp) * n), ncol = n)
+    }
+
+  #if MAT, can take shortcut as always same analogues chosen
   if (identical(fun, MAT)) {
-    #if MAT, can take shortcut as always same analogues chosen
     selected_analogues <- apply(obs[[1]]$mod$match.name, 2, as.numeric)
     p <- apply(selected_analogues, 1, function(n){
         colMeans(rnd[n, ])})
