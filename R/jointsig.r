@@ -2,14 +2,14 @@
 
 jointsig <- function(spp, fos, var1, var2, 
                      method = "randomTF", n = 99, r = 32, ...){
-  if (r %% 4 != 0)
+  if (r %% 4 != 0){
     warning("r not divisible by 4")
+  }
   v1 <- sin(seq(0, 2 * pi, length = r + 1))[-(r + 1)]
   v2 <- cos(seq(0, 2 * pi, length = r + 1))[-(r + 1)]
-  syn.env <- as.data.frame(
-    mapply(function(v1,v2){
+  syn.env <- mapply(function(v1, v2){
       scale(var1) * v1 + scale(var2) * v2}, v1 = v1, v2 = v2)
-    )
+  syn.env <- as.data.frame(syn.env)
   if (method == "randomTF") {
     res <- randomTF(spp, fos, ..., env = syn.env, n = n)
   } else if (method == "obs.cor") {

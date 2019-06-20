@@ -6,7 +6,7 @@
   Creates functions that transform arbitary distributions into a Gaussian distributions, and vice versa.
 }
 \usage{
-anamorph(x, k, plot = F)
+anamorph(x, k, plot = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +25,7 @@ anamorph(x, k, plot = F)
 \references{ Wackernagel, H. (2003) \emph{Multivariate Geostatistics.} 3rd edition, Springer-Verlag, Berlin. }
 \author{ Richard Telford \email{Richard.Telford@bio.uib.no}  }
 \examples{
-set.seed(666)
+set.seed(42)
 x <- c(rnorm(50, 0, 1), rnorm(50, 6, 1))
 hist(x)
 ana.fun <- anamorph(x, 30, plot = TRUE)

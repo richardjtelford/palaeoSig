@@ -1,7 +1,7 @@
 # change name of a and g to alpha and gamma
 # alpha und gamma k?nnen f?r alle Arten unterschiedlich sein
 # statt spacing k?nnte man auch ein Argument fun einf?hren, f?r regular eine Funktion schreiben und sonst runif oder rnorm
-#' @export
+
 
 "make.species" <- function(nspp = 30, Amax, srange, 
                            fun, xpar, alpha = 4, gamma = 4)     
@@ -48,7 +48,7 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
   }
   if(missing(fun)) { 
   spp <- lapply(1:ndim, function(x) {                                      
-    spp <- 'make.species'(nspp = nspp, Amax = Amax, srange = srange[, x],
+    spp <- make.species(nspp = nspp, Amax = Amax, srange = srange[, x],
                           xpar = xpar[x, ], alpha =  alpha[, x], 
                           gamma = gamma[, x])
     spp <- spp$spp[sample(1:nspp), ]
@@ -150,7 +150,7 @@ make.env <- function(n, elen, emean, edistr, ecor, ndim) {
 #-------------------------------------------------------------------------------
 #make abundances
 
-make.abundances <- function (env,param){
+make.abundances <- function (env, param){
   env <- as.matrix(env)
   #error checking
   stopifnot(ncol(env) == nrow(param))
