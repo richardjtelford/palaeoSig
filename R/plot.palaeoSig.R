@@ -61,11 +61,11 @@ autoplot.palaeoSig <- function(x, variable_names,
     top = top,
     PC1 = x$MAX,
     EX = x$EX
-    )
+  )
   
   autoplot_sig(x_fort, xlab = "Proportion variance explained", xmin = 0)
-  }  
-  
+}  
+
 #' @importFrom tibble tibble lst
 #' @importFrom rlang .data
 
@@ -79,7 +79,7 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
     mid_point = (breaks[-length(breaks)] + breaks[-1]) / 2,
     n = as.vector(table(id))
   )
-
+  
   width <- diff(sim_bin$mid_point[1:2])
   
   lines_to_add <- tibble(
@@ -93,7 +93,7 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
   
   result <- lst(sim_bin, lines_to_add, width)
   return(result)
-
+  
 }    
 
 #' @importFrom ggplot2 xlim
@@ -102,12 +102,12 @@ autoplot_sig <- function(x, xlab, xmin){
   g <- ggplot(x$sim_bin, aes(x = .data$mid_point, y = .data$n)) +
     geom_col(fill = "grey70", width = x$width) +
     geom_linerange(data = x$lines_to_add, 
-                  aes(x = .data$value, ymin = 0, ymax = .data$max, 
-                      linetype = .data$linetype, colour = .data$colour), 
-                  inherit.aes = FALSE) +
+                   aes(x = .data$value, ymin = 0, ymax = .data$max, 
+                       linetype = .data$linetype, colour = .data$colour), 
+                   inherit.aes = FALSE) +
     geom_text_repel(data = x$lines_to_add, 
-                   aes(x = .data$value, y = .data$max, label = .data$label,
-                       colour = .data$colour),
+                    aes(x = .data$value, y = .data$max, label = .data$label,
+                        colour = .data$colour),
             angle = 90, hjust = .5, vjust = 0, direction = "x") +
     scale_colour_identity() +
     scale_linetype_identity() +

@@ -51,7 +51,7 @@
 #'    
 #'    require("ggplot2")
 #'    autoplot(rlghr, "pH")
-    
+
 #' @keywords multivariate htest hplot
 
 #' @importFrom rioja MAT
@@ -66,7 +66,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
                      permute = FALSE,
                      models,
                      make_models = FALSE, ...){
-
+  
   #Check env is data.frame or vector
   if(!is.data.frame(env) & !is.vector(env)){
     stop("env must be a data.frame containing one or more environemental
@@ -184,16 +184,16 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     }
     rnd <- autosim
   } else if(isTRUE(permute)){
-      rnd <- replicate(n = n, sample(env[[1]]), simplify = TRUE)
+    rnd <- replicate(n = n, sample(env[[1]]), simplify = TRUE)
   }else{
-      rnd <- matrix(runif(nrow(spp) * n), ncol = n)
-    }
-
+    rnd <- matrix(runif(nrow(spp) * n), ncol = n)
+  }
+  
   #if MAT, can take shortcut as always same analogues chosen
   if (identical(fun, MAT)) {
     selected_analogues <- apply(obs[[1]]$mod$match.name, 2, as.numeric)
     p <- apply(selected_analogues, 1, function(n){
-        colMeans(rnd[n, ])})
+      colMeans(rnd[n, ])})
     sim.ex <- apply(p, 1, function(pp) {
       if (!partial) {
         r <- ord(fos ~ pp)

@@ -6,7 +6,9 @@ Author: Richard Telford, Mathias Trachsel
 Maintainer: Richard Telford <Richard.Telford@bio.uib.no>
 URL: https://github.com/richardjtelford/palaeoSig
 BugReports: https://github.com/richardjtelford/palaeoSig/issues
-Suggests: fields
+Suggests: fields,
+    knitr,
+    rmarkdown
 Imports: TeachingDemos, rioja, mgcv, MASS,
     tibble,
     dplyr,
@@ -23,3 +25,4 @@ Description: Tests if quantitative palaeoenvironmental reconstructions are stati
 License: GPL-3 + file LICENSE
 LazyLoad: yes
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr

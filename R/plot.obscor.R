@@ -84,8 +84,8 @@ identify.obscor <- function(x, labels, ...) {
 #' @export
 
 autoplot.obscor <- function(x, which = 1, variable_names = "env", 
-                        abun = "abun.calib", p_val = 0.05, 
-                        nbins = 20, top = 0.7, ...) {
+                            abun = "abun.calib", p_val = 0.05, 
+                            nbins = 20, top = 0.7, ...) {
   
   weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
                   "n2.calib", "n2.joint", "unweighted")
@@ -103,13 +103,13 @@ autoplot.obscor <- function(x, which = 1, variable_names = "env",
       geom_point(alpha  =0.3) +
       scale_size_area() +
       labs(x = "WA optima", y = "RDA scores", size = "Abundance")
-
+    
   } else if(which == 2){
-      xlab <- ifelse(w == "unweighted", "Correlation", "Weighted correlation")
-
+    xlab <- ifelse(w == "unweighted", "Correlation", "Weighted correlation")
+    
     sim <- x$sim[[w]]
     ob <- x$ob$res[w]
-
+    
     x_fort <- fortify_palaeosig(
       sim = x$sim[, abun], 
       variable_names = variable_names, 

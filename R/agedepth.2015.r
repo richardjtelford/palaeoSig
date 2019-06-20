@@ -64,13 +64,13 @@
     weights = fit.w,
     #     Constant=data.frame(Depth=xp,Calage=y+min(bpup),
     #            Estage=yp,Lowlim=yp1,Upplim=yp2,tsd=sd2,Csd=sd,Rsd=v1),
-#     Muvar=data.frame(Depth=xpm,Calage=y+min(bpup),
-                #Estage=ypm,Lowlim=ypm1,Upplim=ypm2,Tsd=sdm2,Csd=sd,Rsd=vm),
-     RES <- data.frame(
-       Constvar = sum(fit.con[[2]] ^ 2) / 1000,
-       Muvar = sum(fit.mu[[2]] ^ 2) / 1000),
-       Models = fit.pl,
-       data = data
+    #     Muvar=data.frame(Depth=xpm,Calage=y+min(bpup),
+    #Estage=ypm,Lowlim=ypm1,Upplim=ypm2,Tsd=sdm2,Csd=sd,Rsd=vm),
+    RES <- data.frame(
+      Constvar = sum(fit.con[[2]] ^ 2) / 1000,
+      Muvar = sum(fit.mu[[2]] ^ 2) / 1000),
+    Models = fit.pl,
+    data = data
   )
   class(age.res) <- "agelme"
   age.res
@@ -90,7 +90,7 @@
   fit.m <- object$Models[[v]]
   xa <- data.frame(fit.w = object$weights)
   xd <- depth - min(depup)
-
+  
   yp <- predict(fit.m, newdata = data.frame(x = xd), type = "response")
   ypm <- predict(fit.m, se.fit = T)
   #  detach(pos=2)
