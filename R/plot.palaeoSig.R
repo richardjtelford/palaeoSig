@@ -108,7 +108,7 @@ autoplot_sig <- function(x, xlab, xmin){
     geom_text_repel(data = x$lines_to_add, 
                     aes(x = .data$value, y = .data$max, label = .data$label,
                         colour = .data$colour),
-            angle = 90, hjust = .5, vjust = 0, direction = "x") +
+                    angle = 90, hjust = .5, vjust = 0, direction = "x") +
     scale_colour_identity() +
     scale_linetype_identity() +
     xlim(xmin, NA_real_) +
