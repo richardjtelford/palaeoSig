@@ -1,12 +1,20 @@
+#' @describeIn randomTF Plot palaeoSig object
+#' @param x Output from randomTF
+#' @param variable_names Names of environmental variables. If missing, taken from \code{env} data.frame.
+#' @param top Proportion of the figure below the environmental name labels.
+#' @param adj Adjust the position that the environmental names are plotted at.
+#' @param p_val P value to draw a line vertical line at (with which=2)  
+#' 
 #' @importFrom graphics hist lines text strwidth
 #' @importFrom stats quantile
 #' @importFrom TeachingDemos spread.labs
 #' @method plot palaeoSig
 #' @export
 #' 
-plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, ...){
-  if (missing(vnames)) {
-    vnames <- names(x$EX)
+plot.palaeoSig <- function(x, variable_names, top = 0.7, 
+                           adj = c(0, 0.5), p_val = 0.05, ...){
+  if (missing(variable_names)) {
+    variable_names <- names(x$EX)
   }
   with(x,{
     hist(sim.ex, breaks = seq(min(sim.ex), max(sim.ex), length = 20), 
@@ -18,16 +26,18 @@ plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, .
       lines(rep(z, 2), c(0, tops)))
     #abline(v=MAX, col=1, lwd=2, lty=3)
     lines(rep(MAX, 2), c(0, tops), col = 1, lwd = 2, lty = 3)
-    lines(rep(quantile(sim.ex, probs = 1 - p.val), 2), c(0, tops), 
+    lines(rep(quantile(sim.ex, probs = 1 - p_val), 2), c(0, tops), 
           col = 2, lwd = 1, lty = 3)
     #abline(v=EX, col=1)     
     putEX <- spread.labs(EX, 1.2 * strwidth('A', cex = .8))
 
-    text(putEX, par()$usr[4] * .71, label = vnames, 
+    text(putEX, par()$usr[4] * .71, label = variable_names, 
          srt = 90, adj = adj, cex = .8)
   })
 }
 
+#' @describeIn randomTF autoplot function for palaeoSig object
+#' @param nbins integer giving number of bins for the histogram
 #' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text scale_colour_identity scale_linetype_identity labs
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
@@ -35,6 +45,7 @@ plot.palaeoSig <- function(x, vnames, top = 0.7, adj = c(0,0.5), p.val = 0.05, .
 #' @importFrom ggrepel geom_text_repel
 #' @method autoplot palaeoSig
 #' @export
+
 
 autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val = 0.05){
   if (missing(variable_names)) {
@@ -55,6 +66,7 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val =
   }  
   
 #' @importFrom tibble tibble lst
+#' @importFrom rlang .data
 
 fortify_palaeosig <- function(sim, variable_names, p_val, nbins, top, PC1 = NA, EX){  
   
@@ -75,12 +87,14 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins, top, PC1 = NA, 
     linetype = c("dashed", "dotted", rep("solid", length(variable_names))),
     colour = c("black", "red", rep("black", length(variable_names)))
   ) %>% 
-    filter(!is.na(value))
+    filter(!is.na(.data$value))
   
   result <- lst(sim_bin, lines_to_add, width)
   return(result)
 
 }    
+
+#' @importFrom ggplot2 xlim
 
 autoplot_sig <- function(x, xlab, xmin){
   g <- ggplot(x$sim_bin, aes(x = .data$mid_point, y = .data$n)) +
