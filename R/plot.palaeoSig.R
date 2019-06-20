@@ -108,7 +108,7 @@ autoplot_sig <- function(x, xlab, xmin){
             angle = 90, hjust = .5, vjust = 0, direction = "x") +
     scale_colour_identity() +
     scale_linetype_identity() +
-    xlim(xmin, NA) +
+    xlim(xmin, NA_real_) +
     labs(x = xlab, y = "Frequency")
   
   return(g)

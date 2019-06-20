@@ -2,7 +2,7 @@
 #' @title Proportion of variance in the fossil data explained by an environmental reconstruction
 #' @description Calculate the proportion of variance in the fossil data explained by an environmental reconstruction with a constrained ordination. This value is compared with a null distribution calculated as the proportion of variance in the fossil data explained by reconstructions from transfer functions trained on random data.
 
-#' @param spp Data frame of modern training set species data, transformed as required for example with sqrt
+#' @param spp Data frame of modern training set species data, transformed as required for example with \code{sqrt}
 #' @param env Data frame of training set environmental variables or vector with single environmental variable
 #' @param fos Data frame of fossil species data, with same species codes and transformations as spp
 #' @param n number of random training sets. More is better.
