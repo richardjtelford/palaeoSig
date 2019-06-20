@@ -69,14 +69,15 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
 
   #Check env is data.frame or vector
   if(!is.data.frame(env) & !is.vector(env)){
-    stop("env must be a data.frame containing one or more environemental variables, or vector containing a single environemental variable")
+    stop("env must be a data.frame containing one or more environemental
+         variables, or vector containing a single environemental variable")
   }
   
   #force data to be a data.frame
   if (!is.data.frame(env)){
     env <- data.frame(env = env)
   }
-  rownames(spp) <- 1:nrow(spp)
+  rownames(spp) <- seq_len(nrow(spp))
 
   #check env and spp have same number of rows
   if(!identical(nrow(spp), nrow(env))){
@@ -113,7 +114,8 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   
   #MAT and make_models don't work well together
   if(identical(fun, MAT) & make_models){
-    stop("MAT and make_models don't work together because of a shortcut is used to speed up MAT")
+    stop("MAT and make_models don't work together because
+         a shortcut is used to speed up MAT")
   }
   
   if(make_models & !missing(models)){
@@ -122,7 +124,8 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   
   if (!missing(models)) {
     if (class(models) != "model_list") {
-      stop("models must be a model_list made by running randomTF with make_models = TRUE")
+      stop("models must be a model_list made by running 
+           randomTF with make_models = TRUE")
     }
   }  
   
@@ -132,7 +135,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     analogues <- unique(as.vector(as.numeric(mod1$match.name)))
     spp <- spp[analogues, ]
     env <- env[analogues, , drop = FALSE]
-    rownames(spp) <- 1:nrow(spp)
+    rownames(spp) <- seq_len(nrow(spp))
   }
   
   #find inertia explained by first axis of unconstrained ordination

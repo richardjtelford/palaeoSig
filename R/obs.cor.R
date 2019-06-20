@@ -62,18 +62,20 @@
 #to do
 #allow multiple environmental variables to be considered - need to update plot funs for which = 1
 
-obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1, autosim, permute = FALSE){
+obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1,
+                     autosim, permute = FALSE){
   
   #Check env is data.frame or vector
   if(!is.data.frame(env) & !is.vector(env)){
-    stop("env must be a data.frame containing one or more environemental variables, or vector containing a single environemental variable")
+    stop("env must be a data.frame containing one or more environemental
+         variables, or vector containing a single environemental variable")
   }
   
   #force data to be a data.frame
   if (!is.data.frame(env)){
     env <- data.frame(env = env)
   }
-  rownames(spp) <- 1:nrow(spp)
+  rownames(spp) <- seq_len(nrow(spp))
   
   #check env and spp have same number of rows
   if(!identical(nrow(spp), nrow(env))){
@@ -156,7 +158,7 @@ obs.cor <- function (spp, env, fos, ord = rda, n = 99, min.occur = 1, autosim, p
         optima <- mod$coef
         sco <- scores(RDA, display = "spec", choice = 1)
         optima_scores <- data.frame(
-          optima = optima[intersect(rownames(optima), rownames(sco)), , drop = FALSE], 
+          optima = optima[intersect(rownames(optima), rownames(sco)), , drop = FALSE],
           sco = sco[intersect(rownames(sco), rownames(optima)), , drop = FALSE]
         )
         

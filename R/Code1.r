@@ -67,17 +67,21 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
               opt <- mvrnorm(n = nspp, mu = rep(0, ndim), Sigma = ocor,
                              empirical = FALSE)  
               #    adjusting mean and variance to desired values
-              opt <- sapply(1:ndim, function(x) opt[, x] * xpar[x, 2] + xpar[x, 1])   
+              opt <- sapply(1:ndim, function(x){
+                opt[, x] * xpar[x, 2] + xpar[x, 1]
+                })   
             }
             
             if(odistr == 'uniform') { 
                # producing gaussian correlated variable
               opt <- mvrnorm(n = nspp, mu = rowMeans(xpar), Sigma = ocor, 
                              empirical = FALSE)
-              # inverse quantile function produces uniform correlated data   ~U[0,1]
+              # inverse quantile function produces uniform correlated data
               opt <- pnorm(scale(opt))   
               aa <- t(t(opt) * apply(xpar, 1, diff))
-              opt <- apply(aa, 2, function(y) y + (colMeans(t(xpar)) - colMeans(aa)))
+              opt <- apply(aa, 2, function(y){
+                y + (colMeans(t(xpar)) - colMeans(aa))
+                })
              }
              
     spp <- lapply(1:ndim, function(x) {
@@ -196,7 +200,8 @@ make.abundances <- function (env, param){
   mat <- apply(spp, 1, function(sam) {
     sam <- sample(1:ncol(spp), round(cnt), replace = TRUE, prob = sam)
     #,sample(1:ncol(spp),round(cnt/2), replace=TRUE)) # add more noise poisson 
-    table(c(sam, 1:ncol(spp))) # include 1:n to ensure no taxa skipped by table as empty
+    # count - include 1:n to ensure no taxa skipped by table as empty
+    table(c(sam, 1:ncol(spp)))
   })
   t(mat - 1)
 }

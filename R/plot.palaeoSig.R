@@ -47,7 +47,8 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
 #' @export
 
 
-autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val = 0.05){
+autoplot.palaeoSig <- function(x, variable_names, 
+                               nbins = 20, top = 0.7, p_val = 0.05){
   if (missing(variable_names)) {
     variable_names <- names(x$EX)
   }
@@ -68,7 +69,8 @@ autoplot.palaeoSig <- function(x, variable_names, nbins = 20, top = 0.7, p_val =
 #' @importFrom tibble tibble lst
 #' @importFrom rlang .data
 
-fortify_palaeosig <- function(sim, variable_names, p_val, nbins, top, PC1 = NA, EX){  
+fortify_palaeosig <- function(sim, variable_names, p_val, nbins, 
+                              top, PC1 = NA, EX){  
   
   breaks <- seq(min(sim), max(sim), length = nbins + 1)
   id <- cut(sim, breaks = breaks, include.lowest = TRUE)
@@ -100,7 +102,8 @@ autoplot_sig <- function(x, xlab, xmin){
   g <- ggplot(x$sim_bin, aes(x = .data$mid_point, y = .data$n)) +
     geom_col(fill = "grey70", width = x$width) +
     geom_linerange(data = x$lines_to_add, 
-                  aes(x = .data$value, ymin = 0, ymax = .data$max, linetype = .data$linetype, colour = .data$colour), 
+                  aes(x = .data$value, ymin = 0, ymax = .data$max, 
+                      linetype = .data$linetype, colour = .data$colour), 
                   inherit.aes = FALSE) +
     geom_text_repel(data = x$lines_to_add, 
                    aes(x = .data$value, y = .data$max, label = .data$label,

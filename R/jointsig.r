@@ -16,8 +16,9 @@ jointsig <- function(spp, fos, var1, var2,
     warning("obscor can pathological results in jointsig")
     res <- list()
     
-    res$EX <- sapply(syn.env, function(e)
-        obs.cor(spp, fos, ..., env = e, n = 0)$ob$res$wc) ######edit to match new obsc or
+    res$EX <- sapply(syn.env, function(e){
+        obs.cor(spp, fos, ..., env = e, n = 0)$ob$res$wc
+      }) ##edit to match new obsc
     res$sim.ex <- obs.cor(spp, fos, ..., env = syn.env[, 1], n = n)$sim[, 2]
     
   }

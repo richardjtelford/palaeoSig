@@ -48,7 +48,8 @@
       plot(x3, x4, ylim = x1, xlab = "Fitted", ylab = "Residuals")
       lines(loess.smooth(x3, x4, span = vspan))
       abline(h = 0, lty = 2)
-      plot(x3, sqrt(abs(x4)), ylim = x2, ylab = "Sqrt(abs(Residuals))", xlab = "Fitted")
+      plot(x3, sqrt(abs(x4)), ylim = x2, 
+           ylab = "Sqrt(abs(Residuals))", xlab = "Fitted")
       lines(loess.smooth(x3, sqrt(abs(x4)), span = vspan))
       abline(h = 0, lty = 2)
       plot(x3, x5, ylab = "Observed", xlab = "Fitted")

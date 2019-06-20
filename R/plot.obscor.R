@@ -13,7 +13,8 @@
 #' @method plot obscor
 #' @export
 
-plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, variable_names = "env", 
+plot.obscor <- function(x, xlab, ylab, f = 5, which = 1, 
+                        variable_names = "env", 
                         abun = "abun.calib", p_val = 0.05, ...) {
     weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
                     "n2.calib", "n2.joint", "unweighted")
@@ -83,7 +84,8 @@ identify.obscor <- function(x, labels, ...) {
 #' @export
 
 autoplot.obscor <- function(x, which = 1, variable_names = "env", 
-                        abun = "abun.calib", p_val = 0.05, nbins = 20, top = 0.7, ...) {
+                        abun = "abun.calib", p_val = 0.05, 
+                        nbins = 20, top = 0.7, ...) {
   
   weightings <- c("abun.fos", "abun.calib", "abun.joint", "n2.fos",
                   "n2.calib", "n2.joint", "unweighted")

@@ -40,11 +40,11 @@ rne <- function(y, env, geodist, fun, neighbours,
   print(rne$random)
   rne$neighbour <- lapply(neighbours, function(neighbour) {
     print(paste("neighbourhood = ", neighbour,"km"))
-    en <- sapply(1:nrow(y), function(n) {
+    en <- sapply(seq_len(nrow(y)), function(n) {
         sum(geodist[n, ] >= neighbour)
     })
     effn <- (nrow(y) - mean(en))/(nrow(y) - 1)
-    hb <- sapply(1:nrow(y), function(n) {
+    hb <- sapply(seq_len(nrow(y)), function(n) {
       y1 <- y[-n, ]
       env1 <- env[-n]
       exneigh <- geodist[n,-n] >= neighbour
@@ -57,7 +57,7 @@ rne <- function(y, env, geodist, fun, neighbours,
     if(is.null(dim(hb))){hbr<-cor(hb, env)^2}
     else{ hbr<-apply(hb,1,cor,env)^2}
 
-    eb <- sapply(1:nrow(y), function(n) {
+    eb <- sapply(seq_len(nrow(y)), function(n) {
       y1 <- y[-n, ]
       env1 <- env[-n]
       neigh <- which(
