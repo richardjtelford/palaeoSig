@@ -1,7 +1,7 @@
 Package: palaeoSig
 Type: Package
 Title: Significance Tests for Palaeoenvironmental Reconstructions
-Version: 1.2-1
+Version: 2.0-1
 Author: Richard Telford, Mathias Trachsel
 Maintainer: Richard Telford <Richard.Telford@bio.uib.no>
 URL: https://github.com/richardjtelford/palaeoSig
