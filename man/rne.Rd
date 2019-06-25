@@ -7,7 +7,7 @@
   Calculates effect of deleting sites from training set at random, from a geographic neighbourhood, or from an environmental neighbourhood. A simple graphical technique for gauging the effect of spatial autocorrelation on the transfer function model.
 }
 \usage{
-rne(y, env, geodist,fun, neighbours, subsets = c(1,0.75, 0.5, 0.25, 0.1), ...) 
+rne(y, env, geodist,fun, neighbours, subsets = c(1, 0.75, 0.5, 0.25, 0.1), ...) 
 \method{plot}{RNE}(x, which=1, ylim, ...)
 }
 %- maybe also 'usage' for other objects documented here.

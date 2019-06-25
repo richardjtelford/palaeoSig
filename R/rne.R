@@ -2,7 +2,7 @@
 #' @export
 
 rne <- function(y, env, geodist, fun, neighbours, 
-                subsets = c(1,0.75, 0.5, 0.25, 0.1), ...) {
+                subsets = c(1, 0.75, 0.5, 0.25, 0.1), ...) {
   dots <- list(...)
   if (inherits(geodist, "dist")) 
       geodist <- as.matrix(geodist)

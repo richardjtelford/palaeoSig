@@ -36,8 +36,8 @@ cor.mat.fun(ndim, cors)
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-correlations <- list(c(1,2,0.5),c(1,4,0.1),c(2,5,0.6))
-cor.mat <-  cor.mat.fun(5,correlations)
+correlations <- list(c(1, 2, 0.5), c(1, 4, 0.1), c(2, 5, 0.6))
+cor.mat <-  cor.mat.fun(5, correlations)
 
 
 }

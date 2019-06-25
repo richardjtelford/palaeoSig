@@ -110,7 +110,7 @@ autoplot(rlgh.obs, which=1)
 autoplot(rlgh.obs, which=2, variable_names = "pH")
 }
 \references{
-Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{10.1016/j.quascirev.2011.03.002}{https://doi.org/10.1016/j.quascirev.2011.03.002}
+Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
 }
 \seealso{
 \code{\link{randomTF}}, \code{\link[rioja]{WA}}, \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
