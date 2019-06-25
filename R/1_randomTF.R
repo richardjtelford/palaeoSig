@@ -36,7 +36,7 @@
 #'
 #'    \code{autoplot.palaeoSig} returns a \code{ggplot2} object    
     
-#' @references Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{10.1016/j.quascirev.2011.03.002}{https://doi.org/10.1016/j.quascirev.2011.03.002}
+#' @references Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
 #' @author Richard Telford \email{richard.telford@uib.no}
 #' @note If there are only a few fossil levels, \code{\link{obs.cor}} might have more power. If there are few taxa, tests on \code{\link[rioja]{MAT}} reconstructions have more statistical power than those based on \code{\link[rioja]{WA}}.
 #' @seealso \code{\link{obs.cor}}, \code{\link[rioja]{WA}}, \code{\link[rioja]{MAT}}, \code{\link[rioja]{WAPLS}}, \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}} 
