@@ -16,3 +16,10 @@ vignettes/*.pdf
 palaeosig.Rproj
 .Rbuildignore
 inst/doc
+
+#downloadable raw-data files
+*.gz
+MARGO_Atlantic_modern_PF.xls
+*#
+
+
