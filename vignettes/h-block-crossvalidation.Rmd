@@ -1,6 +1,6 @@
 ---
 title: "H-block cross-validation"
-author: "Vignette Author"
+author: "Mathias Trachsel and Richard J Telford"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -18,51 +18,65 @@ knitr::opts_chunk$set(
 )
 ```
 
-#todo
-#clean rmd
-# restrict data sets to +/-3 on import
-#check multimat
-#fill duplicates to package
+Spatial autocorrelation can severely bias  transfer function performance estimates. Telford and Birks (2009) suggested *h*-block cross-validation as a means of obtaining unbiased transfer function estimates. The problem is to estimate the optimal value of *h*: too small and the performance estimates are still over-optimistic, too large and the performance estimates are pessimistic. Trachsel and Telford (2015) presented three methods to estimate *h*: 
 
-Spatial autocorrelation can severely bias  transfer function performance estimates. Telford and Birks (2009) suggested *h*-block cross-validation as a means of obtaining unbiased transfer function estimates. Trachsel and Telford (2015) presented three methods to estimate *h*: 
-
-1. the performance of a transfer functin on a spatially independent test set 2. the autocorrelation in resiudals of a weighted averaging transfer function 
+1. the performance of a transfer function on a spatially independent test set
+2. the autocorrelation in residuals of a weighted averaging transfer function 
 3. Comparing the variance explained of a transfer function trained on random environmental data with similar spatial structure as the environmental data of influence with the correlation between the simulated data and the environmental data of influence.    
 
 
 ```{r, message=FALSE}
-
-library(fields)
-#library(ncdf)
-#library(maps)
-#library(mapdata)
 library(palaeoSig)
 library(rioja)
 library(sp)
 library(gstat)
 library(tidyverse)
+
+# suppress warnings from MAT about duplicate samples (presumably 100% N. pachyderma)
+MAT <- function(...){
+  suppressWarnings(rioja::MAT(...))
+}
 ```
 
 
 ## 1. Spatially independent test set
-We use the foraminifera dataset by Kucera et al. (2005). We split the dataset into two parts, a North Atlantic (NA) dataset (north of 3°N) and a South Atlantic (SA) data set (south of 3°S). We use the NA dataset as training set and the SA dataset as spatially independent test set. 
+We use the foraminifera dataset by [Kucera et al. (2005)](https://doi.pangaea.de/10.1594/PANGAEA.227322). We split the dataset into two parts, a North Atlantic (NA) dataset (north of 3°N) and a South Atlantic (SA) data set (south of 3°S). We use the NA dataset as training set and the SA dataset as spatially independent test set. 
 
-```{r, results='hide'}
+```{r, results='hide', warning=FALSE}
 #load data
-data(foram.data)
+data(Atlantic)
+meta <- c("Core", "Latitude", "Longitude", "summ50")
+
+#N Atlantic
+N_Atlantic <- Atlantic %>% 
+  filter(Latitude > 3)
+N_Atlantic_meta <- N_Atlantic %>% 
+  select(one_of(meta)) %>% 
+  as.data.frame() # to keep rdist.earth happy
+N_Atlantic <- N_Atlantic %>% 
+  select(-one_of(meta)) 
+
+#S Atlantic
+S_Atlantic <- Atlantic %>% 
+  filter(Latitude < -3)
+S_Atlantic_meta <- S_Atlantic %>% 
+  select(one_of(meta))
+S_Atlantic <- S_Atlantic %>% 
+  select(-one_of(meta))
+
 
 #calculating distances among the sampled points in the North Atlantic foraminifera data set 
-geodist <- rdist.earth(select(NA.mod.meta, Longitude, Latitude), miles = FALSE)
+geodist <- fields::rdist.earth(select(N_Atlantic_meta, Longitude, Latitude), miles = FALSE)
 
 #values of h for which h-block cross-validation is calculated
-threshs <- c(0.01, 10, 50, 100, 200, 400, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 2000)
+threshs <- c(0.01, 100, 200, 400, 600, 700, 800, 900, 1000, 1200, 1400, 1600)
 
 #h-block cross-validation of the NA foraminifera dataset for different values of h
-res_h <- map_df(threshs, ~{
-  mod <- MAT(NA.mod, NA.mod.meta$smm.50, k = 5, lean = FALSE)
-  mod <- crossval(mod, cv.method = "h-block", h.dist = geodist, h.cutoff = .)
+res_h <- map_df(threshs, function(h){
+  mod <- MAT(N_Atlantic, N_Atlantic_meta$summ50, k = 5, lean = FALSE)
+  mod <- crossval(mod, cv.method = "h-block", h.dist = geodist, h.cutoff = h)
   
-  tibble(h = ., 
+  tibble(h = h, 
          RMSE = performance(mod)$crossval["N05", "RMSE"],
          R2 = performance(mod)$crossval["N05", "R2"]
   )
@@ -75,10 +89,10 @@ First, we estimate the performance of the North Atlantic (NA) foraminifera train
 #Leave-one-out cross-validated RMSEP using MAT with k = 5
 round(res_h[1, 'RMSE'], 2)
 #Predicting the Sout Atlantic test set
-mod.NA <- MAT((NA.mod[NA.mod.meta$Latitude > 3, ]), NA.mod.meta$smm.50[NA.mod.meta$Latitude > 3], k = 5)
-pred.SA <- predict(mod.NA, newdata = (SA.mod1[SA.mod.meta$Latitude < -3,]))$fit
+mod.NA <- MAT(N_Atlantic, N_Atlantic_meta$summ50, k = 5)
+pred.SA <- predict(mod.NA, newdata = S_Atlantic)$fit
 #Determining RMSEP of the SA test set
-rmse.mat <- sqrt(mean((pred.SA[, 1] - SA.mod.meta$smm.50[SA.mod.meta$Latitude < -3])^2))
+rmse.mat <- sqrt(mean((pred.SA[, 1] - S_Atlantic_meta$summ50)^2))
 #RMSEP of the SA test set using MAT with k = 5
 round(rmse.mat, 2)
 ```
@@ -86,127 +100,132 @@ The RMSEP of the NA training set is `r round(res_h[1,'RMSE'], 2)` while the RMSE
 We have to find the the removal distance *h* at which the *h*-block cross-validated RMSEP and the RMSEP of the SA test set are similar.
 
 ```{r, echo=FALSE, results = 'hide', fig.cap = "Figure 1: Root mean square error of prediction (RMSEP) as a function of removal distance h. Dashed horizontal line indicates RMSEP found on a spatially independent test set."}
+est_h <- approx(y = res_h$h, x = res_h$RMSE, xout = rmse.mat)$y
+seg_dat <- tibble(x = c(-Inf, est_h), 
+              xend = c(est_h, est_h),
+              y = c(rmse.mat, rmse.mat), 
+              yend = c(rmse.mat, -Inf)
+)
+
 ggplot(res_h, aes(x = h, y = RMSE)) + 
   geom_point() +
   geom_line() +
-  geom_hline(yintercept = rmse.mat, colour = "red") +
+  geom_segment(aes(x = x, y= y, xend = xend, yend = yend), data = seg_dat, colour = "red") +
   labs(x = "h [km]", y = "RMSEP [°C]") 
 ```
 
-The *h*-block cross-validated RMSEP of *h* = `r res_h[max(which(res_h[,'RMSE'] < rmse.mat)),'h']` km is closest to the spatially independent RMSEP of the SA test set `r round(rmse.mat, 2)` °C. Hence the removal distance found by means of a spatially independent test set is *h* = `r res_h[max(which(res_h[,'RMSE'] < rmse.mat)), 'h']` km. 
+Using linear interpolation, an *h*-block distance of `r round(est_h, 2)` km gives a cross-validated RMSEP equivalent to the the RMSEP of a spatially independent test set.
 
 ## 2. Variogram range
 
-The second method proposed in Trachsel and Telford is to fit a spherical variogram to detrended residuals of a WA model. 
-```{r, message=FALSE, results = 'hide', fig.cap = "Figure 2: Semi-variogram fitted to detrended residuals of a weighted averaging model. The estimated range of the spherical variogram fitted to the detrended residual of a WA model is `r  round(vm$range[2])` km."}
+The second method proposed in Trachsel and Telford is to fit a variogram to detrended residuals of a weighted average model and use the range of the variogram as *h*.
+
+```{r, message=FALSE, results = 'hide', fig.cap = "Figure 2: Semi-variogram fitted to detrended residuals of a weighted averaging model."}
 #WA model
-modwa <- crossval(WA(sqrt(NA.mod), NA.mod.meta$smm.50, mono = TRUE))
+modwa <- crossval(WA(sqrt(N_Atlantic), N_Atlantic_meta$summ50, mono = TRUE))
 #residuals of the WA model
 wa.resid <- residuals(modwa, cv = TRUE)
 #detrend to remove edge effects (loess with span = 0.1) 
-detrended_resid <- resid(loess(wa.resid[, 1] ~ NA.mod.meta$smm.50, span=.1))
+detrended_resid <- resid(loess(wa.resid[, 1] ~ N_Atlantic_meta$summ50, span = 0.1))
 #copy meta data and add coordinate system
-NA.mod.metac <- NA.mod.meta
-coordinates(NA.mod.metac) <- ~ Longitude + Latitude
-proj4string(NA.mod.metac) <- CRS("+proj=longlat +datum=WGS84")
+N_Atlantic_meta_c <- N_Atlantic_meta
+coordinates(N_Atlantic_meta_c) <- ~ Longitude + Latitude
+proj4string(N_Atlantic_meta_c) <- CRS("+proj=longlat +datum=WGS84")
 #variogram of the detrended residuals of the WA model 
-v <- variogram(detrended_resid ~ 1, data = NA.mod.metac)
+v <- variogram(detrended_resid ~ 1, data = N_Atlantic_meta_c)
 #Fitting a spherical variogram (partial sill, range and nugget are approximately estimated from the empirical variogram)
 vm <- fit.variogram(v, vgm(psill = 2, "Sph", range = 1500, nugget =  0.5))
 plot(v, vm)
 ```
 
+The estimated range of a spherical variogram model fitted to the detrended residual of a WA model is `r  round(vm$range[2])` km.
+
 ## 3. Variance explained
 
-The last method suggested is based on simulating environmental variables with the same spatial structure as the environmental variable of interest. The transfer function performance (r^2^) of the simulated variable is then compared to the squared correlation between the environmental variable of interest and the simulated variables. 
-To simulate these variables, we have to estimate the spatial structure (variogram) of the variables of interest and then simulate environmental variables using these variograms.   
+The third method suggested is based on simulated environmental variables with the same spatial structure as the environmental variable of interest. The transfer function performance (r^2^) of the simulated variable is compared to the r^2^ between the environmental variable of interest and the simulated variables. The optimal value for *h* is the value that minimises the difference these two r^2^.
 
-```{r, fig.cap = "Figure 3: Semi-variogram model (Matérn class) fitted to the north atlantic summer sea temperature at 50 m depth."}
+To simulate the environmental variables of interest, we first have to estimate their spatial structure with a variogram and then use kriging with the variogram to simulate environmental variables with same spatial structure as the observed variable.   
+
+```{r, fig.cap = "Figure 3: Semi-variogram model (Matérn class) fitted to the North Atlantic summer sea temperature at 50 m depth."}
 #Estimate the variogram model for the environmental variable of interest
-ve <- variogram(smm.50 ~ 1, data = NA.mod.metac)
+ve <- variogram(summ50 ~ 1, data = N_Atlantic_meta_c)
 vem <- fit.variogram(ve, vgm(40, "Mat", 5000, .1, kappa = 1.8))
 plot(ve, vem)
+
+#Simulating environmental variables
+sim <- krige(sim ~ 1, locations = N_Atlantic_meta_c, dummy = TRUE, nsim = 100, beta = mean(N_Atlantic_meta[,"summ50"]), model = vem, newdata = N_Atlantic_meta_c)
+
+#convert spatialpointsdataframe back to a regular data.frame
+sim <- as.data.frame(sim) %>% 
+  select(-Longitude, -Latitude)
 ``` 
+Running a MAT models for each simulation at each value of *h* would be very slow, but since the same analogues would be chosen for any environmental variable, we can make a much faster version of MAT.
 
-Often, datasets contain duplicate observations (i.e. more than one observations form one site) that are problematic for simulations, as simulations will try to simulate one point in space several times. Therefore, we first have to remove duplicate samples from a dataset to perform the simulation, and then have to duplicate some of the samples in the simulation to get a simulated environmental dataset of the same dimensionality as the real environmental dataset. 
-
-```{r,message = FALSE, warning= FALSE,results='hide',cache=TRUE, fig.cap="Figure 4: Histogram of squared correlation coefficients between simulated variables and the environmental variable of interest."}
-#Function to fill duplicates 
-fill_duplicates <- function (xy, env) {
-  new.env <- matrix(NA, nrow = nrow(xy), ncol = ncol(env))
-  new.env <- as.data.frame(new.env)
-  dup <- duplicated(xy)
-  new.env[!dup, ] <- env #assigns env to correct sample
-  wd <- which(dup)
-  #fit duplicated
-  xy.u <- xy[!dup, , drop = FALSE]
-  dup.obs <- xy[dup, , drop = FALSE]
-  for (i in 1:nrow(dup.obs)) {
-    w <- which(xy.u[, 1] == dup.obs[i, 1] & xy.u[, 2] == dup.obs[i, 2])
-    new.env[wd[i], ] <- env[w, ]
-  }
-  new.env
-}
+```{r, message = FALSE, warning= FALSE,results='hide', fig.cap="Figure 4: Histogram of squared correlation coefficients between simulated variables and the environmental variable of interest."}
 
 #Function for h-block cross-validating several simulations at a time
-mat.h1 <-function (y, x, noanalogues, geodist, thresh)
+mat.h1 <- function (y, x, noanalogues, geodist, thresh)
 {
     if (!inherits(y, "dist")) {
         if (is.data.frame(y) || !(ncol(y) == nrow(y) & sum(diag(y)) ==
             0)) {
-            y <- as.matrix(dist(sqrt(y)))
+            y <- dist(sqrt(y))^2#squared chord distance
         }
     }
     y <- as.matrix(y)
     diag(y) <- Inf
     if (inherits(geodist, "dist"))
         geodist = as.matrix(geodist)
-    sapply(1:nrow(y), function(n) {
+    sapply(seq_len(nrow(y)), function(n) {browser()
         exneigh <- geodist[n, ] >= thresh
-        colMeans(x[exneigh,][which(rank(y[n, ][exneigh], ties.method = "random") <=
-            noanalogues),])
+        x2 <- x[exneigh, ]
+        y2 <- y[n, ][exneigh]
+        analogues <- which(rank(y2, ties.method = "random") <= noanalogues)
+        colMeans(x2[analogues, ])
     })
 }
 
-dup <- duplicated(coordinates(NA.mod.metac))
-redup <- duplicated(coordinates(NA.mod.metac)[nrow(NA.mod.metac):1])
-#Remove duplicated coordinates for simulating  variables
-NA.mod.metad <- NA.mod.metac[!dup, ]
-
-#Simulating environmental variables
-sim <- krige(sim ~ 1, locations = NA.mod.metad, dummy = TRUE, nsim = 499, beta = mean(NA.mod.meta[,"smm.50"]), model = vem, newdata = NA.mod.metad)
-#Add duplicated samples
-sim2 <- fill_duplicates(coordinates(NA.mod.metac), as.data.frame(sim)[, -(1:2)])
 
 #h-block cross-validation of the simulated variables
 simhr <- sapply(threshs, function(h) {
-  hn <- mat.h1(NA.mod, sim2, noanalogues = 5, geodist = geodist, thresh = h)
-    diag(cor(t(hn), sim2)^2)
+  hn <- mat.h1(N_Atlantic, sim, noanalogues = 5, geodist = geodist, thresh = h)
+    diag(cor(t(hn), sim)^2)
 })
  
-
 #Estimating squared correlation between environmental varible of interest and simulated variables  
-sim.obs.r2 <- sapply(sim2, cor, NA.mod.meta$smm.50)^2
+sim.obs.r2 <- sapply(sim, cor, N_Atlantic_meta$summ50)^2
 #Calculating sum of squares between the two squared correlations
 so.squares <- apply(simhr, 2, function(x){
   sum((x - sim.obs.r2) ^ 2)
   })
-  hist(sim.obs.r2, main="", xlab="Simulated-observed SST r²", col="grey80")
 ```
 
 
-```{r,message = FALSE, warning= FALSE,results='hide', fig.cap = "Figure 5: Scatterplot of squared correlation coefficients between simulated variables and the environmental variable of interest and transfer function r^2^. Last plot indicates sum of squares between the two r^2^ as function of removal distance h."}
-par(mfrow = c(2, 3))
-sapply(c(1, 4, 6, 9, 13), function(n) {
-  plot(sim.obs.r2, simhr[, n], xlim = c(0, 1), ylim = c(0, 1),  main = paste("h =", threshs[n], "km"), xlab = "Simulated-observed environmental r²", ylab = "Transfer function r²")
-  abline(0,1)
-})
-plot(threshs, so.squares, xlab = "h km", ylab = "Sum of squares")
+```{r,message = FALSE, warning= FALSE,results='hide', fig.cap = "Figure 5: Scatterplot of squared correlation coefficients between simulated variables and the environmental variable of interest and transfer function r^2^."}
+
+simhr %>% 
+  as.data.frame() %>% 
+  set_names(threshs) %>% 
+  mutate(sim.obs.r2 = sim.obs.r2) %>% 
+  gather(key = h, value  = value, -sim.obs.r2) %>% 
+  mutate(h = factor(h, levels = threshs)) %>% 
+  ggplot(aes(x = sim.obs.r2, y = value)) +
+  geom_point() + 
+  geom_abline() + 
+  facet_wrap(~h) + 
+  labs( x = "Simulated-observed environmental r²", y = "Transfer function r²")
+```
+
+```{r fig.cap =  "Figure 6: Relationship between the sum of squares between the two r^2^ as function of distance *h*."}
+tibble(threshs, so.squares) %>% 
+  ggplot(aes(x = threshs, y = so.squares)) +
+  geom_point() + 
+  labs(x = "h km", y = "Sum of squares")
 ```
 
 Following the rule described in Trachsel and Telford the value of *h* is estimated as *h* = `r res_h[min(which(so.squares < (min(so.squares) + 0.1 * range(so.squares)))), 'h']` km.
 
-Hence the three methods proposed result in similar values of *h*: *h* = `r res_h[max(which(res_h[,'RMSE'] < rmse.mat)),'h']` km for the spatially independent test set, *h* =   `r  round(vm$range[2])` km for the variogram range method and *h* = `r res_h[min(which(so.squares < (min(so.squares) + 0.1 * range(so.squares)))),'h']` km for the variance explained method.
+Hence the three methods proposed result in similar values of *h*: *h* = `r round(est_h)` km for the spatially independent test set, *h* =   `r  round(vm$range[2])` km for the variogram range method and *h* = `r res_h[min(which(so.squares < (min(so.squares) + 0.1 * range(so.squares)))),'h']` km for the variance explained method.
 
 ## References
 Kucera, M., Weinelt, M., Kiefer, T., Pflaumann, U., Hayes, A., Weinelt, M., Chen, M.-T., Mix, A.C., Barrows, T.T., Cortijo, E., Duprat, J., Juggins, S., Waelbroeck, C. 2005. Reconstruction of the glacial Atlantic and Pacific sea-surface temperatures from assemblages of planktonic foraminifera: multi-technique approach based on geographically constrained calibration datasets. *Quaternary Science Reviews* 24, 951-998 [doi:10.1016/j.quascirev.2004.07.014](https://doi.org/10.1016/j.quascirev.2004.07.014).
