@@ -5,10 +5,10 @@ citHeader("To cite package 'palaeoSig' in publications use:")
 citEntry(entry="Manual",
   title ="palaeoSig: Significance Tests of Quantitative Palaeoenvironmental Reconstructions",
 	author = personList(as.person("Richard Telford")),
-	year = 2015,
+	year = 2019,
 	note = paste("R package version", meta$Version),
-	url = "http://cran.r-project.org/package=palaeoSig",
-	textVersion =	paste("Telford, R.J. (2015) ", 
+	url = "https://cran.r-project.org/package=palaeoSig",
+	textVersion =	paste("Telford, R.J. (2019) ", 
   "palaeoSig: Significance Tests of Quantitative Palaeoenvironmental Reconstructions, R package version (",
 	meta$Version, ")."," (http://cran.r-project.org/package=palaeoSig).", sep="")
 )

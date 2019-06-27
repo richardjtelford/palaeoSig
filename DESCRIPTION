@@ -1,9 +1,14 @@
 Package: palaeoSig
 Type: Package
 Title: Significance Tests for Palaeoenvironmental Reconstructions
-Version: 2.0-1
-Author: Richard Telford, Mathias Trachsel
-Maintainer: Richard Telford <Richard.Telford@bio.uib.no>
+Version: 2.0-2
+Authors@R: 
+    c(person(given = "Richard",
+             family = "Telford",
+             role = c("aut", "cre", "cph"),
+             email = "Richard.Telford@bio.uib.no"),
+      person(given = "Mathias",
+            family = "Trachsel", role = c("ctb")))
 URL: https://github.com/richardjtelford/palaeoSig
 BugReports: https://github.com/richardjtelford/palaeoSig/issues
 Depends: R (>= 2.10)
@@ -25,8 +30,17 @@ Imports: TeachingDemos, rioja, mgcv, MASS,
     ggrepel, 
     tidyr,
     purrr
-Description: Tests if quantitative palaeoenvironmental reconstructions are statistically significant.
-License: GPL-3 + file LICENSE
+Description: This package contains several tests of quantitative palaeo-
+  environmental reconstructions from microfossil assemblages. Tests include the
+  null model tests of the statistically significant of reconstructions 
+  developed by Telford and Birks (2011) <doi:10.1016/j.quascirev.2011.03.002>,
+  and tests of the effect of spatial autocorrelation on transfer function model
+  performance using methods from Telford and Birks (2009) 
+  <doi:10.1016/j.quascirev.2008.12.020> and Trachsel and Telford (2016) 
+  <doi:10.5194/cp-12-1215-2016>. Code for producing age-depth models with a 
+  generalized mixed-effect regression from Heegaard et al (2005)
+  <doi:10.1191/0959683605hl836rr> is also included.
+License: GPL-3
 LazyLoad: yes
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

@@ -14,7 +14,7 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 palaeosig.Rproj
-.Rbuildignore
+palaeoSig.Rproj
 inst/doc
 
 #downloadable raw-data files
