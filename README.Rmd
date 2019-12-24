@@ -1,12 +1,23 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-palaeoSig
-=========
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# palaeoSig
 
 PalaeoSig includes the methods developed in Telford and Birks (2011) for testing the significance of transfer function reconstructions.
 
-Installation
-------------
+## Installation
 
 You can install the released version of palaeoSig from [CRAN](https://CRAN.R-project.org) with:
 
