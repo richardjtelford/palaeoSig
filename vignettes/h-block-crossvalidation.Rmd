@@ -30,7 +30,11 @@ library(palaeoSig)
 library(rioja)
 library(sp)
 library(gstat)
-library(tidyverse)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(purrr)
+library(ggplot2)
 
 # suppress warnings from MAT about duplicate samples (presumably 100% N. pachyderma)
 MAT <- function(...){
@@ -207,7 +211,7 @@ simhr %>%
   as.data.frame() %>% 
   set_names(threshs) %>% 
   mutate(sim.obs.r2 = sim.obs.r2) %>% 
-  gather(key = h, value  = value, -sim.obs.r2) %>% 
+  pivot_longer(cols = -sim.obs.r2, names_to = "h", values_to  = "value") %>% 
   mutate(h = factor(h, levels = threshs)) %>% 
   ggplot(aes(x = sim.obs.r2, y = value)) +
   geom_point() + 
