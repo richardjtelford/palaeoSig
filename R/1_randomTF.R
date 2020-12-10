@@ -136,6 +136,9 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     spp <- spp[analogues, ]
     env <- env[analogues, , drop = FALSE]
     rownames(spp) <- seq_len(nrow(spp))
+    if (!missing(autosim)) {
+      autosim <- autosim[analogues, , drop = FALSE]
+    }
   }
   
   #find inertia explained by first axis of unconstrained ordination
