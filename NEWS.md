@@ -1,3 +1,9 @@
+# palaeoSig 2.0-6
+
+## Bug fix
+
+MAT shortcut now works when autosim is set
+
 # palaeoSig 2.0-1
 
 Lots of changes in this version
