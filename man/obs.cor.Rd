@@ -7,16 +7,41 @@
 \alias{autoplot.obscor}
 \title{Weighted correlation between weighted averaging optima and constrained ordination species scores.}
 \usage{
-obs.cor(spp, env, fos, ord = rda, n = 99, min.occur = 1, autosim,
-  permute = FALSE)
+obs.cor(
+  spp,
+  env,
+  fos,
+  ord = rda,
+  n = 99,
+  min.occur = 1,
+  autosim,
+  permute = FALSE
+)
 
-\method{plot}{obscor}(x, xlab, ylab, f = 5, which = 1,
-  variable_names = "env", abun = "abun.calib", p_val = 0.05, ...)
+\method{plot}{obscor}(
+  x,
+  xlab,
+  ylab,
+  f = 5,
+  which = 1,
+  variable_names = "env",
+  abun = "abun.calib",
+  p_val = 0.05,
+  ...
+)
 
 \method{identify}{obscor}(x, labels, ...)
 
-\method{autoplot}{obscor}(x, which = 1, variable_names = "env",
-  abun = "abun.calib", p_val = 0.05, nbins = 20, top = 0.7, ...)
+\method{autoplot}{obscor}(
+  x,
+  which = 1,
+  variable_names = "env",
+  abun = "abun.calib",
+  p_val = 0.05,
+  nbins = 20,
+  top = 0.7,
+  ...
+)
 }
 \arguments{
 \item{spp}{Data frame of modern training set species data, transformed if required, for example with \code{sqrt}}

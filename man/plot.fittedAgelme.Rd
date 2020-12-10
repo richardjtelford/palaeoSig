@@ -4,8 +4,7 @@
 \alias{plot.fittedAgelme}
 \title{Plots fitted agelme model and dates}
 \usage{
-\method{plot}{fittedAgelme}(x, main, xlab = "Depth",
-  ylab = "Calibrated Age", ...)
+\method{plot}{fittedAgelme}(x, main, xlab = "Depth", ylab = "Calibrated Age", ...)
 }
 \arguments{
 \item{x}{Fitted agelme model.}

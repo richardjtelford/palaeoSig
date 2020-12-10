@@ -5,10 +5,12 @@
 \alias{arctic.pollen}
 \alias{arctic.env}
 \title{Arctic Pollen and associated environmental data}
-\format{\describe{
+\format{
+\describe{
    \item{arctic.pollen}{A data frame with 828 observations on the percentage of 39 pollen taxa}
    \item{arctic.env}{Environmental data for the pollen sites}
- }}
+ }
+}
 \source{
 Data extracted from North American Pollen Database and New \emph{et al.} (2002) by Fréchette \emph{et al.} (2008). Following Fréchette (Pers. Comm.), three duplicate sites have been deleted.
 }

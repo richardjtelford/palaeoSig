@@ -6,14 +6,25 @@
 \alias{autoplot.palaeoSig}
 \title{Proportion of variance in the fossil data explained by an environmental reconstruction}
 \usage{
-randomTF(spp, env, fos, n = 99, fun, col, condition, autosim, ord = rda,
-  permute = FALSE, models, make_models = FALSE, ...)
+randomTF(
+  spp,
+  env,
+  fos,
+  n = 99,
+  fun,
+  col,
+  condition,
+  autosim,
+  ord = rda,
+  permute = FALSE,
+  models,
+  make_models = FALSE,
+  ...
+)
 
-\method{plot}{palaeoSig}(x, variable_names, top = 0.7, adj = c(0, 0.5),
-  p_val = 0.05, ...)
+\method{plot}{palaeoSig}(x, variable_names, top = 0.7, adj = c(0, 0.5), p_val = 0.05, ...)
 
-\method{autoplot}{palaeoSig}(x, variable_names, nbins = 20, top = 0.7,
-  p_val = 0.05)
+\method{autoplot}{palaeoSig}(x, variable_names, nbins = 20, top = 0.7, p_val = 0.05)
 }
 \arguments{
 \item{spp}{Data frame of modern training set species data, transformed as required for example with \code{sqrt}}
