@@ -1,11 +1,11 @@
-#' Atlantic core-top foram assemblages 
+#' Atlantic core-top foram assemblages
 #'
 #' A dataset containing over 1000 foram assemblages from the Atlantic from Kucera et al (2005) and the 50m SST for the warmest season. Rare taxa and co-located assemblages are removed.
 #'
 #' @format A data frame with 1093 rows and 33 variables. summ50 is 50m water temperature of the warmest season
 
 #' @source \url{https://doi.pangaea.de/10.1594/PANGAEA.227322} \url{https://www.nodc.noaa.gov/cgi-bin/OC5/woa13/woa13.pl?parameter=t}
-#' @examples 
+#' @examples
 #' data(Atlantic)
 #' @keywords datasets
 "Atlantic"
@@ -13,7 +13,7 @@
 
 
 
-#'@title Storsandsvatnet
+#' @title Storsandsvatnet
 #' @description Storsandsvatnet is a lake in western Norway. From the sediments a core was obtained, and 11 samples was submitted for radiocarbon dating. The data contain the depths of the slides dated and the younger and older calibrated ages for each slide.
 #' @format
 #'  A data.frame with 11 observations on the following 4 variables.
@@ -46,8 +46,8 @@
 #' @references  Fréchette, B., de Vernal, A., Guiot, J., Wolfe, A. P., Miller, G. H., Fredskild, B., Kerwin, M. W. and Richard, P. J. H. (2008) Methodological basis for quantitative reconstruction of air temperature and sunshine from pollen assemblages in Arctic Canada and Greenland. \emph{Quaternary Science Reviews} \bold{27}, 1197--1216 doi:\href{https://doi.org/10.1016/j.quascirev.2008.02.016}{10.1016/j.quascirev.2008.02.016}
 
 #' @examples
-#'  data(arctic.pollen)
-#'  data(arctic.env)
+#' data(arctic.pollen)
+#' data(arctic.env)
 #' @keywords datasets
 #' @rdname arctic.pollen
 "arctic.env"
