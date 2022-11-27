@@ -3,6 +3,11 @@
 
 # palaeoSig
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/richardjtelford/palaeoSig/workflows/R-CMD-check/badge.svg)](https://github.com/richardjtelford/palaeoSig/actions)
+<!-- badges: end -->
+
 PalaeoSig includes the methods developed in [Telford and Birks
 (2011)](https://doi.org/10.1016/j.quascirev.2011.03.002) for testing the
 significance of transfer function reconstructions.
