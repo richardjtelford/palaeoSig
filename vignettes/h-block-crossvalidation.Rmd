@@ -180,7 +180,7 @@ mat.h1 <- function (y, x, noanalogues, geodist, thresh)
     diag(y) <- Inf
     if (inherits(geodist, "dist"))
         geodist = as.matrix(geodist)
-    sapply(seq_len(nrow(y)), function(n) {browser()
+    sapply(seq_len(nrow(y)), function(n) {
         exneigh <- geodist[n, ] >= thresh
         x2 <- x[exneigh, ]
         y2 <- y[n, ][exneigh]
