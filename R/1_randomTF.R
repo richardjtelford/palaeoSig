@@ -1,45 +1,102 @@
 #' @name randomTF
-#' @title Proportion of variance in the fossil data explained by an environmental reconstruction
-#' @description Calculate the proportion of variance in the fossil data explained by an environmental reconstruction with a constrained ordination. This value is compared with a null distribution calculated as the proportion of variance in the fossil data explained by reconstructions from transfer functions trained on random data.
+#' @title Proportion of variance in the fossil data explained by an
+#' environmental reconstruction
+#' @description Calculate the proportion of variance in the fossil data
+#' explained by an environmental reconstruction with a constrained ordination.
+#' This value is compared with a null distribution calculated as the proportion
+#' of variance in the fossil data explained by reconstructions from transfer
+#' functions trained on random data.
 
-#' @param spp Data frame of modern training set species data, transformed as required for example with \code{sqrt}
-#' @param env Data frame of training set environmental variables or vector with single environmental variable
-#' @param fos Data frame of fossil species data, with same species codes and transformations as spp
+#' @param spp Data frame of modern training set species data, transformed as
+#' required for example with \code{sqrt}
+#' @param env Data frame of training set environmental variables or vector with
+#' single environmental variable
+#' @param fos Data frame of fossil species data, with same species codes and
+#' transformations as spp
 #' @param n number of random training sets. More is better.
-#' @param fun Transfer function method. Additional arguments to \code{fun} can be passed with \code{...}
-#' @param col Some transfer functions return more than one column of results, for example with different \code{\link[rioja]{WAPLS}} components. \code{col} selects which column to use. See the relevant transfer function method help file.
-#' @param condition Optional data frame of reconstructions to partial out when testing if multiple independent reconstructions are possible.
-#' @param autosim Optional data frame of random values. This is useful if the training set is spatially autocorrelated and the supplied data frame contains autocorrelated random variables. If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the transfer functions are trained on random variables drawn from a uniform distribution.
-#' @param ord Constrained ordination method to use. \code{\link[vegan]{rda}} is the default, \code{\link[vegan]{cca}} should also work. \code{\link[vegan]{capscale}} won't work without modifications to the code (or a wrapper).
-#' @param permute logical value. Generate random environmental variables by permuting existing variable. Only possible if there is only one environmental varible and \code{autosim} is missing.
-#' @param models list of models made by \code{randomTF} with argument \code{make_models = TRUE}
-#' @param make_models logical, should a list of transfer functions trained on random data be returned
-#' @param \dots Other arguments to the transfer function. For example to change the distance metric in \code{\link[rioja]{MAT}}. Also extra arguments to plot.
+#' @param fun Transfer function method.
+#' Additional arguments to \code{fun} can be passed with \code{...}
+#' @param col Some transfer functions return more than one column of results,
+#' for example with different \code{\link[rioja]{WAPLS}} components.
+#' \code{col} selects which column to use.
+#' See the relevant transfer function method help file.
+#' @param condition Optional data frame of reconstructions to partial out when
+#' testing if multiple independent reconstructions are possible.
+#' @param autosim Optional data frame of random values.
+#' This is useful if the training set is spatially autocorrelated and the
+#' supplied data frame contains autocorrelated random variables.
+#' If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the
+#' transfer functions are trained on random variables drawn from a uniform
+#' distribution.
+#' @param ord Constrained ordination method to use. \code{\link[vegan]{rda}} is
+#' the default, \code{\link[vegan]{cca}} should also work.
+#' \code{\link[vegan]{capscale}} won't work without modifications to the code
+#' (or a wrapper).
+#' @param permute logical value. Generate random environmental variables by
+#' permuting existing variable. Only possible if there is only one environmental
+#' variable and \code{autosim} is missing.
+#' @param models list of models made by \code{randomTF} with argument
+#' \code{make_models = TRUE}
+#' @param make_models logical, should a list of transfer functions trained on
+#' random data be returned
+#' @param \dots Other arguments to the transfer function. For example to change
+#' the distance metric in \code{\link[rioja]{MAT}}.
+#' Also extra arguments to plot.
 
-#' @details The function calculates the proportion of variance in the fossil data explained by the transfer function reconstruction. This is compared with a null distribution of the proportion of variance explained by reconstructions based on random environmental variables. Reconstructions can be partialled out to test if multiple reconstructions are statistically significant. If the environment is spatially autocorrelated, a red-noise null should be used instead of the default white noise null. The red noise environmental variables can be generated with the \pkg{gstat} package.
+#' @details The function calculates the proportion of variance in the fossil
+#' data explained by the transfer function reconstruction.
+#' This is compared with a null distribution of the proportion of variance
+#' explained by reconstructions based on random environmental variables.
+#' Reconstructions can be partialled out to test if multiple reconstructions are
+#' statistically significant. If the environment is spatially autocorrelated, a
+#' red-noise null should be used instead of the default white noise null.
+#' Red noise environmental variables can be generated with the \pkg{gstat}
+#' package.
 #'
-#' Any transfer function in the \pkg{rioja} package can be used. Other methods (e.g. random forests) can be used by making a wrapper function.
+#' Any transfer function in the \pkg{rioja} package can be used. Other methods
+#' (e.g. random forests) can be used by making a wrapper function.
 #'
-#' If reconstructions from several sites are to be tested using the same training set it can be much faster to train the models on random environmental data once and then use them repeatedly. This can be done with \code{make_models = TRUE} and then running \code{randomTF} again giving the resultant models to the \code{models} argument. \code{make_models} does not work with MAT.
+#' If reconstructions from several sites are to be tested using the same
+#' training set it can be much faster to train the models on random
+#' environmental data once and then use them repeatedly.
+#' This can be done with \code{make_models = TRUE} and then running
+#' \code{randomTF} again giving the resultant models to the \code{models}
+#'  argument.
+#'  \code{make_models} does not work with MAT.
 #'
 #' @return
 #' A list with components
 #' \itemize{
 #'    \item{PCA}{ The unconstrained ordination of the fossil data.}
-#'    \item{preds}{ A list of the containing the reconstructions for each environmental variable.}
-#'    \item{MAX}{ Proportion of the variance explained by the first axis of the unconstrained ordination. This is the maximum amount that a reconstruction of a single variable can explain.}
-#'    \item{EX}{ The proportion of the variance in the fossil data explained by each reconstruction.}
-#'    \item{sim.ex}{ The proportion of variance explained by each of the random environmental variables.}
+#'    \item{preds}{ A list of the containing the reconstructions for each
+#'    environmental variable.}
+#'    \item{MAX}{ Proportion of the variance explained by the first axis of the
+#'     unconstrained ordination.
+#'     This is the maximum amount that a reconstruction of a single variable can
+#'     explain.}
+#'    \item{EX}{ The proportion of the variance in the fossil data explained by
+#'     each reconstruction.}
+#'    \item{sim.ex}{ The proportion of variance explained by each of the random
+#'     environmental variables.}
 #'    \item{sig}{ The p-value of each reconstruction.}
 #' }
 #' If \code{make_models = TRUE}, a list of transfer function models is returned.
 #'
 #'    \code{autoplot.palaeoSig} returns a \code{ggplot2} object
 
-#' @references Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
+#' @references Telford, R. J. and Birks, H. J. B. (2011) A novel method for
+#' assessing the statistical significance of quantitative reconstructions
+#' inferred from biotic assemblages. \emph{Quaternary Science Reviews}
+#' \bold{30}: 1272--1278. DOI:
+#' \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
 #' @author Richard Telford \email{richard.telford@uib.no}
-#' @note If there are only a few fossil levels, \code{\link{obs.cor}} might have more power. If there are few taxa, tests on \code{\link[rioja]{MAT}} reconstructions have more statistical power than those based on \code{\link[rioja]{WA}}.
-#' @seealso \code{\link{obs.cor}}, \code{\link[rioja]{WA}}, \code{\link[rioja]{MAT}}, \code{\link[rioja]{WAPLS}}, \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
+#' @note If there are only a few fossil levels, \code{\link{obs.cor}} might have
+#' more power.
+#' If there are few taxa, tests on \code{\link[rioja]{MAT}} reconstructions have
+#' more statistical power than those based on \code{\link[rioja]{WA}}.
+#' @seealso \code{\link{obs.cor}}, \code{\link[rioja]{WA}},
+#' \code{\link[rioja]{MAT}}, \code{\link[rioja]{WAPLS}},
+#' \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
 #' @examples
 #' require(rioja)
 #' data(SWAP)
@@ -69,7 +126,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
                      models,
                      make_models = FALSE, ...) {
   # Check env is data.frame or vector
-  if (!is.data.frame(env) & !is.vector(env)) {
+  if (!is.data.frame(env) && !is.vector(env)) {
     stop("env must be a data.frame containing one or more environemental
          variables, or vector containing a single environemental variable")
   }
@@ -86,12 +143,12 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   }
 
   # permute and autosim don't play together
-  if (isTRUE(permute) & !missing(autosim)) {
+  if (isTRUE(permute) && !missing(autosim)) {
     stop("permute does not make sense if autosim is provided")
   }
 
   # check only one variable if permute is true
-  if (isTRUE(permute) & length(env) > 1) {
+  if (isTRUE(permute) && length(env) > 1) {
     stop("permute is only possible with one environmental variable")
   }
 
@@ -114,17 +171,17 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   }
 
   # MAT and make_models don't work well together
-  if (identical(fun, MAT) & make_models) {
+  if (identical(fun, MAT) && make_models) {
     stop("MAT and make_models don't work together because
          a shortcut is used to speed up MAT")
   }
 
-  if (make_models & !missing(models)) {
+  if (make_models && !missing(models)) {
     stop("If make_models is true, no not provide models")
   }
 
   if (!missing(models)) {
-    if (class(models) != "model_list") {
+    if (!inherits(models, "model_list")) {
       stop("models must be a model_list made by running
            randomTF with make_models = TRUE")
     }
@@ -156,8 +213,8 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
 
     # Find inertia explained by reconstructions
     obs <- lapply(env, function(ev) {
-      Mod <- fun(spp, ev, ...)
-      Pred <- predict(Mod, fos)
+      mod <- fun(spp, ev, ...)
+      Pred <- predict(mod, fos)
       if (is.list(Pred)) {
         p <- Pred$fit[, col]
       } else {
@@ -199,7 +256,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     p <- apply(selected_analogues, 1, function(n) {
       colMeans(rnd[n, ])
     })
-    sim.ex <- apply(p, 1, function(pp) {
+    sim_ex <- apply(p, 1, function(pp) {
       if (!partial) {
         r <- ord(fos ~ pp)
       } else {
@@ -210,16 +267,17 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     })
   } else {
     if (missing(models)) {
-      # precalculated models not provided
+      # pre-calculated models not provided
       models <- apply(rnd, 2, function(sim) {
         m <- fun(spp, sim, ...)
+        m
       })
     }
     if (make_models) {
       class(models) <- "model_list"
       return(models)
     }
-    sim.ex <- sapply(models, function(m) {
+    sim_ex <- sapply(models, function(m) {
       p <- predict(m, fos)
       if (is.list(p)) {
         p <- p$fit[, col]
@@ -240,8 +298,8 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     MAX = MAX,
     EX = map_dbl(obs, "EX"),
     eig1 = map_dbl(obs, "EIG1"),
-    sim.ex = sim.ex,
-    sig = map_dbl(.data$EX, function(E) mean(E <= c(E, sim.ex)))
+    sim.ex = sim_ex,
+    sig = map_dbl(.data$EX, function(e) mean(e <= c(e, sim_ex)))
   )
   class(res) <- "palaeoSig"
   return(res)

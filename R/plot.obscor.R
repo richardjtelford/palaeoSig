@@ -2,9 +2,14 @@
 #' @param x An obscor object.
 #' @param xlab X-axis label if the default is unsatisfactory.
 #' @param ylab Y-axis label if the default is unsatisfactory.
-#' @param f Scale factor for the abundances, the maximum cex of points for the which=1 plot.
-#' @param which Which type of plot. which = 1 gives a plot of RDA scores against species optima. which = 2 gives a histogram showing the null distribution of correlations between RDA scores and species optima, together with the observed correlation.
-#' @param variable_names Name of environmental variable (only 1 currently) for the label on the observed correlation with which = 2
+#' @param f Scale factor for the abundances, the maximum cex of points for the
+#' which=1 plot.
+#' @param which Which type of plot. which = 1 gives a plot of RDA scores against
+#' species optima. which = 2 gives a histogram showing the null distribution of
+#' correlations between RDA scores and species optima, together with the
+#' observed correlation.
+#' @param variable_names Name of environmental variable (only 1 currently) for
+#' the label on the observed correlation with which = 2
 #' @param abun Which species weighting required for plots. See details
 #' @param p_val P value to draw a line vertical line at (with which=2)
 
@@ -66,7 +71,8 @@ plot.obscor <- function(x, xlab, ylab, f = 5, which = 1,
 
 
 #' @describeIn obs.cor Identify species on obs.cor plot
-#' @param labels Labels for the points in identify. By default, the species names from intersection of colnames(spp) and colnames(fos) are used.
+#' @param labels Labels for the points in identify. By default, the species
+#' names from intersection of colnames(spp) and colnames(fos) are used.
 #' @param \dots Other arguments to plot or identify
 #' @importFrom graphics identify
 #'
@@ -113,9 +119,6 @@ autoplot.obscor <- function(x, which = 1, variable_names = "env",
       labs(x = "WA optima", y = "RDA scores", size = "Abundance")
   } else if (which == 2) {
     xlab <- ifelse(w == "unweighted", "Correlation", "Weighted correlation")
-
-    sim <- x$sim[[w]]
-    ob <- x$ob$res[w]
 
     x_fort <- fortify_palaeosig(
       sim = x$sim[, abun],

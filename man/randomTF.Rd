@@ -4,7 +4,8 @@
 \alias{randomTF}
 \alias{plot.palaeoSig}
 \alias{autoplot.palaeoSig}
-\title{Proportion of variance in the fossil data explained by an environmental reconstruction}
+\title{Proportion of variance in the fossil data explained by an
+environmental reconstruction}
 \usage{
 randomTF(
   spp,
@@ -27,35 +28,58 @@ randomTF(
 \method{autoplot}{palaeoSig}(x, variable_names, nbins = 20, top = 0.7, p_val = 0.05)
 }
 \arguments{
-\item{spp}{Data frame of modern training set species data, transformed as required for example with \code{sqrt}}
+\item{spp}{Data frame of modern training set species data, transformed as
+required for example with \code{sqrt}}
 
-\item{env}{Data frame of training set environmental variables or vector with single environmental variable}
+\item{env}{Data frame of training set environmental variables or vector with
+single environmental variable}
 
-\item{fos}{Data frame of fossil species data, with same species codes and transformations as spp}
+\item{fos}{Data frame of fossil species data, with same species codes and
+transformations as spp}
 
 \item{n}{number of random training sets. More is better.}
 
-\item{fun}{Transfer function method. Additional arguments to \code{fun} can be passed with \code{...}}
+\item{fun}{Transfer function method.
+Additional arguments to \code{fun} can be passed with \code{...}}
 
-\item{col}{Some transfer functions return more than one column of results, for example with different \code{\link[rioja]{WAPLS}} components. \code{col} selects which column to use. See the relevant transfer function method help file.}
+\item{col}{Some transfer functions return more than one column of results,
+for example with different \code{\link[rioja]{WAPLS}} components.
+\code{col} selects which column to use.
+See the relevant transfer function method help file.}
 
-\item{condition}{Optional data frame of reconstructions to partial out when testing if multiple independent reconstructions are possible.}
+\item{condition}{Optional data frame of reconstructions to partial out when
+testing if multiple independent reconstructions are possible.}
 
-\item{autosim}{Optional data frame of random values. This is useful if the training set is spatially autocorrelated and the supplied data frame contains autocorrelated random variables. If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the transfer functions are trained on random variables drawn from a uniform distribution.}
+\item{autosim}{Optional data frame of random values.
+This is useful if the training set is spatially autocorrelated and the
+supplied data frame contains autocorrelated random variables.
+If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the
+transfer functions are trained on random variables drawn from a uniform
+distribution.}
 
-\item{ord}{Constrained ordination method to use. \code{\link[vegan]{rda}} is the default, \code{\link[vegan]{cca}} should also work. \code{\link[vegan]{capscale}} won't work without modifications to the code (or a wrapper).}
+\item{ord}{Constrained ordination method to use. \code{\link[vegan]{rda}} is
+the default, \code{\link[vegan]{cca}} should also work.
+\code{\link[vegan]{capscale}} won't work without modifications to the code
+(or a wrapper).}
 
-\item{permute}{logical value. Generate random environmental variables by permuting existing variable. Only possible if there is only one environmental varible and \code{autosim} is missing.}
+\item{permute}{logical value. Generate random environmental variables by
+permuting existing variable. Only possible if there is only one environmental
+variable and \code{autosim} is missing.}
 
-\item{models}{list of models made by \code{randomTF} with argument \code{make_models = TRUE}}
+\item{models}{list of models made by \code{randomTF} with argument
+\code{make_models = TRUE}}
 
-\item{make_models}{logical, should a list of transfer functions trained on random data be returned}
+\item{make_models}{logical, should a list of transfer functions trained on
+random data be returned}
 
-\item{\dots}{Other arguments to the transfer function. For example to change the distance metric in \code{\link[rioja]{MAT}}. Also extra arguments to plot.}
+\item{\dots}{Other arguments to the transfer function. For example to change
+the distance metric in \code{\link[rioja]{MAT}}.
+Also extra arguments to plot.}
 
 \item{x}{Output from randomTF}
 
-\item{variable_names}{Names of environmental variables. If missing, taken from \code{env} data.frame.}
+\item{variable_names}{Names of environmental variables. If missing, taken
+from \code{env} data.frame.}
 
 \item{top}{Proportion of the figure below the environmental name labels.}
 
@@ -69,25 +93,50 @@ randomTF(
 A list with components
 \itemize{
    \item{PCA}{ The unconstrained ordination of the fossil data.}
-   \item{preds}{ A list of the containing the reconstructions for each environmental variable.}
-   \item{MAX}{ Proportion of the variance explained by the first axis of the unconstrained ordination. This is the maximum amount that a reconstruction of a single variable can explain.}
-   \item{EX}{ The proportion of the variance in the fossil data explained by each reconstruction.}
-   \item{sim.ex}{ The proportion of variance explained by each of the random environmental variables.}
+   \item{preds}{ A list of the containing the reconstructions for each
+   environmental variable.}
+   \item{MAX}{ Proportion of the variance explained by the first axis of the
+    unconstrained ordination.
+    This is the maximum amount that a reconstruction of a single variable can
+    explain.}
+   \item{EX}{ The proportion of the variance in the fossil data explained by
+    each reconstruction.}
+   \item{sim.ex}{ The proportion of variance explained by each of the random
+    environmental variables.}
    \item{sig}{ The p-value of each reconstruction.}
-}    
+}
 If \code{make_models = TRUE}, a list of transfer function models is returned.
 
    \code{autoplot.palaeoSig} returns a \code{ggplot2} object
 }
 \description{
-Calculate the proportion of variance in the fossil data explained by an environmental reconstruction with a constrained ordination. This value is compared with a null distribution calculated as the proportion of variance in the fossil data explained by reconstructions from transfer functions trained on random data.
+Calculate the proportion of variance in the fossil data
+explained by an environmental reconstruction with a constrained ordination.
+This value is compared with a null distribution calculated as the proportion
+of variance in the fossil data explained by reconstructions from transfer
+functions trained on random data.
 }
 \details{
-The function calculates the proportion of variance in the fossil data explained by the transfer function reconstruction. This is compared with a null distribution of the proportion of variance explained by reconstructions based on random environmental variables. Reconstructions can be partialled out to test if multiple reconstructions are statistically significant. If the environment is spatially autocorrelated, a red-noise null should be used instead of the default white noise null. The red noise environmental variables can be generated with the \pkg{gstat} package.
+The function calculates the proportion of variance in the fossil
+data explained by the transfer function reconstruction.
+This is compared with a null distribution of the proportion of variance
+explained by reconstructions based on random environmental variables.
+Reconstructions can be partialled out to test if multiple reconstructions are
+statistically significant. If the environment is spatially autocorrelated, a
+red-noise null should be used instead of the default white noise null.
+Red noise environmental variables can be generated with the \pkg{gstat}
+package.
 
-Any transfer function in the \pkg{rioja} package can be used. Other methods (e.g. random forests) can be used by making a wrapper function.
+Any transfer function in the \pkg{rioja} package can be used. Other methods
+(e.g. random forests) can be used by making a wrapper function.
 
-If reconstructions from several sites are to be tested using the same training set it can be much faster to train the models on random environmental data once and then use them repeatedly. This can be done with \code{make_models = TRUE} and then running \code{randomTF} again giving the resultant models to the \code{models} argument. \code{make_models} does not work with MAT.
+If reconstructions from several sites are to be tested using the same
+training set it can be much faster to train the models on random
+environmental data once and then use them repeatedly.
+This can be done with \code{make_models = TRUE} and then running
+\code{randomTF} again giving the resultant models to the \code{models}
+ argument.
+ \code{make_models} does not work with MAT.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -97,25 +146,36 @@ If reconstructions from several sites are to be tested using the same training s
 }}
 
 \note{
-If there are only a few fossil levels, \code{\link{obs.cor}} might have more power. If there are few taxa, tests on \code{\link[rioja]{MAT}} reconstructions have more statistical power than those based on \code{\link[rioja]{WA}}.
+If there are only a few fossil levels, \code{\link{obs.cor}} might have
+more power.
+If there are few taxa, tests on \code{\link[rioja]{MAT}} reconstructions have
+more statistical power than those based on \code{\link[rioja]{WA}}.
 }
 \examples{
-   require(rioja)
-   data(SWAP)
-   data(RLGH)
-   rlghr <- randomTF(spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
-   fos = sqrt(RLGH$spec), n = 99, fun = WA, col = 1)
-   rlghr$sig
-   plot(rlghr, "pH")
-   
-   require("ggplot2")
-   autoplot(rlghr, "pH")
+require(rioja)
+data(SWAP)
+data(RLGH)
+rlghr <- randomTF(
+  spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
+  fos = sqrt(RLGH$spec), n = 99, fun = WA, col = 1
+)
+rlghr$sig
+plot(rlghr, "pH")
+
+require("ggplot2")
+autoplot(rlghr, "pH")
 }
 \references{
-Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
+Telford, R. J. and Birks, H. J. B. (2011) A novel method for
+assessing the statistical significance of quantitative reconstructions
+inferred from biotic assemblages. \emph{Quaternary Science Reviews}
+\bold{30}: 1272--1278. DOI:
+\href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
 }
 \seealso{
-\code{\link{obs.cor}}, \code{\link[rioja]{WA}}, \code{\link[rioja]{MAT}}, \code{\link[rioja]{WAPLS}}, \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
+\code{\link{obs.cor}}, \code{\link[rioja]{WA}},
+\code{\link[rioja]{MAT}}, \code{\link[rioja]{WAPLS}},
+\code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
 }
 \author{
 Richard Telford \email{richard.telford@uib.no}

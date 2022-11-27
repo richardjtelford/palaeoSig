@@ -5,7 +5,8 @@
 \alias{plot.obscor}
 \alias{identify.obscor}
 \alias{autoplot.obscor}
-\title{Weighted correlation between weighted averaging optima and constrained ordination species scores.}
+\title{Weighted correlation between weighted averaging optima and constrained
+ordination species scores.}
 \usage{
 obs.cor(
   spp,
@@ -44,21 +45,36 @@ obs.cor(
 )
 }
 \arguments{
-\item{spp}{Data frame of modern training set species data, transformed if required, for example with \code{sqrt}}
+\item{spp}{Data frame of modern training set species data, transformed if
+required, for example with \code{sqrt}}
 
 \item{env}{Vector of a single environmental variable}
 
-\item{fos}{Data frame of fossil species data. Species codes and tranformations should match those in spp.}
+\item{fos}{Data frame of fossil species data. Species codes and
+transformations should match those in spp.}
 
-\item{ord}{Constrained ordination method to use. \code{\link[vegan]{rda}} is the default, \code{\link[vegan]{cca}} should also work. \code{\link[vegan]{capscale}} won't work without modifications to the code (or a wrapper).}
+\item{ord}{Constrained ordination method to use.
+\code{\link[vegan]{rda}} is the default,
+\code{\link[vegan]{cca}} should also work.
+\code{\link[vegan]{capscale}} won't work without modifications to the code
+(or a wrapper).}
 
 \item{n}{number of random training sets. More is better.}
 
-\item{min.occur}{Minimum number of occurrances of species in the species and fossil data.}
+\item{min.occur}{Minimum number of occurrences of species in the species and
+fossil data.}
 
-\item{autosim}{Optional data frame of random values. This is useful if the training set is spatially autocorrelated and the supplied data frame contains autocorrelated random variables. If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the transfer functions are trained on random variables drawn from a uniform distribution.}
+\item{autosim}{Optional data frame of random values. This is useful if the
+training set is spatially autocorrelated and the supplied data frame contains
+autocorrelated random variables.
+If \code{autosim} is missing, and \code{permute} is \code{FALSE}, the
+transfer functions are trained on random variables drawn from a uniform
+distribution.}
 
-\item{permute}{logical value. Generate random environmental variables by permuting existing variable. Only possible if there is only one environmental varible and \code{autosim} is missing.}
+\item{permute}{logical value. Generate random environmental variables by
+permuting existing variable.
+Only possible if there is only one environmental variable and \code{autosim}
+is missing.}
 
 \item{x}{An obscor object.}
 
@@ -66,11 +82,16 @@ obs.cor(
 
 \item{ylab}{Y-axis label if the default is unsatisfactory.}
 
-\item{f}{Scale factor for the abundances, the maximum cex of points for the which=1 plot.}
+\item{f}{Scale factor for the abundances, the maximum cex of points for the
+which=1 plot.}
 
-\item{which}{Which type of plot. which = 1 gives a plot of RDA scores against species optima. which = 2 gives a histogram showing the null distribution of correlations between RDA scores and species optima, together with the observed correlation.}
+\item{which}{Which type of plot. which = 1 gives a plot of RDA scores against
+species optima. which = 2 gives a histogram showing the null distribution of
+correlations between RDA scores and species optima, together with the
+observed correlation.}
 
-\item{variable_names}{Name of environmental variable (only 1 currently) for the label on the observed correlation with which = 2}
+\item{variable_names}{Name of environmental variable (only 1 currently) for
+the label on the observed correlation with which = 2}
 
 \item{abun}{Which species weighting required for plots. See details}
 
@@ -78,7 +99,8 @@ obs.cor(
 
 \item{\dots}{Other arguments to plot or identify}
 
-\item{labels}{Labels for the points in identify. By default, the species names from intersection of colnames(spp) and colnames(fos) are used.}
+\item{labels}{Labels for the points in identify. By default, the species
+names from intersection of colnames(spp) and colnames(fos) are used.}
 
 \item{nbins}{integer giving number of bins for the histogram}
 
@@ -87,27 +109,46 @@ obs.cor(
 \value{
 obs.cor returns an obscor object, which is a list
 \itemize{
-  \item{ob}{ Obsevered correlation. Data.frame with columns Optima, RDA1 and abun containing the species optima, ordination axis 1 scores, and abundance used to weight the species respectively and a vectorcontaining the weighted and unweighted correlations between species optima and ordination scores.}
-  \item{sim}{ Matrix with the correlation between species weighted average optima and ordination scores in the first column and the weighted correlation in the second column. Each row represents a different random environmental variable.}
-  \item{sigs}{ p-value for the observed correlation between species weighted average optima and ordination scores for each of the weights.}
+  \item{ob}{ Obsevered correlation. Data.frame with columns Optima, RDA1 and
+   abun containing the species optima, ordination axis 1 scores, and
+   abundance used to weight the species respectively and a vector containing
+   the weighted and unweighted correlations between species optima and
+   ordination scores.}
+  \item{sim}{ Matrix with the correlation between species weighted average
+  optima and ordination scores in the first column and the weighted
+  correlation in the second column. Each row represents a different random
+  environmental variable.}
+  \item{sigs}{ p-value for the observed correlation between species weighted
+  average optima and ordination scores for each of the weights.}
  }
 }
 \description{
-obs.cor calculates the weighted correlation between the species weighted average optima and the axis one species scores of an ordination constrained by the WA reconstruction.
+obs.cor calculates the weighted correlation between the species
+weighted average optima and the axis one species scores of an ordination
+constrained by the WA reconstruction.
 }
 \details{
-Obs.cor calculates the (weighted) correlation between the species WA optima in the calibration set and their ordination axis one scores in the fossil data. Seven different weights for the species are implimented. 
+Obs.cor calculates the (weighted) correlation between the species
+WA optima in the calibration set and their ordination axis one scores in the
+fossil data. Seven different weights for the species are implimented.
 \itemize{
   \item{"abun.fos" - weight by the mean abundance in the fossil data.}
    \item{"abun.calib" - weight by the mean abundance in the calibration data}
-   \item{"abun.joint" - weight by the product of the mean abundance in the fossil and calibration data}
-   \item{"n2.fos" - weight by the effective number of occurences (Hill's N2) of each species in the fossil data}
-   \item{"n2.calib" - weight by the effective number of occurences (Hill's N2) of each species in the calibration data} 
+   \item{"abun.joint" - weight by the product of the mean abundance in the
+   fossil and calibration data}
+   \item{"n2.fos" - weight by the effective number of occurences
+   (Hill's N2) of each species in the fossil data}
+   \item{"n2.calib" - weight by the effective number of occurences
+   (Hill's N2) of each species in the calibration data}
    \item{"n2.joint" - weight by the product of n2.calib and n2.fos}
-   \item{"unweighted" - all species recieve same weight. This is unlikely to be the best option but is included for completeness.} 
+   \item{"unweighted" - all species recieve same weight.
+   This is unlikely to be the best option but is included for completeness.}
    }
-   It is unclear which of these weights is likely to be best, research is in progress.
-   A square root transformation of the species data is often useful. n = 99 is too small in practice to give a smooth histogram of the null model. n = 999 is better.
+   It is unclear which of these weights is likely to be best:
+   research is in progress.
+   A square root transformation of the species data is often useful. n = 99
+    is too small in practice to give a smooth histogram of the null model.
+    n = 999 is better.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -119,26 +160,39 @@ Obs.cor calculates the (weighted) correlation between the species WA optima in t
 }}
 
 \note{
-The test of the weighted correlation between species optima and ordination axis scores is more powerful, especially with a small number of fossil observations, that the test of variance explained in  \code{\link{randomTF}} but is only applicable to WA and will have a large type II error if there are few species.
+The test of the weighted correlation between species optima and
+ordination axis scores is more powerful, especially with a small number of
+fossil observations, that the test of variance explained in
+\code{\link{randomTF}} but is only applicable to WA and will have a large
+type II error if there are few species.
 }
 \examples{
 require(rioja)
 data(SWAP)
 data(RLGH)
-rlgh.obs <- obs.cor(spp = sqrt(SWAP$spec), env = SWAP$pH, fos = sqrt(RLGH$spec))
+rlgh.obs <- obs.cor(
+  spp = sqrt(SWAP$spec),
+  env = SWAP$pH,
+  fos = sqrt(RLGH$spec)
+)
 rlgh.obs$sig
-plot(rlgh.obs, which=1)
-plot(rlgh.obs, which=2)
+plot(rlgh.obs, which = 1)
+plot(rlgh.obs, which = 2)
 
 require(ggplot2)
-autoplot(rlgh.obs, which=1)
-autoplot(rlgh.obs, which=2, variable_names = "pH")
+autoplot(rlgh.obs, which = 1)
+autoplot(rlgh.obs, which = 2, variable_names = "pH")
 }
 \references{
-Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
+Telford, R. J. and Birks, H. J. B. (2011) A novel method for
+assessing the statistical significance of quantitative reconstructions
+inferred from biotic assemblages. \emph{Quaternary Science Reviews}
+\bold{30}: 1272--1278.
+DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
 }
 \seealso{
-\code{\link{randomTF}}, \code{\link[rioja]{WA}}, \code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
+\code{\link{randomTF}}, \code{\link[rioja]{WA}},
+\code{\link[vegan]{rda}}, \code{\link[vegan]{cca}}
 }
 \author{
 Richard Telford \email{richard.telford@uib.no}

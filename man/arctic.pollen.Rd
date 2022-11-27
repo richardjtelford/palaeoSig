@@ -21,8 +21,8 @@ arctic.env
 Arctic pollen percent data and associated environmental data
 }
 \examples{
- data(arctic.pollen)
- data(arctic.env)
+data(arctic.pollen)
+data(arctic.env)
 }
 \references{
 Fréchette, B., de Vernal, A., Guiot, J., Wolfe, A. P., Miller, G. H., Fredskild, B., Kerwin, M. W. and Richard, P. J. H. (2008) Methodological basis for quantitative reconstruction of air temperature and sunshine from pollen assemblages in Arctic Canada and Greenland. \emph{Quaternary Science Reviews} \bold{27}, 1197--1216 doi:\href{https://doi.org/10.1016/j.quascirev.2008.02.016}{10.1016/j.quascirev.2008.02.016}

@@ -12,7 +12,7 @@ rne <- function(y, env, geodist, fun, neighbours,
   rne$random <- t(sapply(subsets, function(ss) {
     print(paste("random subset = ", ss))
     r2 <- replicate(10, {
-      est <- sapply(1:N, function(n) {
+      est <- sapply(seq_len(N), function(n) {
         retain <- sample(1:(N - 1), size = round((N - 1) * (ss)))
         y2 <- y[-n, ][retain, ]
         keepcols <- colSums(y2) != 0
@@ -53,7 +53,7 @@ rne <- function(y, env, geodist, fun, neighbours,
         "fun",
         c(list(y = y2[, keepcols], x = env1[exneigh]), dots)
       )
-      predict(mod, y[n, keepcols, drop = F])$fit
+      predict(mod, y[n, keepcols, drop = FALSE])$fit
     })
     if (is.null(dim(hb))) {
       hbr <- cor(hb, env)^2

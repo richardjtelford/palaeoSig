@@ -1,6 +1,7 @@
 #' @describeIn randomTF Plot palaeoSig object
 #' @param x Output from randomTF
-#' @param variable_names Names of environmental variables. If missing, taken from \code{env} data.frame.
+#' @param variable_names Names of environmental variables. If missing, taken
+#' from \code{env} data.frame.
 #' @param top Proportion of the figure below the environmental name labels.
 #' @param adj Adjust the position that the environmental names are plotted at.
 #' @param p_val P value to draw a line vertical line at (with which=2)
@@ -16,35 +17,35 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
   if (missing(variable_names)) {
     variable_names <- names(x$EX)
   }
-  with(x, {
-    hist(sim.ex,
-      breaks = seq(min(sim.ex), max(sim.ex), length = 20),
-      xlim = c(0, MAX[1] * 1.1),
-      main = "", xlab = "Proportion variance explained",
-      col = "grey80", border = NA, ...
-    )
-    tops <- par()$usr[4] * top
-    sapply(EX, function(z) {
-      lines(rep(z, 2), c(0, tops))
-    })
-    # abline(v=MAX, col=1, lwd=2, lty=3)
-    lines(rep(MAX, 2), c(0, tops), col = 1, lwd = 2, lty = 3)
-    lines(rep(quantile(sim.ex, probs = 1 - p_val), 2), c(0, tops),
-      col = 2, lwd = 1, lty = 3
-    )
-    # abline(v=EX, col=1)
-    putEX <- spread.labs(EX, 1.2 * strwidth("A", cex = .8))
 
-    text(putEX, par()$usr[4] * .71,
-      label = variable_names,
-      srt = 90, adj = adj, cex = .8
-    )
+  hist(x$sim.ex,
+    breaks = seq(min(x$sim.ex), max(x$sim.ex), length = 20),
+    xlim = c(0, x$MAX[1] * 1.1),
+    main = "", xlab = "Proportion variance explained",
+    col = "grey80", border = NA, ...
+  )
+  tops <- par()$usr[4] * top
+  sapply(x$EX, function(z) {
+    lines(rep(z, 2), c(0, tops))
   })
+
+  lines(rep(x$MAX, 2), c(0, tops), col = 1, lwd = 2, lty = 3)
+  lines(rep(quantile(x$sim.ex, probs = 1 - p_val), 2), c(0, tops),
+    col = 2, lwd = 1, lty = 3
+  )
+
+  put <- spread.labs(x$EX, 1.2 * strwidth("A", cex = .8))
+
+  text(put, par()$usr[4] * .71,
+    label = variable_names,
+    srt = 90, adj = adj, cex = .8
+  )
 }
 
 #' @describeIn randomTF autoplot function for palaeoSig object
 #' @param nbins integer giving number of bins for the histogram
-#' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text scale_colour_identity scale_linetype_identity labs
+#' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text
+#' scale_colour_identity scale_linetype_identity labs
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @importFrom stats quantile

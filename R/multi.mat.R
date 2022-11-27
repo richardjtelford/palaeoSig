@@ -6,7 +6,7 @@
     lapply(noanalogues, function(ana) {
       res <- sapply(1:nRow, function(s) {
         analogues <- (1:nSamp)[order(d.mat[, s], decreasing = FALSE)][1:ana]
-        nDWmean <- colMeans(envs[analogues, , drop = F])
+        nDWmean <- colMeans(envs[analogues, , drop = FALSE])
         c(nDWmean = nDWmean)
       })
       t(res)

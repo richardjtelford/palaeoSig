@@ -27,6 +27,6 @@ Finds the maximum abundance of fossil taxa and plots this against the maximum ab
 \examples{
 data("SWAP", package = "rioja")
 data("RLGH", package = "rioja")
-coverage_plot(spp = SWAP$spec, fos=RLGH$spec, n2_rare = 5, label = 0)
+coverage_plot(spp = SWAP$spec, fos = RLGH$spec, n2_rare = 5, label = 0)
 
 }
