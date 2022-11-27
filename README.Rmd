@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # palaeoSig
 
-PalaeoSig includes the methods developed in Telford and Birks (2011) for testing the significance of transfer function reconstructions.
+PalaeoSig includes the methods developed in [Telford and Birks (2011)](https://doi.org/10.1016/j.quascirev.2011.03.002) for testing the significance of transfer function reconstructions.
 
 ## Installation
 
@@ -25,9 +25,9 @@ You can install the released version of palaeoSig from [CRAN](https://CRAN.R-pro
 install.packages("palaeoSig")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from [GitHub](https://github.com/richardjtelford/palaeoSig) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("richardjtelford/palaeoSig")
+# install.packages("remotes")
+remotes::install_github("richardjtelford/palaeoSig")
 ```
