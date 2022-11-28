@@ -18,7 +18,8 @@ New \emph{et al.} (2002) by Fréchette \emph{et al.} (2008).
 Following Fréchette (Pers. Comm.), three duplicate sites have been deleted.
 }
 \usage{
-arctic.env
+data(arctic.pollen)
+data(arctic.env)
 }
 \description{
 Arctic pollen percent data and associated environmental data

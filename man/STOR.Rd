@@ -18,7 +18,7 @@ The data are unpublished and provided by H. John B. Birks
 <john.birks@bio.uib.no> and Sylvia M. Peglar
 }
 \usage{
-STOR
+data(STOR)
 }
 \description{
 Storsandsvatnet is a lake in western Norway. From the sediments

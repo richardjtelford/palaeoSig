@@ -6,7 +6,7 @@
 #'
 #' @format A data frame with 1093 rows and 33 variables.
 #' summ50 is 50m water temperature of the warmest season
-
+#' @usage data(Atlantic)
 #' @source \url{https://doi.pangaea.de/10.1594/PANGAEA.227322}
 #' \url{https://www.nodc.noaa.gov/cgi-bin/OC5/woa13/woa13.pl?parameter=t}
 #' @keywords datasets
@@ -33,7 +33,7 @@
 #' The borders represent mean calibrated age +/- 1 SD of calibrated age.
 #' @source The data are unpublished and provided by H. John B. Birks
 #' <john.birks@bio.uib.no> and Sylvia M. Peglar
-
+#' @usage data(STOR)
 #' @references  Heegaard, E., Birks, HJB. & Telford, RJ. 2005. Relationships
 #' between calibrated ages and depth in stratigraphical sequences: an estimation
 #' procedure by mixed-effect regression. The Holocene 15: 612-618
@@ -59,6 +59,8 @@
 #' sunshine from pollen assemblages in Arctic Canada and Greenland.
 #' \emph{Quaternary Science Reviews} \bold{27}, 1197--1216
 #' doi:\href{https://doi.org/10.1016/j.quascirev.2008.02.016}{10.1016/j.quascirev.2008.02.016}
+#' @usage data(arctic.pollen)
+#' data(arctic.env)
 #' @keywords datasets
 #' @rdname arctic.pollen
 "arctic.env"

@@ -13,7 +13,7 @@ summ50 is 50m water temperature of the warmest season
 \url{https://www.nodc.noaa.gov/cgi-bin/OC5/woa13/woa13.pl?parameter=t}
 }
 \usage{
-Atlantic
+data(Atlantic)
 }
 \description{
 A dataset containing over 1000 foram assemblages from the Atlantic from
