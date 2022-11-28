@@ -1,13 +1,24 @@
 #' coverage_plot
 #'
-#' @description  A simple diagnostic plot showing the coverage of fossil taxa in modern calibration set
+#' @description  A simple diagnostic plot showing the coverage of fossil taxa in
+#' modern calibration set
 #'
 #' @param spp data.frame of modern species abundances
 #' @param fos data.frame of fossil species abundances
-#' @param n2_rare numeric value of Hill's N2 below which species are highlighted as rare
-#' @param label numeric label taxa where maximum fossil abundance - maximum modern abundance > label. Defaults to NULL which does not add labels
+#' @param n2_rare numeric value of Hill's N2 below which species are
+#' highlighted as rare
+#' @param label numeric label taxa where maximum fossil abundance -
+#' maximum modern abundance > label.
+#' Defaults to NULL which does not add labels
 #'
-#' @details   Finds the maximum abundance of fossil taxa and plots this against the maximum abundance the taxa in the modern calibration set. Taxa with a Hill's N2 less than \code{rare} in the calibration set are highlighted in blue. Taxa absent from the calibration set are highlighed in red. If there are many taxa above the 1:1 line, or important fossil taxa have a low N2 in the calibration set, reconstructions should be interpreted with caution.
+#' @details   Finds the maximum abundance of fossil taxa and plots this against
+#' the maximum abundance the taxa in the modern calibration set.
+#' Taxa with a Hill's N2 less than \code{rare} in the calibration set are
+#' highlighted in blue.
+#' Taxa absent from the calibration set are highlighted in red.
+#' If there are many taxa above the 1:1 line, or important fossil taxa have a
+#' low N2 in the calibration set,
+#' reconstructions should be interpreted with caution.
 #'
 #' @return A \code{\link[ggplot2]{ggplot}} object.
 #'
@@ -16,12 +27,14 @@
 #' data("RLGH", package = "rioja")
 #' coverage_plot(spp = SWAP$spec, fos = RLGH$spec, n2_rare = 5, label = 0)
 #'
-#' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join summarise_all
+#' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join
+#' summarise_all
 #' @importFrom tidyr spread gather replace_na
 #' @importFrom tibble enframe
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
-#' @importFrom ggplot2 ggplot aes geom_point geom_abline labs scale_colour_brewer
+#' @importFrom ggplot2 ggplot aes geom_point geom_abline labs
+#' scale_colour_brewer
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom forcats fct_explicit_na fct_relevel
 #' @importFrom utils data
@@ -32,7 +45,7 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
   mod_fos <- bind_rows(spp = spp, fos = fos, .id = "data")
 
   # calculate N2
-  N2 <- mod_fos %>%
+  n2 <- mod_fos %>%
     filter(.data$data == "spp") %>%
     select(-.data$data) %>%
     Hill.N2() %>%
@@ -47,7 +60,7 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
     gather(key = "Taxon", value = "max", -.data$data) %>%
     spread(key = .data$data, value = .data$max) %>%
     replace_na(list(spp = 0, fos = 0)) %>%
-    inner_join(N2, by = "Taxon") %>%
+    inner_join(n2, by = "Taxon") %>%
     mutate(
       n2_cut = cut(.data$n2,
         breaks = c(0, n2_rare, Inf),

@@ -7,20 +7,20 @@ jointsig <- function(spp, fos, var1, var2,
   }
   v1 <- sin(seq(0, 2 * pi, length = r + 1))[-(r + 1)]
   v2 <- cos(seq(0, 2 * pi, length = r + 1))[-(r + 1)]
-  syn.env <- mapply(function(v1, v2) {
+  syn_env <- mapply(function(v1, v2) {
     scale(var1) * v1 + scale(var2) * v2
   }, v1 = v1, v2 = v2)
-  syn.env <- as.data.frame(syn.env)
+  syn_env <- as.data.frame(syn_env)
   if (method == "randomTF") {
-    res <- randomTF(spp, fos, ..., env = syn.env, n = n)
+    res <- randomTF(spp, fos, ..., env = syn_env, n = n)
   } else if (method == "obs.cor") {
     warning("obscor can pathological results in jointsig")
     res <- list()
 
-    res$EX <- sapply(syn.env, function(e) {
+    res$EX <- sapply(syn_env, function(e) {
       obs.cor(spp, fos, ..., env = e, n = 0)$ob$res$wc
     }) ## edit to match new obsc
-    res$sim.ex <- obs.cor(spp, fos, ..., env = syn.env[, 1], n = n)$sim[, 2]
+    res$sim.ex <- obs.cor(spp, fos, ..., env = syn_env[, 1], n = n)$sim[, 2]
   }
   res$v1 <- v1
   res$v2 <- v2

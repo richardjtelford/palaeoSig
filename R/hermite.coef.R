@@ -1,15 +1,16 @@
 `hermite.coef` <-
   function(z, kk) {
-    H <- function(kk, y) {
-      HH <- list(kk + 1)
-      HH[[0 + 1]] <- rep(1, length(y))
-      HH[[1 + 1]] <- -y
+    herm <- function(kk, y) {
+      hh <- list(kk + 1)
+      hh[[0 + 1]] <- rep(1, length(y))
+      hh[[1 + 1]] <- -y
       if (kk > 1) {
         for (k in 2:kk) {
-          HH[[k + 1]] <- -1 / sqrt(k) * y * HH[[k + 1 - 1]] - sqrt((k - 1) / k) * HH[[k + 1 - 2]]
+          hh[[k + 1]] <- -1 / sqrt(k) * y * hh[[k + 1 - 1]] -
+            sqrt((k - 1) / k) * hh[[k + 1 - 2]]
         }
       }
-      HH
+      hh
     }
     len <- length(z)
     z <- jitter(z)
@@ -22,10 +23,10 @@
     gy <- qnorm(gy)
     y <- dnorm(gy)
     y[c(1, len)] <- 0
-    HH <- H(kk, gy)
+    hh <- herm(kk, gy)
     for (k in 1:kk) {
       theta[k + 1] <- sum(
-        (z[1:(len - 1)] - z[2:len]) / sqrt(k) * HH[[k + 1 - 1]][-1] * y[-1]
+        (z[1:(len - 1)] - z[2:len]) / sqrt(k) * hh[[k + 1 - 1]][-1] * y[-1]
       )
     }
     theta

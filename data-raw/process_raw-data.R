@@ -15,8 +15,10 @@ N_Atlantic <- read_excel(
   sheet = "North Atlantic", skip = 1
 ) %>%
   mutate(
-    `Longitude (decimal, from -180 to +180)` = as.numeric(`Longitude (decimal, from -180 to +180)`),
-    `Water depth (m)` = as.numeric(`Water depth (m)`)
+    across(
+      c(`Longitude (decimal, from -180 to +180)`, `Water depth (m)`),
+      as.numeric
+    )
   )
 
 S_Atlantic <- read_excel(
@@ -41,7 +43,12 @@ Atlantic <- bind_rows(
     Latitude = `Latitude (decimal, from -90 to +90)`
   ) %>%
   # remove duplicate taxa
-  select(-`Globigerinoides ruber total`, -`Globigerinoides sacc total`, -`Neogloboquadrina pachyderma R`, -`Globorotalia truncatulinoides L`, -`Globorotalia truncatulinoides R`, -`Globorotalia menardii`, -`Globorotalia tumida`, -`Globorotalia menardii flexuosa`) %>%
+  select(
+    -`Globigerinoides ruber total`, -`Globigerinoides sacc total`,
+    -`Neogloboquadrina pachyderma R`, -`Globorotalia truncatulinoides L`,
+    -`Globorotalia truncatulinoides R`, -`Globorotalia menardii`,
+    -`Globorotalia tumida`, -`Globorotalia menardii flexuosa`
+  ) %>%
   distinct(Latitude, Longitude, .keep_all = TRUE) # remove dupllicate samples
 
 
@@ -104,7 +111,13 @@ woa16 <- read_csv("data-raw/woa13_decav_t16mn01v2.csv.gz", skip = 1) %>%
   filter(between(LONGITUDE, -120, 50), between(LATITUDE, -60, 90))
 
 # get thermal summer temperature
-woa <- bind_rows(jfm = woa13, amj = woa14, jas = woa15, ond = woa16, .id = "season") %>%
+woa <- bind_rows(
+  jfm = woa13,
+  amj = woa14,
+  jas = woa15,
+  ond = woa16,
+  .id = "season"
+) %>%
   filter(!is.na(`50`)) %>%
   group_by(LONGITUDE, LATITUDE) %>%
   summarise(summ50 = max(`50`))
@@ -126,7 +139,11 @@ Atlantic %>% select(Core, Latitude, Longitude, summ50, everything())
 
 mp <- map_data("world")
 ggplot(Atlantic, aes(x = Longitude, y = Latitude, colour = summ50)) +
-  geom_map(map = mp, data = mp, aes(map_id = region), inherit.aes = FALSE, fill = "grey50") +
+  geom_map(
+    map = mp, data = mp, aes(map_id = region),
+    inherit.aes = FALSE,
+    fill = "grey50"
+  ) +
   geom_point()
 
 # save data

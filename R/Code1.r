@@ -1,11 +1,11 @@
 # change name of a and g to alpha and gamma
 # alpha und gamma k?nnen f?r alle Arten unterschiedlich sein
-# statt spacing k?nnte man auch ein Argument fun einf?hren, f?r regular eine Funktion schreiben und sonst runif oder rnorm
+# statt spacing k?nnte man auch ein Argument fun einf?hren, f?r regular eine
+# Funktion schreiben und sonst runif oder rnorm
 
 
 "make.species" <- function(nspp = 30, Amax, srange,
                            fun, xpar, alpha = 4, gamma = 4) {
-  # if(missing(xpar)) xpar=c(-50,150)
   # maximum Ao
   if (is.numeric(Amax)) {
     Ao <- Amax
@@ -42,7 +42,7 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
   if (length(srange) == 1) {
     srange <- matrix(ncol = ndim, rep(srange, ndim * nspp))
   }
-  if (length(Amax) == 1 & is.numeric(Amax)) {
+  if (length(Amax) == 1 && is.numeric(Amax)) {
     srange <- matrix(ncol = 1, rep(Amax, nspp))
   }
   if (missing(fun)) {
@@ -116,14 +116,14 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
 #-------------------------------------------------------------------------------
 #' @export
 cor.mat.fun <- function(ndim, cors) {
-  cor.mat <- diag(ndim)
+  cor_mat <- diag(ndim)
   if (!missing(cors)) {
-    for (i in 1:length(cors)) {
-      cor.mat[cors[[i]][1], cors[[i]][2]] <- cors[[i]][3]
-      cor.mat[cors[[i]][2], cors[[i]][1]] <- cors[[i]][3]
+    for (i in seq_along(cors)) {
+      cor_mat[cors[[i]][1], cors[[i]][2]] <- cors[[i]][3]
+      cor_mat[cors[[i]][2], cors[[i]][1]] <- cors[[i]][3]
     }
   }
-  cor.mat
+  cor_mat
 }
 
 
@@ -133,11 +133,11 @@ make.env <- function(n, elen, emean, edistr, ecor, ndim) {
     ecor <- diag(ndim)
   }
   if (edistr == "uniform") {
-    env.norm <- mvrnorm(
+    env_norm <- mvrnorm(
       n = n, mu = rep(0, ndim), Sigma = ecor,
       empirical = FALSE
     )
-    env <- pnorm(scale(env.norm))
+    env <- pnorm(scale(env_norm))
     env <- sapply(1:ndim, function(x) {
       aa <- env[, x] * elen[x]
       aa + (emean[x] - mean(aa))
@@ -154,7 +154,6 @@ make.env <- function(n, elen, emean, edistr, ecor, ndim) {
     })
   }
   env <- as.data.frame(env)
-  # names(env)<-c("env1", "env2", "env3")
   env
 }
 
@@ -172,33 +171,33 @@ make.abundances <- function(env, param) {
     # calculate b and d
     d <- numeric(ncol(env))
     b <- numeric(ncol(env))
-    for (k in 1:ncol(env)) {
+    for (k in seq_along(env)) {
       b[k] <- alpha[k] / (alpha[k] + gamma[k])
       d[k] <- b[k]^alpha[k] * (1 - b[k])^gamma[k]
     }
     d <- prod(d)
     # find which env values are within taxon's range
-    in.range <- matrix(numeric(0), nrow = nrow(env), ncol = ncol(env))
-    for (k in 1:ncol(env)) {
+    in_range <- matrix(numeric(0), nrow = nrow(env), ncol = ncol(env))
+    for (k in seq_along(env)) {
       c1 <- m[k] - r[k] * b[k] <= env[, k]
       c2 <- m[k] + r[k] * (1 - b[k]) >= env[, k]
-      in.range[, k] <- c1 & c2
+      in_range[, k] <- c1 & c2
     }
-    in.range <- apply(in.range, 1, function(x) {
+    in_range <- apply(in_range, 1, function(x) {
       all(as.logical(x))
     })
 
     # calculate abundances
     A <- numeric(nrow(env))
-    A[!in.range] <- 0
-    xx <- env[in.range, , drop = F]
+    A[!in_range] <- 0
+    xx <- env[in_range, , drop = FALSE]
     if (nrow(xx) > 0) {
       h <- matrix(numeric(0), nrow(xx), ncol(xx))
-      for (k in 1:ncol(xx)) {
+      for (k in seq_along(xx)) {
         h[, k] <- ((xx[, k] - m[k]) / r[k] + b[k])^alpha[k] *
           (1 - ((xx[, k] - m[k]) / r[k] + b[k]))^gamma[k]
       }
-      A[in.range] <- Ao[1] / d * apply(h, 1, prod)
+      A[in_range] <- Ao[1] / d * apply(h, 1, prod)
     }
     A
   })
@@ -208,10 +207,10 @@ make.abundances <- function(env, param) {
 "add.noise.bs" <- function(spp, cnt) {
   spp <- spp / rowSums(spp) # percent data
   mat <- apply(spp, 1, function(sam) {
-    sam <- sample(1:ncol(spp), round(cnt), replace = TRUE, prob = sam)
+    sam <- sample(seq_along(spp), round(cnt), replace = TRUE, prob = sam)
     # ,sample(1:ncol(spp),round(cnt/2), replace=TRUE)) # add more noise poisson
     # count - include 1:n to ensure no taxa skipped by table as empty
-    table(c(sam, 1:ncol(spp)))
+    table(c(sam, seq_along(spp)))
   })
   t(mat - 1)
 }
@@ -221,7 +220,7 @@ abundances <- function(env, spp, nc) {
   ndim <- ncol(env)
   spp <- matrix(ncol = 5 * ndim, unlist(spp))
   colnames(spp) <- rep(c("Ao", "m", "r", "alpha", "gamma"), ndim)
-  abun <- sapply(1:nrow(spp), function(x) {
+  abun <- sapply(seq_len(nrow(spp)), function(x) {
     param <- matrix(ncol = 5, spp[x, ], byrow = TRUE)
     colnames(param) <- c("Ao", "m", "r", "alpha", "gamma")
     make.abundances(env = env, param = param)
@@ -229,7 +228,7 @@ abundances <- function(env, spp, nc) {
   if (!missing(nc)) {
     abun <- add.noise.bs(abun, nc)
   }
-  colnames(abun) <- 1:ncol(abun)
+  colnames(abun) <- seq_len(ncol(abun))
   abun <- run.spp.present(abun)
   abun <- abun / rowSums(abun)
   list(spp = as.data.frame(abun), env = env)
