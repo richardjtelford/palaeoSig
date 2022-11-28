@@ -130,7 +130,7 @@ ggplot(Atlantic, aes(x = Longitude, y = Latitude, colour = summ50)) +
   geom_point()
 
 # save data
-devtools::use_data(Atlantic, overwrite = TRUE)
+usethis::use_data(Atlantic, overwrite = TRUE)
 
 
 #### STOR ####
@@ -151,7 +151,7 @@ STOR <- read_csv(
 389.5,   390.5,  13450,  13820"
 )
 
-devtools::use_data(STOR, overwrite = TRUE)
+usethis::use_data(STOR, overwrite = TRUE)
 
 
 #### arctic pollen ####
@@ -170,5 +170,5 @@ arctic.env <- arctic %>%
   select(-matches("^[FC]-")) %>%
   as.data.frame()
 
-devtools::use_data(arctic.pollen, overwrite = TRUE)
-devtools::use_data(arctic.env, overwrite = TRUE)
+usethis::use_data(arctic.pollen, overwrite = TRUE)
+usethis::use_data(arctic.env, overwrite = TRUE)
