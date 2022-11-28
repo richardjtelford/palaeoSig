@@ -8,7 +8,6 @@
 #'
 #' @importFrom graphics hist lines text strwidth
 #' @importFrom stats quantile
-#' @importFrom TeachingDemos spread.labs
 #' @method plot palaeoSig
 #' @export
 #'
@@ -34,7 +33,7 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
     col = 2, lwd = 1, lty = 3
   )
 
-  put <- spread.labs(x$EX, 1.2 * strwidth("A", cex = .8))
+  put <- TeachingDemos::spread.labs(x$EX, 1.2 * strwidth("A", cex = .8))
 
   text(put, par()$usr[4] * .71,
     label = variable_names,

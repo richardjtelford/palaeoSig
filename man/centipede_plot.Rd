@@ -7,7 +7,8 @@
 centipede_plot(x, spp, minN2 = 1, mult = 1)
 }
 \arguments{
-\item{x}{A tolerance weighted weighted-average model from \code{\link[rioja]{WA}}}
+\item{x}{A tolerance weighted weighted-average model from
+\code{\link[rioja]{WA}}}
 
 \item{spp}{data.frame of species data used to train the WA model}
 
@@ -22,8 +23,15 @@ A \code{\link[ggplot2]{ggplot}} object.
 Plot of species WA optima and tolerance
 }
 \details{
-Extracts and sorts \code{\link[rioja]{WA}} optima and tolerances and generates a ggplot. Tends only to work well when there are a reasonable number of taxa, otherwise it is difficult to read the names on the axis. Rare taxa can be exluded with the  \code{minN2} argument. The \code{tol.cut} argument in \code{\link[rioja]{WA}} may need to be set to prevent very small tolerances in rare taxa.
-This function is very similar to the \code{\link[analogue]{caterpillar}} plot, but produces a ggplot
+Extracts and sorts \code{\link[rioja]{WA}} optima and tolerances and
+ generates a ggplot.
+ Tends only to work well when there are a reasonable number of taxa,
+ otherwise it is difficult to read the names on the axis.
+ Rare taxa can be excluded with the \code{minN2} argument.
+ The \code{tol.cut} argument in \code{\link[rioja]{WA}} may need to be set to
+ prevent very small tolerances in rare taxa.
+This function is very similar to the \code{\link[analogue]{caterpillar}}
+ plot, but produces a ggplot
 }
 \examples{
 library(rioja)
