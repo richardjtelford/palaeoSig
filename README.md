@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/richardjtelford/palaeoSig/workflows/R-CMD-check/badge.svg)](https://github.com/richardjtelford/palaeoSig/actions)
+[![R-CMD-check](https://github.com/richardjtelford/palaeoSig/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/richardjtelford/palaeoSig/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 PalaeoSig includes the methods developed in [Telford and Birks
