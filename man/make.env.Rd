@@ -4,7 +4,7 @@
 \title{ Generates environmental variables
 %%  ~~function to do ... ~~
 }
-\description{ Generates environmental variables used for generating species abundances. Environmental variables may be correlated, and may follow different distirubtions. 
+\description{ Generates environmental variables used for generating species abundances. Environmental variables may be correlated, and may follow different distributions. 
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{

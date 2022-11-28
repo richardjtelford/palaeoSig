@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ MAT for multiple variables }
 \description{
-  MAT for many environmental variables simultaneously. More efficient than calculating them seperately for each variable.
+  MAT for many environmental variables simultaneously. More efficient than calculating them separately for each variable.
 }
 \usage{
 multi.mat(training.spp, envs, core.spp, noanalogues = 10, method = "sq-chord",

@@ -30,18 +30,18 @@
 
 #' @details  Obs.cor calculates the (weighted) correlation between the species
 #' WA optima in the calibration set and their ordination axis one scores in the
-#' fossil data. Seven different weights for the species are implimented.
+#' fossil data. Seven different weights for the species are implemented.
 #' \itemize{
 #'   \item{"abun.fos" - weight by the mean abundance in the fossil data.}
 #'    \item{"abun.calib" - weight by the mean abundance in the calibration data}
 #'    \item{"abun.joint" - weight by the product of the mean abundance in the
 #'    fossil and calibration data}
-#'    \item{"n2.fos" - weight by the effective number of occurences
+#'    \item{"n2.fos" - weight by the effective number of occurrences
 #'    (Hill's N2) of each species in the fossil data}
-#'    \item{"n2.calib" - weight by the effective number of occurences
+#'    \item{"n2.calib" - weight by the effective number of occurrences
 #'    (Hill's N2) of each species in the calibration data}
 #'    \item{"n2.joint" - weight by the product of n2.calib and n2.fos}
-#'    \item{"unweighted" - all species recieve same weight.
+#'    \item{"unweighted" - all species receive same weight.
 #'    This is unlikely to be the best option but is included for completeness.}
 #'    }
 #'    It is unclear which of these weights is likely to be best:
@@ -53,7 +53,7 @@
 #' @return
 #' obs.cor returns an obscor object, which is a list
 #' \itemize{
-#'   \item{ob}{ Obsevered correlation. Data.frame with columns Optima, RDA1 and
+#'   \item{ob}{ Observed correlation. Data.frame with columns Optima, RDA1 and
 #'    abun containing the species optima, ordination axis 1 scores, and
 #'    abundance used to weight the species respectively and a vector containing
 #'    the weighted and unweighted correlations between species optima and

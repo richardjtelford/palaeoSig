@@ -26,14 +26,14 @@ See also my blog at https://quantpalaeo.wordpress.com/
 \tabular{ll}{
 Package: \tab palaeoSig\cr
 Type: \tab Package\cr
-Version: \tab 1.1-2\cr
-Date: \tab 2013-04-17\cr
+Version: \tab 2.0-7\cr
+Date: \tab 2022-11-29\cr
 License: \tab GPL - 3\cr
 LazyLoad: \tab yes\cr
 }
 }                                      
 \author{
-Richard Telford \email{richard.telford@bio.uib.no}
+Richard Telford \email{richard.telford@uib.no}
 }
 \references{
 Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer functions in spatially structured environments. \emph{Quaternary Science Reviews} \bold{28}: 1309--1316. DOI: 10.1016/j.quascirev.2008.12.020  

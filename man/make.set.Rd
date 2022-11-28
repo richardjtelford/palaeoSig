@@ -33,7 +33,7 @@ make.set(ndim, n, elen, emean, edistr, ecor, cnt, spec, env,...)
  \item{cnt}{ Number of counts to be simulated.
 %%     ~~Describe \code{cnt} here~~
 }
-  \item{spec}{ Users may supply their own species paramters.
+  \item{spec}{ Users may supply their own species parameters.
 %%     ~~Describe \code{spec} here~~
 }              
   \item{env}{  Users may supply their own environmental variables.

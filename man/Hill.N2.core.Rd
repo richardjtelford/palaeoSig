@@ -5,7 +5,7 @@
 Calculate the effective number of species in the fossil data
 }
 \description{
-Gives a measure of the species divesity in the fossil data.
+Gives a measure of the species diversity in the fossil data.
 }
 \usage{
 Hill.N2.core(spp)

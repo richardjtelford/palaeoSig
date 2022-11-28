@@ -39,7 +39,7 @@ How many synthetic variables to make. More is better but slower.
 Output from jointsig
 }
   \item{names.v1}{
-Vector length 2 with names of the end members of the first environmental variable, e.g., c("cold", "warm") for temerature.
+Vector length 2 with names of the end members of the first environmental variable, e.g., c("cold", "warm") for temperature.
 }
   \item{names.v2}{
 Ditto for the second variable.
@@ -50,7 +50,7 @@ Other arguments to the significance test (some of these are required) or plot.
 
 }
 \details{
-With method="randomTF", the function calculates the proportion of variance in the fossil data explained by transfer function reconstructions of synthetic variables. The synthetic variables are composed of two environmental variables, weighted betweeen -1 and +1, so to represent a circle. This is compared with a null distribution of the proportion of variance explained by reconstructions based on random environmental variables. Any transfer function in the rioja library can be used. 
+With method="randomTF", the function calculates the proportion of variance in the fossil data explained by transfer function reconstructions of synthetic variables. The synthetic variables are composed of two environmental variables, weighted between -1 and +1, so to represent a circle. This is compared with a null distribution of the proportion of variance explained by reconstructions based on random environmental variables. Any transfer function in the rioja library can be used. 
 With method="obs.cor", the aim is the same, but the function reports the correlation between the species weighted average optima on the synthetic variables and the species first axis scores. This option has some pathological behaviour and should probably be avoided.
 }
 \value{
