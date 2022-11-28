@@ -6,7 +6,7 @@ Authors@R:
     c(person(given = "Richard",
              family = "Telford",
              role = c("aut", "cre", "cph"),
-             email = "Richard.Telford@bio.uib.no"),
+             email = "Richard.Telford@uib.no"),
       person(given = "Mathias",
             family = "Trachsel", role = c("ctb")))
 URL: https://github.com/richardjtelford/palaeoSig
