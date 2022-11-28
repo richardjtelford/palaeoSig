@@ -165,20 +165,20 @@ make.abundances <- function(env, param) {
   env <- as.matrix(env)
   # error checking
   stopifnot(ncol(env) == nrow(param))
-  # if(!is.matrix(param)&!is.data.frame(param))
+  
   param <- as.data.frame(param)
   with(param, {
     # calculate b and d
     d <- numeric(ncol(env))
     b <- numeric(ncol(env))
-    for (k in seq_along(env)) {
+    for (k in seq_len(ncol(env))) {
       b[k] <- alpha[k] / (alpha[k] + gamma[k])
       d[k] <- b[k]^alpha[k] * (1 - b[k])^gamma[k]
     }
     d <- prod(d)
     # find which env values are within taxon's range
     in_range <- matrix(numeric(0), nrow = nrow(env), ncol = ncol(env))
-    for (k in seq_along(env)) {
+    for (k in seq_len(ncol(env))) {
       c1 <- m[k] - r[k] * b[k] <= env[, k]
       c2 <- m[k] + r[k] * (1 - b[k]) >= env[, k]
       in_range[, k] <- c1 & c2
@@ -193,7 +193,7 @@ make.abundances <- function(env, param) {
     xx <- env[in_range, , drop = FALSE]
     if (nrow(xx) > 0) {
       h <- matrix(numeric(0), nrow(xx), ncol(xx))
-      for (k in seq_along(xx)) {
+      for (k in seq_len(ncol(xx))) {
         h[, k] <- ((xx[, k] - m[k]) / r[k] + b[k])^alpha[k] *
           (1 - ((xx[, k] - m[k]) / r[k] + b[k]))^gamma[k]
       }
@@ -207,10 +207,10 @@ make.abundances <- function(env, param) {
 "add.noise.bs" <- function(spp, cnt) {
   spp <- spp / rowSums(spp) # percent data
   mat <- apply(spp, 1, function(sam) {
-    sam <- sample(seq_along(spp), round(cnt), replace = TRUE, prob = sam)
+    sam <- sample(seq_len(ncol(spp)), round(cnt), replace = TRUE, prob = sam)
     # ,sample(1:ncol(spp),round(cnt/2), replace=TRUE)) # add more noise poisson
     # count - include 1:n to ensure no taxa skipped by table as empty
-    table(c(sam, seq_along(spp)))
+    table(c(sam, seq_len(ncol(spp))))
   })
   t(mat - 1)
 }
