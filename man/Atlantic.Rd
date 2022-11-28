@@ -5,7 +5,8 @@
 \alias{Atlantic}
 \title{Atlantic core-top foram assemblages}
 \format{
-A data frame with 1093 rows and 33 variables. summ50 is 50m water temperature of the warmest season
+A data frame with 1093 rows and 33 variables.
+summ50 is 50m water temperature of the warmest season
 }
 \source{
 \url{https://doi.pangaea.de/10.1594/PANGAEA.227322} \url{https://www.nodc.noaa.gov/cgi-bin/OC5/woa13/woa13.pl?parameter=t}
@@ -14,9 +15,8 @@ A data frame with 1093 rows and 33 variables. summ50 is 50m water temperature of
 Atlantic
 }
 \description{
-A dataset containing over 1000 foram assemblages from the Atlantic from Kucera et al (2005) and the 50m SST for the warmest season. Rare taxa and co-located assemblages are removed.
-}
-\examples{
-data(Atlantic)
+A dataset containing over 1000 foram assemblages from the Atlantic from
+Kucera et al (2005) and the 50m SST for the warmest season. Rare taxa and
+co-located assemblages are removed.
 }
 \keyword{datasets}

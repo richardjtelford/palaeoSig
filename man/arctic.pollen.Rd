@@ -7,12 +7,15 @@
 \title{Arctic Pollen and associated environmental data}
 \format{
 \describe{
-   \item{arctic.pollen}{A data frame with 828 observations on the percentage of 39 pollen taxa}
+   \item{arctic.pollen}{A data frame with 828 observations on the percentage
+   of 39 pollen taxa}
    \item{arctic.env}{Environmental data for the pollen sites}
  }
 }
 \source{
-Data extracted from North American Pollen Database and New \emph{et al.} (2002) by Fréchette \emph{et al.} (2008). Following Fréchette (Pers. Comm.), three duplicate sites have been deleted.
+Data extracted from North American Pollen Database and
+New \emph{et al.} (2002) by Fréchette \emph{et al.} (2008).
+Following Fréchette (Pers. Comm.), three duplicate sites have been deleted.
 }
 \usage{
 arctic.env
@@ -20,11 +23,12 @@ arctic.env
 \description{
 Arctic pollen percent data and associated environmental data
 }
-\examples{
-data(arctic.pollen)
-data(arctic.env)
-}
 \references{
-Fréchette, B., de Vernal, A., Guiot, J., Wolfe, A. P., Miller, G. H., Fredskild, B., Kerwin, M. W. and Richard, P. J. H. (2008) Methodological basis for quantitative reconstruction of air temperature and sunshine from pollen assemblages in Arctic Canada and Greenland. \emph{Quaternary Science Reviews} \bold{27}, 1197--1216 doi:\href{https://doi.org/10.1016/j.quascirev.2008.02.016}{10.1016/j.quascirev.2008.02.016}
+Fréchette, B., de Vernal, A., Guiot, J., Wolfe, A. P., Miller,
+G. H., Fredskild, B., Kerwin, M. W. and Richard, P. J. H. (2008)
+Methodological basis for quantitative reconstruction of air temperature and
+sunshine from pollen assemblages in Arctic Canada and Greenland.
+\emph{Quaternary Science Reviews} \bold{27}, 1197--1216
+doi:\href{https://doi.org/10.1016/j.quascirev.2008.02.016}{10.1016/j.quascirev.2008.02.016}
 }
 \keyword{datasets}
