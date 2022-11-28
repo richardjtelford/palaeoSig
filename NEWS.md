@@ -1,3 +1,7 @@
+# palaeoSig 2.0-7
+
+Maintenance release to fix CRAN check error.
+
 # palaeoSig 2.0-6
 
 ## Bug fix
@@ -10,7 +14,7 @@ Lots of changes in this version
 
 ## Breaking changes
 
-* In the plotting functions `p.val` becomes `p_val` and is not the p-value rather than the 
+* In the plotting functions `p.val` becomes `p_val` and is not the p-value rather than the percentile of the null distribution
 * The functionality of `modelMaker` and `randomTFmm` (which can be used when a calibration set is used for many cores) is moved within `randomTF`
 
 ## Other changes
