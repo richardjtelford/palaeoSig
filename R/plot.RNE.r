@@ -1,3 +1,10 @@
+#' @describeIn rne Plot RNE object
+#' @param   x RNE object to be plotted
+#' @param   which Which column of the results to plot eg if more than one WAPLS
+#'  component is calculated
+#' @param   ylim Y-limits of the plot
+#' @param   ... Arguments passed to plot
+#'
 #' @importFrom graphics plot matpoints text
 #' @export
 

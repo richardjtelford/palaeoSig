@@ -1,3 +1,59 @@
+#' @name rne
+#' @aliases rne
+#' @aliases plot.RNE
+#'
+#' @title Random, neighbour, environment deletion analysis for transfer function
+#'  models
+#' @description Calculates effect of deleting sites from training set at random,
+#' from a geographic neighbourhood, or from an environmental neighbourhood.
+#' A simple graphical technique for gauging the effect of spatial
+#' autocorrelation on the transfer function model.
+#'
+#' @param   y Community data, or distance object, or distance matrix
+#' @param   env Environmental variable
+#' @param   geodist Matrix of geographical distances between sites
+#' @param   fun Transfer function
+#' @param   neighbours  Neighbourhood radii
+#' @param   subsets  Proportion of sites to retain in random deletion
+#' @param   ... Arguments passed to fun
+
+#' @details Finds the leave-one-out transfer function performance if sites are
+#'  deleted at random (repeated 10 times to reduce variance in results), from a
+#'   neighbourhood zone, or by deleting environmentally close sites.
+
+#' @return
+#' Returns an RNE object, list with two components
+#' \itemize{
+#'  \item{random }{Performance with random deletion.}
+#'  \item{neighbour }{Performance with deletion by neighourhood, or environment}
+#'  }
+#' @references Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer
+#' functions in spatially structured environments.
+#' \emph{Quaternary Science Reviews} \bold{28}: 1309--1316.
+#' \doi{10.1016/j.quascirev.2008.12.020}
+#' @author Richard Telford \email{Richard.Telford@bio.uib.no}
+
+#' @examples
+#' require(fields)
+#' require(rioja)
+#' data(arctic.env)
+#' data(arctic.pollen)
+#'
+#' # using just the first 20 sites so that code runs in an reasonable time
+#' arctic.dist <- rdist.earth(arctic.env[1:20, c("Longitude", "Latitude")],
+#'   miles = FALSE
+#' )
+#' arctic.rne <- rne(
+#'   y = arctic.pollen[1:20, ], env = arctic.env$tjul[1:20],
+#'   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
+#'   subsets = c(1, .5), k = 5
+#' )
+#'
+#' plot(arctic.rne)
+
+#' @keywords multivariate
+
+
 #' @importFrom stats cor predict
 #' @export
 
