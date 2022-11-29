@@ -103,7 +103,7 @@
 #' data(RLGH)
 #' rlghr <- randomTF(
 #'   spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
-#'   fos = sqrt(RLGH$spec), n = 99, fun = WA, col = 1
+#'   fos = sqrt(RLGH$spec), n = 49, fun = WA, col = 1
 #' )
 #' rlghr$sig
 #' plot(rlghr, "pH")

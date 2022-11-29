@@ -88,7 +88,8 @@
 #' rlgh.obs <- obs.cor(
 #'   spp = sqrt(SWAP$spec),
 #'   env = SWAP$pH,
-#'   fos = sqrt(RLGH$spec)
+#'   fos = sqrt(RLGH$spec),
+#'   n = 49 # low number for speed
 #' )
 #' rlgh.obs$sig
 #' plot(rlgh.obs, which = 1)
