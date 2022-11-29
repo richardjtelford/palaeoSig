@@ -21,7 +21,7 @@ multi.mat(training.spp, envs, core.spp, noanalogues = 10, method = "sq-chord",
 \value{
   Matrix of predictions
 }
-\references{ Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer functions in spatially structured environments. \emph{Quaternary Science Reviews} \bold{28}: 1309--1316. DOI: 10.1016/j.quascirev.2008.12.020  }
+\references{ Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer functions in spatially structured environments. \emph{Quaternary Science Reviews} \bold{28}: 1309--1316. \doi{10.1016/j.quascirev.2008.12.020}  }
 \author{ Richard Telford \email{Richard.Telford@bio.uib.no}  }
 \examples{
 

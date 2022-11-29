@@ -86,7 +86,7 @@ identify.obscor <- function(x, labels, ...) {
 
 
 
-#' @describeIn obs.cor autoplots for obscor object
+#' @describeIn obs.cor autoplot for obscor object
 #' @param top Proportion of the figure below the environmental name labels.
 #' @param nbins integer giving number of bins for the histogram
 #' @importFrom ggplot2 autoplot ggplot geom_point scale_size_area

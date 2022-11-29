@@ -3,7 +3,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Anamorph }
 \description{
-  Creates functions that transform arbitary distributions into a Gaussian distributions, and vice versa.
+  Creates functions that transform arbitrary distributions into a Gaussian distributions, and vice versa.
 }
 \usage{
 anamorph(x, k, plot = FALSE)

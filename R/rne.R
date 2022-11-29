@@ -25,7 +25,8 @@
 #' Returns an RNE object, list with two components
 #' \itemize{
 #'  \item{random }{Performance with random deletion.}
-#'  \item{neighbour }{Performance with deletion by neighourhood, or environment}
+#'  \item{neighbour }{Performance with deletion by neighbourhood, 
+#'  or environment}
 #'  }
 #' @references Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer
 #' functions in spatially structured environments.

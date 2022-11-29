@@ -36,9 +36,9 @@ LazyLoad: \tab yes\cr
 Richard Telford \email{richard.telford@uib.no}
 }
 \references{
-Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer functions in spatially structured environments. \emph{Quaternary Science Reviews} \bold{28}: 1309--1316. DOI: 10.1016/j.quascirev.2008.12.020  
+Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer functions in spatially structured environments. \emph{Quaternary Science Reviews} \bold{28}: 1309--1316. \doi{10.1016/j.quascirev.2008.12.020}  
 
-Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. DOI: 10.1016/j.quascirev.2011.03.002
+Telford, R. J. and Birks, H. J. B. (2011) A novel method for assessing the statistical significance of quantitative reconstructions inferred from biotic assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278. \doi{10.1016/j.quascirev.2011.03.002}
 }
 
 \keyword{ package }

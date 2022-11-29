@@ -156,7 +156,7 @@ n = 999 is better.
 
 \item \code{identify}: Identify species on obs.cor plot
 
-\item \code{autoplot}: autoplots for obscor object
+\item \code{autoplot}: autoplot for obscor object
 }}
 
 \note{

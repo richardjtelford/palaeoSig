@@ -44,7 +44,8 @@ component is calculated}
 Returns an RNE object, list with two components
 \itemize{
 \item{random }{Performance with random deletion.}
-\item{neighbour }{Performance with deletion by neighourhood, or environment}
+\item{neighbour }{Performance with deletion by neighbourhood,
+or environment}
 }
 }
 \description{
