@@ -92,22 +92,22 @@ from \code{env} data.frame.}
 \value{
 A list with components
 \itemize{
-   \item{PCA}{ The unconstrained ordination of the fossil data.}
-   \item{preds}{ A list of the containing the reconstructions for each
-   environmental variable.}
-   \item{MAX}{ Proportion of the variance explained by the first axis of the
-    unconstrained ordination.
-    This is the maximum amount that a reconstruction of a single variable can
-    explain.}
-   \item{EX}{ The proportion of the variance in the fossil data explained by
-    each reconstruction.}
-   \item{sim.ex}{ The proportion of variance explained by each of the random
-    environmental variables.}
-   \item{sig}{ The p-value of each reconstruction.}
+\item{PCA}{ The unconstrained ordination of the fossil data.}
+\item{preds}{ A list of the containing the reconstructions for each
+environmental variable.}
+\item{MAX}{ Proportion of the variance explained by the first axis of the
+unconstrained ordination.
+This is the maximum amount that a reconstruction of a single variable can
+explain.}
+\item{EX}{ The proportion of the variance in the fossil data explained by
+each reconstruction.}
+\item{sim.ex}{ The proportion of variance explained by each of the random
+environmental variables.}
+\item{sig}{ The p-value of each reconstruction.}
 }
 If \code{make_models = TRUE}, a list of transfer function models is returned.
 
-   \code{autoplot.palaeoSig} returns a \code{ggplot2} object
+\code{autoplot.palaeoSig} returns a \code{ggplot2} object
 }
 \description{
 Calculate the proportion of variance in the fossil data
@@ -135,8 +135,8 @@ training set it can be much faster to train the models on random
 environmental data once and then use them repeatedly.
 This can be done with \code{make_models = TRUE} and then running
 \code{randomTF} again giving the resultant models to the \code{models}
- argument.
- \code{make_models} does not work with MAT.
+argument.
+\code{make_models} does not work with MAT.
 }
 \section{Methods (by generic)}{
 \itemize{
@@ -157,7 +157,7 @@ data(SWAP)
 data(RLGH)
 rlghr <- randomTF(
   spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
-  fos = sqrt(RLGH$spec), n = 99, fun = WA, col = 1
+  fos = sqrt(RLGH$spec), n = 49, fun = WA, col = 1
 )
 rlghr$sig
 plot(rlghr, "pH")

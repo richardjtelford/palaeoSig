@@ -6,16 +6,16 @@
 \title{Storsandsvatnet}
 \format{
 A data.frame with 11 observations on the following 4 variables.
-   \describe{
-       \item{depthup}{The upper border of the dated slide}
-       \item{depthdo}{The lower border of the dated slide}
-       \item{cageup}{The younger calibrated age of the dated slide}
-       \item{cagedo}{The older calibrated age of the dated slide}
-       }
+\describe{
+\item{depthup}{The upper border of the dated slide}
+\item{depthdo}{The lower border of the dated slide}
+\item{cageup}{The younger calibrated age of the dated slide}
+\item{cagedo}{The older calibrated age of the dated slide}
+}
 }
 \source{
 The data are unpublished and provided by H. John B. Birks
-<john.birks@bio.uib.no> and Sylvia M. Peglar
+\href{mailto:john.birks@bio.uib.no}{john.birks@bio.uib.no} and Sylvia M. Peglar
 }
 \usage{
 data(STOR)

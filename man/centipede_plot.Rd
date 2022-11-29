@@ -24,14 +24,14 @@ Plot of species WA optima and tolerance
 }
 \details{
 Extracts and sorts \code{\link[rioja]{WA}} optima and tolerances and
- generates a ggplot.
- Tends only to work well when there are a reasonable number of taxa,
- otherwise it is difficult to read the names on the axis.
- Rare taxa can be excluded with the \code{minN2} argument.
- The \code{tol.cut} argument in \code{\link[rioja]{WA}} may need to be set to
- prevent very small tolerances in rare taxa.
+generates a ggplot.
+Tends only to work well when there are a reasonable number of taxa,
+otherwise it is difficult to read the names on the axis.
+Rare taxa can be excluded with the \code{minN2} argument.
+The \code{tol.cut} argument in \code{\link[rioja]{WA}} may need to be set to
+prevent very small tolerances in rare taxa.
 This function is very similar to the \code{\link[analogue]{caterpillar}}
- plot, but produces a ggplot
+plot, but produces a ggplot
 }
 \examples{
 library(rioja)
