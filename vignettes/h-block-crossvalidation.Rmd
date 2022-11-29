@@ -80,11 +80,11 @@ geodist <- fields::rdist.earth(select(N_Atlantic_meta, Longitude, Latitude),
 )
 
 # values of h for which h-block cross-validation is calculated
-threshs <- c(0.01, 100, 200, 400, 600, 700, 800, 900, 1000, 1200, 1400, 1600)
+threshs <- c(0.01, 100, 200, 400, 600, 800, 1000, 1500)
 
 # h-block cross-validation of the NA foraminifera dataset for
 # different values of h
-res_h <- map_df(threshs, function(h) {
+res_h <- map_dfr(threshs, function(h) {
   mod <- MAT(N_Atlantic, N_Atlantic_meta$summ50, k = 5, lean = FALSE)
   mod <- crossval(mod, cv.method = "h-block", h.dist = geodist, h.cutoff = h)
 
