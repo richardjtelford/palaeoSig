@@ -88,7 +88,7 @@
 #' assessing the statistical significance of quantitative reconstructions
 #' inferred from biotic assemblages. \emph{Quaternary Science Reviews}
 #' \bold{30}: 1272--1278. DOI:
-#' \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
+#' \doi{10.1016/j.quascirev.2011.03.002}
 #' @author Richard Telford \email{richard.telford@uib.no}
 #' @note If there are only a few fossil levels, \code{\link{obs.cor}} might have
 #' more power.

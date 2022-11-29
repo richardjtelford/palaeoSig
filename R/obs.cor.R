@@ -71,7 +71,7 @@
 #' assessing the statistical significance of quantitative reconstructions
 #' inferred from biotic assemblages. \emph{Quaternary Science Reviews}
 #' \bold{30}: 1272--1278.
-#' DOI: \href{https://doi.org/10.1016/j.quascirev.2011.03.002}{10.1016/j.quascirev.2011.03.002}
+#' \doi{10.1016/j.quascirev.2011.03.002}
 #' @author Richard Telford \email{richard.telford@uib.no}
 #' @note The test of the weighted correlation between species optima and
 #' ordination axis scores is more powerful, especially with a small number of
