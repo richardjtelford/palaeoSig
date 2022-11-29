@@ -1,3 +1,10 @@
+#' @describeIn jointsig Plot js object
+#' @param x Output from jointsig
+#' @param names.v1 Vector length 2 with names of the end members of the first
+#' environmental variable, e.g., c("cold", "warm") for temperature.
+#' @param names.v2 Ditto for the second variable.
+#' @param \dots Other arguments to plot
+
 #' @importFrom graphics polygon
 #' @export
 
