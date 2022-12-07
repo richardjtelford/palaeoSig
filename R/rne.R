@@ -16,6 +16,7 @@
 #' @param   neighbours  Neighbourhood radii
 #' @param   subsets  Proportion of sites to retain in random deletion
 #' @param   ... Arguments passed to fun
+#' @param   nrep integer, number of times to delete sites at random
 
 #' @details Finds the leave-one-out transfer function performance if sites are
 #'  deleted at random (repeated 10 times to reduce variance in results), from a
@@ -41,13 +42,14 @@
 #' data(arctic.pollen)
 #'
 #' # using just the first 20 sites so that code runs in an reasonable time
-#' arctic.dist <- rdist.earth(arctic.env[1:20, c("Longitude", "Latitude")],
+#' arctic.dist <- rdist.earth(
+#'   x1 = arctic.env[1:20, c("Longitude", "Latitude")],
 #'   miles = FALSE
 #' )
 #' arctic.rne <- rne(
 #'   y = arctic.pollen[1:20, ], env = arctic.env$tjul[1:20],
 #'   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
-#'   subsets = c(1, .5), k = 5
+#'   subsets = c(1, .5), nrep = 2, k = 5
 #' )
 #'
 #' plot(arctic.rne)
@@ -59,7 +61,7 @@
 #' @export
 
 rne <- function(y, env, geodist, fun, neighbours,
-                subsets = c(1, 0.75, 0.5, 0.25, 0.1), ...) {
+                subsets = c(1, 0.75, 0.5, 0.25, 0.1), nrep = 10, ...) {
   dots <- list(...)
   if (inherits(geodist, "dist")) {
     geodist <- as.matrix(geodist)
@@ -68,7 +70,7 @@ rne <- function(y, env, geodist, fun, neighbours,
   nr <- nrow(y)
   rne$random <- t(sapply(subsets, function(ss) {
     print(paste("random subset = ", ss))
-    r2 <- replicate(10, {
+    r2 <- replicate(nrep, {
       est <- sapply(seq_len(nr), function(n) {
         retain <- sample(1:(nr - 1), size = round((nr - 1) * (ss)))
         y2 <- y[-n, ][retain, ]
