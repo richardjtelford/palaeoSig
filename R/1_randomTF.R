@@ -121,7 +121,7 @@
 #' @export
 
 randomTF <- function(spp, env, fos, n = 99, fun, col,
-                     condition, autosim, ord = rda,
+                     condition = NULL, autosim, ord = rda,
                      permute = FALSE,
                      models,
                      make_models = FALSE, ...) {
@@ -153,7 +153,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   }
 
   # check condition is data.frame and fos have same number of rows
-  partial <- !missing(condition)
+  partial <- !is.null(condition)
   if (partial) {
     if (!is.data.frame(condition)) {
       stop("condition must be a data.frame of reconstructions to partial out")
@@ -199,6 +199,11 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     }
   }
 
+   # coerce spp and fos to matrix for speed
+  fos <- as.matrix(fos)
+  spp <- as.matrix(spp)
+  
+  
   # find inertia explained by first axis of unconstrained ordination
   if (!make_models) {
     # only if not in make_model mode
