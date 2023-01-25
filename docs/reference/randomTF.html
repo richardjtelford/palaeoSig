@@ -81,7 +81,7 @@ functions trained on random data.</p>
 <span>  n <span class="op">=</span> <span class="fl">99</span>,</span>
 <span>  <span class="va">fun</span>,</span>
 <span>  <span class="va">col</span>,</span>
-<span>  <span class="va">condition</span>,</span>
+<span>  condition <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">autosim</span>,</span>
 <span>  ord <span class="op">=</span> <span class="va">rda</span>,</span>
 <span>  permute <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -111,7 +111,7 @@ single environmental variable</p></dd>
 
 <dt>fos</dt>
 <dd><p>Data frame of fossil species data, with same species codes and
-transformations as spp</p></dd>
+transformations as <code>spp</code></p></dd>
 
 
 <dt>n</dt>
@@ -240,11 +240,11 @@ This can be done with <code>make_models = TRUE</code> and then running
 argument.
 <code>make_models</code> does not work with MAT.</p>
     </div>
-    <div id="methods-by-generic-">
-    <h2>Methods (by generic)</h2>
+    <div id="functions">
+    <h2>Functions</h2>
     
-<ul><li><p><code>plot</code>: Plot palaeoSig object</p></li>
-<li><p><code>autoplot</code>: autoplot function for palaeoSig object</p></li>
+<ul><li><p><code>plot(palaeoSig)</code>: Plot palaeoSig object</p></li>
+<li><p><code>autoplot(palaeoSig)</code>: autoplot function for palaeoSig object</p></li>
 </ul></div>
     <div id="note">
     <h2>Note</h2>
