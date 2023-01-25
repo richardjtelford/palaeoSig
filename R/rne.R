@@ -68,11 +68,13 @@ rne <- function(y, env, geodist, fun, neighbours,
   }
   rne <- list()
   nr <- nrow(y)
+  
+  # deletion at random
   rne$random <- t(sapply(subsets, function(ss) {
     print(paste("random subset = ", ss))
     r2 <- replicate(nrep, {
       est <- sapply(seq_len(nr), function(n) {
-        retain <- sample(1:(nr - 1), size = round((nr - 1) * (ss)))
+        retain <- sample(seq_len(nr - 1), size = round((nr - 1) * (ss)))
         y2 <- y[-n, ][retain, ]
         keepcols <- colSums(y2) != 0
         mod <- do.call(
@@ -96,13 +98,15 @@ rne <- function(y, env, geodist, fun, neighbours,
     c(prop = ss, r2 = r2)
   }))
   print(rne$random)
+  
+  # deletion from geographic/environmental neighbourhood
   rne$neighbour <- lapply(neighbours, function(neighbour) {
     print(paste("neighbourhood = ", neighbour, "km"))
-    en <- sapply(seq_len(nrow(y)), function(n) {
+    en <- sapply(seq_len(nr), function(n) {
       sum(geodist[n, ] >= neighbour)
     })
-    effn <- (nrow(y) - mean(en)) / (nrow(y) - 1)
-    hb <- sapply(seq_len(nrow(y)), function(n) {
+    effn <- (nr - mean(en)) / (nr - 1)
+    hb <- sapply(seq_len(nr), function(n) {
       y1 <- y[-n, ]
       env1 <- env[-n]
       exneigh <- geodist[n, -n] >= neighbour
@@ -119,8 +123,9 @@ rne <- function(y, env, geodist, fun, neighbours,
     } else {
       hbr <- apply(hb, 1, cor, env)^2
     }
-
-    eb <- sapply(seq_len(nrow(y)), function(n) {
+    
+    # delete by environmental distance
+    eb <- sapply(seq_len(nr), function(n) {
       y1 <- y[-n, ]
       env1 <- env[-n]
       neigh <- which(
