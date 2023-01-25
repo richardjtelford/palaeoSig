@@ -14,7 +14,7 @@ randomTF(
   n = 99,
   fun,
   col,
-  condition,
+  condition = NULL,
   autosim,
   ord = rda,
   permute = FALSE,
@@ -35,7 +35,7 @@ required for example with \code{sqrt}}
 single environmental variable}
 
 \item{fos}{Data frame of fossil species data, with same species codes and
-transformations as spp}
+transformations as \code{spp}}
 
 \item{n}{number of random training sets. More is better.}
 
@@ -138,13 +138,13 @@ This can be done with \code{make_models = TRUE} and then running
 argument.
 \code{make_models} does not work with MAT.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{plot}: Plot palaeoSig object
+\item \code{plot(palaeoSig)}: Plot palaeoSig object
 
-\item \code{autoplot}: autoplot function for palaeoSig object
+\item \code{autoplot(palaeoSig)}: autoplot function for palaeoSig object
+
 }}
-
 \note{
 If there are only a few fossil levels, \code{\link{obs.cor}} might have
 more power.

@@ -11,9 +11,9 @@
 
 \item{main}{Title of the plot.}
 
-\item{xlab}{xlabel of the plot.}
+\item{xlab}{x axis label of the plot.}
 
-\item{ylab}{ylabel of the plot.}
+\item{ylab}{y axis label of the plot.}
 
 \item{\dots}{Other arguments to plot.}
 }

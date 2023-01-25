@@ -16,30 +16,30 @@ species(nspp = 30, Amax, fun, xpar, srange, alpha = 4,
   \item{nspp}{ Number of species to be generated.
 %%     ~~Describe \code{nspp} here~~
 }
-  \item{Amax}{ Maximum abundance of a species. Amax currently allows three options: i) a function how to generate maximum abundances (e.g. runif, rgamma) ii) a vector of length nspp  iii) a single number that is used as maximum abundance for all the species.  
+  \item{Amax}{ Maximum abundance of a species. `Amax` currently allows three options: i) a function how to generate maximum abundances (e.g. `runif`, `rgamma`) ii) a vector of length `nspp`  iii) a single number that is used as maximum abundance for all the species.  
 %%     ~~Describe \code{Amax} here~~
 }
-  \item{fun}{ Function to generate species optima (e.g. rnorm, runif). The two parameters in xpar are passed to function fun. If omitted species optima are generated 
-  at regular intervals between the two values in xpar.  
+  \item{fun}{ Function to generate species optima (e.g. `rnorm`, `runif`). The two parameters in `xpar` are passed to function `fun`. If omitted species optima are generated 
+  at regular intervals between the two values in `xpar`.  
 %%     ~~Describe \code{fun} here~~
 }   
 \item{xpar}{ Two numbers describing a distribution e.g mu and sigma for a normal distribution, lower and upper bound for a random uniform distribution. 
 %%     ~~Describe \code{xpar} here~~
 }
-\item{srange}{ Length of the ecological gradient to which individual species respond. Either one number or a matrix with nspp rows and ndim columns. If srange should be different for different environmental variables a simpler solution is to change argument elen in \code{\link{make.env}} accordingly. E.g. elen =c(100,50,50) when using three environmental gradients.  
+\item{srange}{ Length of the ecological gradient to which individual species respond. Either one number or a matrix with `nspp` rows and `ndim` columns. If `srange` should be different for different environmental variables a simpler solution is to change argument elen in \code{\link{make.env}} accordingly. E.g. `elen = c(100,50,50)` when using three environmental gradients.  
 %%     ~~Describe \code{srange} here~~
 }    
-\item{alpha}{ Shape parameter of the beta distribution. One number or a matrix with nspp rows and ndim columns.
+\item{alpha}{ Shape parameter of the beta distribution. One number or a matrix with `nspp` rows and `ndim` columns.
 %%     ~~Describe \code{alpha} here~~
 }
-  \item{gamma}{ Shape parameter of the beta distribution. One number or a matrix with nspp rows and ndim columns.
+  \item{gamma}{ Shape parameter of the beta distribution. One number or a matrix with `nspp` rows and `ndim` columns.
 %%     ~~Describe \code{gamma} here~~
 }
   \item{ndim}{ Number of environmental variables to which generated species should respond.
 %%     ~~Describe \code{ndim} here~~
 }
 
-  \item{sdistr}{ Users may supply own distributions of species optima. Matrix with nspp rows and ndim columns (as well in the special case of ndim = 1).  
+  \item{sdistr}{ Users may supply own distributions of species optima. Matrix with `nspp` rows and `ndim` columns (as well in the special case of `ndim = 1`).  
 %%     ~~Describe \code{sdistr} here~~
 }
 
@@ -50,11 +50,11 @@ species(nspp = 30, Amax, fun, xpar, srange, alpha = 4,
 %%     ~~Describe \code{odistr} here~~
 }
 }
-\details{ Details on the exact generation of species response functions from parameters Amax, m, r, gamma and alpha are given in Minchin (1987). Species response curves are determined by five parameters: a parameter determining the maximum abundance (Amax) and one describing the location (m) of this mode. A parameter determining to which environmental range the species respond (srange in the input r in the output) and two parameters (alpha, gamma) describing the shape of the species response function. If alpha = gamma the response curve is symmetric (alpha = gamma = 4, yields Gaussian distributions). Additionally, species optima for several environmental variables may be correlated. Currently this is only possible for gaussian or uniform distributions of species optima. Users may as well supply previously generated optima (e.g. optima similar to a real dataset). 
+\details{ Details on the exact generation of species response functions from parameters `Amax`, `m`, `r`, `gamma` and `alpha` are given in Minchin (1987). Species response curves are determined by five parameters: a parameter determining the maximum abundance (`Amax`) and one describing the location (`m`) of this mode. A parameter determining to which environmental range the species respond (`srange` in the input `r` in the output) and two parameters (`alpha`, `gamma`) describing the shape of the species response function. If `alpha` = `gamma` the response curve is symmetric (`alpha` = `gamma` = 4, yields Gaussian distributions). Additionally, species optima for several environmental variables may be correlated. Currently this is only possible for gaussian or uniform distributions of species optima. Users may as well supply previously generated optima (e.g. optima similar to a real dataset). 
 
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{ List with ndim elements. Each list contains the species response parameters to one environmental gradient.     
+\value{ List with `ndim` elements. Each list contains the species response parameters to one environmental gradient.     
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

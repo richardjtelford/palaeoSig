@@ -1,8 +1,8 @@
 #' Plots fitted agelme model and dates
 #' @param x Fitted agelme model.
 #' @param main Title of the plot.
-#' @param xlab xlabel of the plot.
-#' @param ylab ylabel of the plot.
+#' @param xlab x axis label of the plot.
+#' @param ylab y axis label of the plot.
 #' @param \dots Other arguments to plot.
 #' @examples
 #' data(STOR)

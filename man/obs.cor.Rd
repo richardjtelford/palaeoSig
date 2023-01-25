@@ -150,15 +150,15 @@ A square root transformation of the species data is often useful. n = 99
 is too small in practice to give a smooth histogram of the null model.
 n = 999 is better.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{plot}: Plots for obscor object
+\item \code{plot(obscor)}: Plots for obscor object
 
-\item \code{identify}: Identify species on obs.cor plot
+\item \code{identify(obscor)}: Identify species on obs.cor plot
 
-\item \code{autoplot}: autoplot for obscor object
+\item \code{autoplot(obscor)}: autoplot for obscor object
+
 }}
-
 \note{
 The test of the weighted correlation between species optima and
 ordination axis scores is more powerful, especially with a small number of

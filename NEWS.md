@@ -131,7 +131,7 @@ Lots of changes in this version
 
  * `wajack` was removed as `WA` is now implemented in \pkg{rioja}. 
 
-## FORTHCOMMING CHANGES
+## FORTHCOMING CHANGES
       
  * `mat.h` will be removed in the next release, when code for h-block resampling should be implemented in \pkg{rioja}.
 

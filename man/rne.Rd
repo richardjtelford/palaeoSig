@@ -62,11 +62,11 @@ Finds the leave-one-out transfer function performance if sites are
 deleted at random (repeated 10 times to reduce variance in results), from a
 neighbourhood zone, or by deleting environmentally close sites.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{plot}: Plot RNE object
-}}
+\item \code{plot(RNE)}: Plot RNE object
 
+}}
 \examples{
 require(fields)
 require(rioja)

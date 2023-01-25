@@ -72,11 +72,11 @@ correlation between the species weighted average optima on the synthetic
 variables and the species first axis scores.
 This option has some pathological behaviour and should probably be avoided.
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{plot}: Plot js object
-}}
+\item \code{plot(js)}: Plot js object
 
+}}
 \examples{
 require(rioja)
 data(SWAP)

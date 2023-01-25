@@ -12,7 +12,7 @@
 #' @param env Data frame of training set environmental variables or vector with
 #' single environmental variable
 #' @param fos Data frame of fossil species data, with same species codes and
-#' transformations as spp
+#' transformations as `spp`
 #' @param n number of random training sets. More is better.
 #' @param fun Transfer function method.
 #' Additional arguments to \code{fun} can be passed with \code{...}
