@@ -4,7 +4,7 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Estimation of the relationship between Calibrated age and depth }
 \description{
-  Estimates the relationship of Calibrated age and depth for paleorecords. The function uses a smooth spline
+  Estimates the relationship of Calibrated age and depth for palaeorecords. The function uses a smooth spline
   of the mgcv library by Simon Wood. It produces predicted confidence interval for the relationship approximating 
   a mixed effect model, as there are two levels of uncertainty, i.e. within dated object and between dated objects.
 }
@@ -29,7 +29,7 @@ agelme(depup, depdo, bpup, bpdo, use, weights=c(1,rep(0,length(depup)-1)),
   Note that the fixation of the top layer is done by a weight = 1, whereas the other weights follows inverse variance within object.
   
   The diagnostic plots is used to check the quality of the estimation and to see if there is a need for an assumption of between
-  object variance proportional to mean. The latter however is rarely encountered for paleodata.
+  object variance proportional to mean. The latter however is rarely encountered for palaeodata.
 }
 \value{
   \item{tdf }{Degrees of freedom used by the cubic smooth spline, a vector with first value for constant variance and second vector for variance equal to mu.}
