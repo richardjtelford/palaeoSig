@@ -18,7 +18,7 @@
 #' Additional arguments to \code{fun} can be passed with \code{...}
 #' @param col Some transfer functions return more than one column of results,
 #' for example with different \code{\link[rioja]{WAPLS}} components.
-#' \code{col} selects which column to use.
+#' \code{col} selects which column of the reconstructions to use.
 #' See the relevant transfer function method help file.
 #' @param condition Optional data frame of reconstructions to partial out when
 #' testing if multiple independent reconstructions are possible.
@@ -103,7 +103,7 @@
 #' data(RLGH)
 #' rlghr <- randomTF(
 #'   spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
-#'   fos = sqrt(RLGH$spec), n = 49, fun = WA, col = 1
+#'   fos = sqrt(RLGH$spec), n = 49, fun = WA, col = "WA.inv"
 #' )
 #' rlghr$sig
 #' plot(rlghr, "pH")
@@ -199,11 +199,11 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     }
   }
 
-   # coerce spp and fos to matrix for speed
+  # coerce spp and fos to matrix for speed
   fos <- as.matrix(fos)
   spp <- as.matrix(spp)
-  
-  
+
+
   # find inertia explained by first axis of unconstrained ordination
   if (!make_models) {
     # only if not in make_model mode
@@ -217,10 +217,11 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     MAX <- PC$CA$eig[1] / PC$tot.chi
 
     # Find inertia explained by reconstructions
-    obs <- lapply(env, function(ev) {
+    obs <- lapply(env, FUN = function(ev) {
       mod <- fun(spp, ev, ...)
       Pred <- predict(mod, fos)
       if (is.list(Pred)) {
+        col # force evaluation - otherwise lazy evaluation fails
         p <- Pred$fit[, col]
       } else {
         p <- Pred

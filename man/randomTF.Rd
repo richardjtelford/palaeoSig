@@ -44,7 +44,7 @@ Additional arguments to \code{fun} can be passed with \code{...}}
 
 \item{col}{Some transfer functions return more than one column of results,
 for example with different \code{\link[rioja]{WAPLS}} components.
-\code{col} selects which column to use.
+\code{col} selects which column of the reconstructions to use.
 See the relevant transfer function method help file.}
 
 \item{condition}{Optional data frame of reconstructions to partial out when
@@ -157,7 +157,7 @@ data(SWAP)
 data(RLGH)
 rlghr <- randomTF(
   spp = sqrt(SWAP$spec), env = data.frame(pH = SWAP$pH),
-  fos = sqrt(RLGH$spec), n = 49, fun = WA, col = 1
+  fos = sqrt(RLGH$spec), n = 49, fun = WA, col = "WA.inv"
 )
 rlghr$sig
 plot(rlghr, "pH")
