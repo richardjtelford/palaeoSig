@@ -1,3 +1,9 @@
+# palaeoSig 2.0-8
+
+## Bug fix
+
+In randomTF(), if argument `col` was missing, all columns of the reconstruction would be used, because lazy evaluation was not done before use in a formula. Code now check `col` is set when needed.
+
 # palaeoSig 2.0-7
 
 Maintenance release to fix CRAN check error.
