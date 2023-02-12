@@ -200,8 +200,8 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
   }
 
   # coerce spp and fos to matrix for speed
-  fos <- as.matrix(fos)
-  spp <- as.matrix(spp)
+  # fos <- as.matrix(fos)
+  # spp <- as.matrix(spp)
 
 
   # find inertia explained by first axis of unconstrained ordination
