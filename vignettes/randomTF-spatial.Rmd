@@ -1,0 +1,128 @@
+---
+title: "randomTF on spatially structured environments"
+author: "Richard J Telford"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{H-block cross-validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Spatial autocorrelation can severely bias transfer function performance estimates. 
+Telford and Birks (2009) suggested *h*-block cross-validation as a means of obtaining unbiased transfer function estimates.
+The problem is to estimate the optimal value of *h*: too small and the performance estimates are still over-optimistic, too large and the performance estimates are pessimistic. 
+Trachsel and Telford (2015) presented three methods to estimate *h*: 
+  
+  1. the performance of a transfer function on a spatially independent test set
+2. the autocorrelation in residuals of a weighted averaging transfer function 
+3. Comparing the variance explained of a transfer function trained on random environmental data with similar spatial structure as the environmental data of influence with the correlation between the simulated data and the environmental data of influence.    
+
+
+```{r, message=FALSE}
+library(palaeoSig)
+library(rioja)
+library(sp)
+library(gstat)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+```
+
+
+## 1. Spatially independent test set
+
+We use the foraminifera dataset by [Kucera et al. (2005)](https://doi.pangaea.de/10.1594/PANGAEA.227322). We split the dataset into two parts, a North Atlantic (NA) dataset (north of 3°N) and a South Atlantic (SA) data set (south of 3°S). We use the NA dataset as training set and the SA dataset as spatially independent test set. 
+
+```{r, results='hide', warning=FALSE}
+# load data
+data(Atlantic)
+meta <- c("Core", "Latitude", "Longitude", "summ50")
+Atlantic <- as.data.frame(Atlantic)
+
+#pseudocore as no fossil foram data in palaeoSig
+fosn <- Atlantic |> 
+  filter(between(summ50, 5, 10)) |> 
+  sample_n(size = 20)
+
+# remaining samples as training set
+Atlantic <- Atlantic |> 
+  anti_join(fosn, by = "Core")
+
+Atlantic_meta <- Atlantic |>
+  select(one_of(meta)) # to keep rdist.earth happy
+Atlantic <- Atlantic |> # species
+  select(-one_of(meta))
+
+fos <- fosn |> 
+  select(-one_of(meta))
+
+
+
+# calculating distances among the sampled points in the
+# North Atlantic foraminifera data set
+geodist <- fields::rdist.earth(
+  x1 = cbind(Atlantic_meta$Longitude, Atlantic_meta$Latitude),
+  miles = FALSE
+)
+
+```
+
+
+
+
+```{r, message=FALSE, results = 'hide', fig.cap = "Figure 2: Semi-variogram fitted to detrended residuals of a weighted averaging model."}
+
+# copy meta data and add coordinate system
+Atlantic_meta_c <- Atlantic_meta
+coordinates(Atlantic_meta_c) <- ~ Longitude + Latitude
+proj4string(Atlantic_meta_c) <- CRS("+proj=longlat +datum=WGS84")
+```
+
+
+```{r, fig.cap = "Figure 3: Semi-variogram model (Matérn class) fitted to the North Atlantic summer sea temperature at 50 m depth."}
+# Estimate the variogram model for the environmental variable of interest
+ve <- variogram(summ50 ~ 1, data = Atlantic_meta_c)
+vem <- fit.variogram(ve, vgm(40, "Mat", 5000, .1, kappa = 1.8))
+plot(ve, vem)
+
+# Simulating environmental variables
+sim <- krige(sim ~ 1,
+             locations = Atlantic_meta_c,
+             dummy = TRUE,
+             nsim = 100,
+             beta = mean(Atlantic_meta$"summ50"),
+             model = vem,
+             newdata = Atlantic_meta_c
+)
+
+# convert spatialpointsdataframe back to a regular data.frame
+sim <- as.data.frame(sim) %>%
+  select(-Longitude, -Latitude)
+``` 
+
+```{r}
+rtf <- randomTF(spp = Atlantic, env = Atlantic_meta$summ50, fos = fos,
+               autosim = sim,
+                fun = MAT, col = "MAT.wm")
+
+rtf
+```
+
+
+
+## References
+Kucera, M., Weinelt, M., Kiefer, T., Pflaumann, U., Hayes, A., Weinelt, M., Chen, M.-T., Mix, A.C., Barrows, T.T., Cortijo, E., Duprat, J., Juggins, S., Waelbroeck, C. 2005. Reconstruction of the glacial Atlantic and Pacific sea-surface temperatures from assemblages of planktonic foraminifera: multi-technique approach based on geographically constrained calibration datasets. *Quaternary Science Reviews* 24, 951-998 [doi:10.1016/j.quascirev.2004.07.014](https://doi.org/10.1016/j.quascirev.2004.07.014).
+
+Telford, R.J., Birks, H.J.B. 2009. Evaluation of transfer functions in spatially structured environments. *Quaternary Science Reviews* 28, 1309-1316 [doi:10.1016/j.quascirev.2008.12.020](https://doi.org/10.1016/j.quascirev.2008.12.020).  
