@@ -48,6 +48,7 @@ MAT <- function(...) {
 
 
 ## 1. Spatially independent test set
+
 We use the foraminifera dataset by [Kucera et al. (2005)](https://doi.pangaea.de/10.1594/PANGAEA.227322). We split the dataset into two parts, a North Atlantic (NA) dataset (north of 3°N) and a South Atlantic (SA) data set (south of 3°S). We use the NA dataset as training set and the SA dataset as spatially independent test set. 
 
 ```{r, results='hide', warning=FALSE}
@@ -84,7 +85,7 @@ threshs <- c(0.01, 100, 200, 400, 600, 800, 1000, 1500)
 
 # h-block cross-validation of the NA foraminifera dataset for
 # different values of h
-res_h <- map_dfr(threshs, function(h) {
+res_h <- map(threshs, function(h) {
   mod <- MAT(N_Atlantic, N_Atlantic_meta$summ50, k = 5, lean = FALSE)
   mod <- crossval(mod, cv.method = "h-block", h.dist = geodist, h.cutoff = h)
 
@@ -93,7 +94,8 @@ res_h <- map_dfr(threshs, function(h) {
     RMSE = performance(mod)$crossval["N05", "RMSE"],
     R2 = performance(mod)$crossval["N05", "R2"]
   )
-})
+}) |> 
+  list_rbind()
 ```
 
 First, we estimate the performance of the North Atlantic (NA) foraminifera training set when applied to the spatially independent data set from the South Atlantic (SA), which in our case contains the samples used by Kucera et al. (2005) that are situated south of 3°S.
