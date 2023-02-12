@@ -36,7 +36,7 @@
 #' @importFrom ggplot2 ggplot aes geom_point geom_abline labs
 #' scale_colour_brewer
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom forcats fct_explicit_na fct_relevel
+#' @importFrom forcats fct_na_value_to_level fct_relevel
 #' @importFrom utils data
 #' @importFrom stats coef
 #' @export
@@ -66,7 +66,7 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
         breaks = c(0, n2_rare, Inf),
         labels = paste("N2", c("<=", ">"), n2_rare)
       ),
-      n2_cut = fct_explicit_na(.data$n2_cut, na_level = "-"),
+      n2_cut = fct_na_value_to_level(.data$n2_cut, level = "-"),
       n2_cut = fct_relevel(.data$n2_cut, "-")
     )
 
