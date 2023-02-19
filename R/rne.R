@@ -42,12 +42,22 @@
 #' data(arctic.pollen)
 #'
 #' # using just the first 20 sites so that code runs in an reasonable time
-#' arctic.dist <- rdist.earth(
-#'   x1 = arctic.env[1:20, c("Longitude", "Latitude")],
-#'   miles = FALSE
-#' )
+#' 
+#' # convert environmental data into an sf object
+#' arctic.env <- st_as_sf(
+#'   x = arctic.env,
+#'   coords = c("Longitude", "Latitude"),
+#'   crs = 4326
+#'   )
+#'   
+#'  # find great circle distances and remove units
+#' arctic.dist <- geodist <- st_distance(N_Atlantic_meta[1:20, ]) |>
+#'   units::set_units("km") |>
+#'   units::set_units(NULL)
+#'   
+#' # rne
 #' arctic.rne <- rne(
-#'   y = arctic.pollen[1:20, ], env = arctic.env$tjul[1:20],
+#'   y = arctic.pollen, env = arctic.env$tjul[1:20],
 #'   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
 #'   subsets = c(1, .5), nrep = 2, k = 5
 #' )
