@@ -64,6 +64,11 @@
 #'  argument.
 #'  \code{make_models} does not work with MAT.
 #'
+#' For some transfer function methods, including `WA`, the code can be made
+#' somewhat faster by coercing the modern and fossil species data to matrices
+#' (`spp <- as.matrix(spp)`), otherwise `WA` has to do this repeatedly.
+#' With `MAT`, this should not be done as it might cause an error.
+#'
 #' @return
 #' A list with components
 #' \itemize{
@@ -198,11 +203,6 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
       autosim <- autosim[analogues, , drop = FALSE]
     }
   }
-
-  # coerce spp and fos to matrix for speed
-  # fos <- as.matrix(fos)
-  # spp <- as.matrix(spp)
-
 
   # find inertia explained by first axis of unconstrained ordination
   if (!make_models) {
