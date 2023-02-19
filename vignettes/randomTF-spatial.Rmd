@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{H-block cross-validation}
+  %\VignetteIndexEntry{randomTF on spatially structured environments}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,20 +18,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-Spatial autocorrelation can severely bias transfer function performance estimates. 
-Telford and Birks (2009) suggested *h*-block cross-validation as a means of obtaining unbiased transfer function estimates.
-The problem is to estimate the optimal value of *h*: too small and the performance estimates are still over-optimistic, too large and the performance estimates are pessimistic. 
-Trachsel and Telford (2015) presented three methods to estimate *h*: 
-  
-  1. the performance of a transfer function on a spatially independent test set
-2. the autocorrelation in residuals of a weighted averaging transfer function 
-3. Comparing the variance explained of a transfer function trained on random environmental data with similar spatial structure as the environmental data of influence with the correlation between the simulated data and the environmental data of influence.    
+Spatial autocorrelation can severely bias transfer function performance estimates.
+If can also bias reconstruction significance tests, but I suspect the bias is not as severe.
 
+This vignette show how to use the `autosim` argument to `randomTF()` to use an autocorrelated simulated environmental variables, instead of the default uniformly distributed independent environmental variables, to make the reference distribution.
 
 ```{r, message=FALSE}
 library(palaeoSig)
-library(rioja)
-library(sp)
+library(sf)
 library(gstat)
 library(dplyr)
 library(tibble)
@@ -41,15 +35,16 @@ library(ggplot2)
 ```
 
 
-## 1. Spatially independent test set
+## Data
 
-We use the foraminifera dataset by [Kucera et al. (2005)](https://doi.pangaea.de/10.1594/PANGAEA.227322). We split the dataset into two parts, a North Atlantic (NA) dataset (north of 3°N) and a South Atlantic (SA) data set (south of 3°S). We use the NA dataset as training set and the SA dataset as spatially independent test set. 
+We use the foraminifera dataset by [Kucera et al. (2005)](https://doi.pangaea.de/10.1594/PANGAEA.227322). 
+We use some of the samples to represent a core.
 
 ```{r, results='hide', warning=FALSE}
 # load data
 data(Atlantic)
 meta <- c("Core", "Latitude", "Longitude", "summ50")
-Atlantic <- as.data.frame(Atlantic)
+Atlantic <- as.data.frame(Atlantic) #prevents rowname warnings
 
 #pseudocore as no fossil foram data in palaeoSig
 fosn <- Atlantic |> 
@@ -67,59 +62,90 @@ Atlantic <- Atlantic |> # species
 
 fos <- fosn |> 
   select(-one_of(meta))
-
-
-
-# calculating distances among the sampled points in the
-# North Atlantic foraminifera data set
-geodist <- fields::rdist.earth(
-  x1 = cbind(Atlantic_meta$Longitude, Atlantic_meta$Latitude),
-  miles = FALSE
-)
-
 ```
 
+## Variogram
 
-
+We need to convert the meta data into an `sf` object for further calculation.
 
 ```{r, message=FALSE, results = 'hide', fig.cap = "Figure 2: Semi-variogram fitted to detrended residuals of a weighted averaging model."}
 
-# copy meta data and add coordinate system
-Atlantic_meta_c <- Atlantic_meta
-coordinates(Atlantic_meta_c) <- ~ Longitude + Latitude
-proj4string(Atlantic_meta_c) <- CRS("+proj=longlat +datum=WGS84")
+Atlantic_meta <- st_as_sf(
+  x = Atlantic_meta, 
+  coords = c("Longitude", "Latitude"), 
+  crs = 4326)
 ```
 
 
-```{r, fig.cap = "Figure 3: Semi-variogram model (Matérn class) fitted to the North Atlantic summer sea temperature at 50 m depth."}
+Fitting the variogram is the hardest part.
+There are several types of variogram model available, e.g. exponential "Exp", spherical "Sph", gaussian "Gau" and Matérn "Mat". 
+These have different shapes. 
+It is important to find one that fits the data well.
+
+```{r, fig.cap = "Figure 1: Semi-variogram model (Matérn class) fitted to the Atlantic summer sea temperature at 50 m depth."}
 # Estimate the variogram model for the environmental variable of interest
-ve <- variogram(summ50 ~ 1, data = Atlantic_meta_c)
-vem <- fit.variogram(ve, vgm(40, "Mat", 5000, .1, kappa = 1.8))
+ve <- variogram(summ50 ~ 1, data = Atlantic_meta)
+vem <- fit.variogram(
+  object = ve,
+  model = vgm(40, "Mat", 5000, .1, kappa = 1.8)
+)
 plot(ve, vem)
+vem
+```
+
+## Kriging
+
+Now we can use `gstat::krige` to do Gaussian unconditional simulation and make simulated environmental fields with the same spatial structure as the observed variable.
+This step is quite slow with large datasets. 
+
+```{r}
+#| label: kriging
 
 # Simulating environmental variables
 sim <- krige(sim ~ 1,
-             locations = Atlantic_meta_c,
+             locations = Atlantic_meta,
              dummy = TRUE,
              nsim = 100,
              beta = mean(Atlantic_meta$"summ50"),
              model = vem,
-             newdata = Atlantic_meta_c
+             newdata = Atlantic_meta
 )
 
-# convert spatialpointsdataframe back to a regular data.frame
-sim <- as.data.frame(sim) %>%
-  select(-Longitude, -Latitude)
-``` 
-
-```{r}
-rtf <- randomTF(spp = Atlantic, env = Atlantic_meta$summ50, fos = fos,
-               autosim = sim,
-                fun = MAT, col = "MAT.wm")
-
-rtf
+# convert sf back to a regular data.frame
+sim <- sim |> st_drop_geometry() 
 ```
 
+Now we can run `randomTF` using the simulated environmental variables.
+
+```{r}
+#| label: randomTF-auto
+#| fig-cap: "Figure 2. Result of randomTF with an autocorrelated null model."
+
+rtf_auto <- randomTF(
+  spp = Atlantic,
+  env = Atlantic_meta$summ50,
+  fos = fos,
+  autosim = sim,
+  fun = MAT,
+  col = "MAT.wm"
+) 
+
+plot(rtf_auto)
+```
+
+```{r}
+#| label: randomTF-independent
+#| fig-cap: Figure 3. Result of randomTF with a spatially independent null model.
+rtf_ind <- randomTF(
+  spp = Atlantic,
+  env = Atlantic_meta$summ50,
+  fos = fos,
+  fun = MAT,
+  col = "MAT.wm"
+)
+
+plot(rtf_ind)
+```
 
 
 ## References
