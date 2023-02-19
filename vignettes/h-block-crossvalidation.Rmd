@@ -77,19 +77,20 @@ S_Atlantic <- S_Atlantic |>
 ## convert N_Atlatic_meta to an sf object
 
 N_Atlantic_meta <- st_as_sf(
-  x = N_Atlantic_meta, 
-  coords = c("Longitude", "Latitude"), 
-  crs = 4326)
+  x = N_Atlantic_meta,
+  coords = c("Longitude", "Latitude"),
+  crs = 4326
+)
 
 
 # calculating distances among the sampled points in the
 # North Atlantic foraminifera data set
-geodist <- st_distance(N_Atlantic_meta) |> 
-  units::set_units("km") |> 
+geodist <- st_distance(N_Atlantic_meta) |>
+  units::set_units("km") |>
   units::set_units(NULL)
 
 # values of h for which h-block cross-validation is calculated
-threshs <- c(0.01, 100, 200, 400, 600, 800, 1000, 1500) 
+threshs <- c(0.01, 100, 200, 400, 600, 800, 1000, 1500)
 
 # h-block cross-validation of the NA foraminifera dataset for
 # different values of h
@@ -102,7 +103,7 @@ res_h <- map(threshs, function(h) {
     RMSE = performance(mod)$crossval["N05", "RMSE"],
     R2 = performance(mod)$crossval["N05", "R2"]
   )
-}) |> 
+}) |>
   list_rbind()
 ```
 
@@ -192,13 +193,12 @@ sim <- krige(sim ~ 1,
 )
 
 # convert back to a regular data.frame
-sim <- sim |> 
+sim <- sim |>
   st_drop_geometry()
 ``` 
 Running a MAT models for each simulation at each value of *h* would be very slow, but since the same analogues would be chosen for any environmental variable, we can make a much faster version of MAT.
 
 ```{r, message = FALSE, warning= FALSE,results='hide', fig.cap="Figure 4: Histogram of squared correlation coefficients between simulated variables and the environmental variable of interest."}
-
 # Function for h-block cross-validating several simulations at a time
 mat_h1 <- function(y, x, noanalogues, geodist, thresh) {
   if (!inherits(y, "dist")) {
@@ -238,7 +238,6 @@ so_squares <- apply(simhr, 2, function(x) {
 
 
 ```{r,message = FALSE, warning= FALSE,results='hide', fig.cap = "Figure 5: Scatterplot of squared correlation coefficients between simulated variables and the environmental variable of interest and transfer function r^2^."}
-
 simhr |>
   as.data.frame() |>
   set_names(threshs) |>

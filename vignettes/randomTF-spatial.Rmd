@@ -44,15 +44,15 @@ We use some of the samples to represent a core.
 # load data
 data(Atlantic)
 meta <- c("Core", "Latitude", "Longitude", "summ50")
-Atlantic <- as.data.frame(Atlantic) #prevents rowname warnings
+Atlantic <- as.data.frame(Atlantic) # prevents rowname warnings
 
-#pseudocore as no fossil foram data in palaeoSig
-fosn <- Atlantic |> 
-  filter(between(summ50, 5, 10)) |> 
+# pseudocore as no fossil foram data in palaeoSig
+fosn <- Atlantic |>
+  filter(between(summ50, 5, 10)) |>
   sample_n(size = 20)
 
 # remaining samples as training set
-Atlantic <- Atlantic |> 
+Atlantic <- Atlantic |>
   anti_join(fosn, by = "Core")
 
 Atlantic_meta <- Atlantic |>
@@ -60,7 +60,7 @@ Atlantic_meta <- Atlantic |>
 Atlantic <- Atlantic |> # species
   select(-one_of(meta))
 
-fos <- fosn |> 
+fos <- fosn |>
   select(-one_of(meta))
 ```
 
@@ -69,11 +69,11 @@ fos <- fosn |>
 We need to convert the meta data into an `sf` object for further calculation.
 
 ```{r, message=FALSE, results = 'hide', fig.cap = "Figure 2: Semi-variogram fitted to detrended residuals of a weighted averaging model."}
-
 Atlantic_meta <- st_as_sf(
-  x = Atlantic_meta, 
-  coords = c("Longitude", "Latitude"), 
-  crs = 4326)
+  x = Atlantic_meta,
+  coords = c("Longitude", "Latitude"),
+  crs = 4326
+)
 ```
 
 
@@ -103,16 +103,16 @@ This step is quite slow with large datasets.
 
 # Simulating environmental variables
 sim <- krige(sim ~ 1,
-             locations = Atlantic_meta,
-             dummy = TRUE,
-             nsim = 100,
-             beta = mean(Atlantic_meta$"summ50"),
-             model = vem,
-             newdata = Atlantic_meta
+  locations = Atlantic_meta,
+  dummy = TRUE,
+  nsim = 100,
+  beta = mean(Atlantic_meta$"summ50"),
+  model = vem,
+  newdata = Atlantic_meta
 )
 
 # convert sf back to a regular data.frame
-sim <- sim |> st_drop_geometry() 
+sim <- sim |> st_drop_geometry()
 ```
 
 Now we can run `randomTF` using the simulated environmental variables.
@@ -128,7 +128,7 @@ rtf_auto <- randomTF(
   autosim = sim,
   fun = MAT,
   col = "MAT.wm"
-) 
+)
 
 plot(rtf_auto)
 ```

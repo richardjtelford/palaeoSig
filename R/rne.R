@@ -26,7 +26,7 @@
 #' Returns an RNE object, list with two components
 #' \itemize{
 #'  \item{random }{Performance with random deletion.}
-#'  \item{neighbour }{Performance with deletion by neighbourhood, 
+#'  \item{neighbour }{Performance with deletion by neighbourhood,
 #'  or environment}
 #'  }
 #' @references Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer
@@ -68,7 +68,7 @@ rne <- function(y, env, geodist, fun, neighbours,
   }
   rne <- list()
   nr <- nrow(y)
-  
+
   # deletion at random
   rne$random <- t(sapply(subsets, function(ss) {
     print(paste("random subset = ", ss))
@@ -98,7 +98,7 @@ rne <- function(y, env, geodist, fun, neighbours,
     c(prop = ss, r2 = r2)
   }))
   print(rne$random)
-  
+
   # deletion from geographic/environmental neighbourhood
   rne$neighbour <- lapply(neighbours, function(neighbour) {
     print(paste("neighbourhood = ", neighbour, "km"))
@@ -123,7 +123,7 @@ rne <- function(y, env, geodist, fun, neighbours,
     } else {
       hbr <- apply(hb, 1, cor, env)^2
     }
-    
+
     # delete by environmental distance
     eb <- sapply(seq_len(nr), function(n) {
       y1 <- y[-n, ]

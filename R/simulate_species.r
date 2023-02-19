@@ -165,7 +165,7 @@ make.abundances <- function(env, param) {
   env <- as.matrix(env)
   # error checking
   stopifnot(ncol(env) == nrow(param))
-  
+
   param <- as.data.frame(param)
   with(param, {
     # calculate b and d

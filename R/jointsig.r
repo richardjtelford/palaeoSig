@@ -50,7 +50,7 @@
 #'  \item{sig}{ The p-value of each reconstruction.}
 #' }
 #'
-#' @references Unpublished method - use with caution. Can give spurious results 
+#' @references Unpublished method - use with caution. Can give spurious results
 #' with weighted averaging.
 #' @author Richard Telford \email{richard.telford@bio.uib.no}
 #' @seealso \code{\link{randomTF}},\code{\link{obs.cor}}
