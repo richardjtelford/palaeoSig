@@ -15,7 +15,6 @@ rne(
   fun,
   neighbours,
   subsets = c(1, 0.75, 0.5, 0.25, 0.1),
-  nrep = 10,
   ...
 )
 }
@@ -40,8 +39,6 @@ component is calculated}
 \item{neighbours}{Neighbourhood radii}
 
 \item{subsets}{Proportion of sites to retain in random deletion}
-
-\item{nrep}{integer, number of times to delete sites at random}
 }
 \value{
 Returns an RNE object, list with two components
@@ -68,20 +65,29 @@ neighbourhood zone, or by deleting environmentally close sites.
 
 }}
 \examples{
-require(fields)
 require(rioja)
 data(arctic.env)
 data(arctic.pollen)
 
 # using just the first 20 sites so that code runs in an reasonable time
-arctic.dist <- rdist.earth(
-  x1 = arctic.env[1:20, c("Longitude", "Latitude")],
-  miles = FALSE
-)
+v 
+# convert environmental data into an sf object
+arctic.env <- st_as_sf(
+  x = arctic.env,
+  coords = c("Longitude", "Latitude"),
+  crs = 4326
+  )
+  
+ # find great circle distances and remove units
+arctic.dist <- geodist <- st_distance(N_Atlantic_meta[1:20, ]) |>
+  units::set_units("km") |>
+  units::set_units(NULL)
+  
+# rne
 arctic.rne <- rne(
-  y = arctic.pollen[1:20, ], env = arctic.env$tjul[1:20],
+  y = arctic.pollen, env = arctic.env$tjul[1:20],
   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
-  subsets = c(1, .5), nrep = 2, k = 5
+  subsets = c(1, .5), k = 5
 )
 
 plot(arctic.rne)

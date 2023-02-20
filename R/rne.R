@@ -16,7 +16,6 @@
 #' @param   neighbours  Neighbourhood radii
 #' @param   subsets  Proportion of sites to retain in random deletion
 #' @param   ... Arguments passed to fun
-#' @param   nrep integer, number of times to delete sites at random
 
 #' @details Finds the leave-one-out transfer function performance if sites are
 #'  deleted at random (repeated 10 times to reduce variance in results), from a
@@ -36,130 +35,146 @@
 #' @author Richard Telford \email{Richard.Telford@bio.uib.no}
 
 #' @examples
-#' require(fields)
 #' require(rioja)
 #' data(arctic.env)
 #' data(arctic.pollen)
 #'
 #' # using just the first 20 sites so that code runs in an reasonable time
-#' 
+#' v
 #' # convert environmental data into an sf object
 #' arctic.env <- st_as_sf(
 #'   x = arctic.env,
 #'   coords = c("Longitude", "Latitude"),
 #'   crs = 4326
-#'   )
-#'   
-#'  # find great circle distances and remove units
+#' )
+#'
+#' # find great circle distances and remove units
 #' arctic.dist <- geodist <- st_distance(N_Atlantic_meta[1:20, ]) |>
 #'   units::set_units("km") |>
 #'   units::set_units(NULL)
-#'   
+#'
 #' # rne
 #' arctic.rne <- rne(
 #'   y = arctic.pollen, env = arctic.env$tjul[1:20],
 #'   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
-#'   subsets = c(1, .5), nrep = 2, k = 5
+#'   subsets = c(1, .5), k = 5
 #' )
 #'
 #' plot(arctic.rne)
 
 #' @keywords multivariate
 
-
 #' @importFrom stats cor predict
 #' @export
 
 rne <- function(y, env, geodist, fun, neighbours,
-                subsets = c(1, 0.75, 0.5, 0.25, 0.1), nrep = 10, ...) {
+                subsets = c(1, 0.75, 0.5, 0.25, 0.1), ...) {
   dots <- list(...)
   if (inherits(geodist, "dist")) {
     geodist <- as.matrix(geodist)
   }
+  # ensure diagonal of geographic distances is zero
+  diag(geodist) <- 0
+
   rne <- list()
   nr <- nrow(y)
 
+  # fit model
+  mod <- do.call(
+    "fun",
+    c(list(y = y, x = env), dots, lean = FALSE)
+  )
+
   # deletion at random
+
+
   rne$random <- t(sapply(subsets, function(ss) {
-    print(paste("random subset = ", ss))
-    r2 <- replicate(nrep, {
-      est <- sapply(seq_len(nr), function(n) {
-        retain <- sample(seq_len(nr - 1), size = round((nr - 1) * (ss)))
-        y2 <- y[-n, ][retain, ]
-        keepcols <- colSums(y2) != 0
-        mod <- do.call(
-          "fun",
-          c(list(y = y2[, keepcols], x = env[-n][retain]), dots)
-        )
-        predict(mod, y[n, keepcols, drop = FALSE])$fit
-      })
-      if (is.null(dim(est))) {
-        cor(est, env)^2
-      } else {
-        apply(est, 1, cor, env)^2
-      }
+    message(paste("random subset = ", ss))
+
+    # make pseudo-distance matrix, 1 to keep, 0, to drop
+    rdist <- lapply(seq_len(nr), function(n) {
+      d <- rep(0, times = nr)
+      retain <- sample(seq_len(nr)[-n], size = round((nr - 1) * (ss)))
+      d[retain] <- 1
+      d
     })
-    if (is.null(dim(r2))) {
-      r2 <- mean(r2) # average across replicates
-    } else {
-      r2 <- rowMeans(r2) # average across replicates
+    rdist <- do.call(what = "rbind", args = rdist)
+
+    # cross validate
+    mod_random_cv <- crossval(mod,
+      cv.method = "h-block",
+      h.cutoff = 0.5,
+      h.dist = rdist
+    )
+    mod_random_r2 <- performance(mod_random_cv)$crossval[, "R2"]
+
+    # extract only required k for MAT models
+    if (identical(fun, MAT)) {
+      # pick max k
+      k <- mod$k
+      mod_random_r2 <- mod_random_r2[c(k, k * 2)]
     }
-    print(r2)
-    c(prop = ss, r2 = r2)
+
+    c(prop = ss, r2 = mod_random_r2)
   }))
-  print(rne$random)
+  message(rne$random)
 
   # deletion from geographic/environmental neighbourhood
   rne$neighbour <- lapply(neighbours, function(neighbour) {
-    print(paste("neighbourhood = ", neighbour, "km"))
+    message(paste("neighbourhood = ", neighbour, "km"))
     en <- sapply(seq_len(nr), function(n) {
-      sum(geodist[n, ] >= neighbour)
+      sum(geodist[n, ] > neighbour)
     })
     effn <- (nr - mean(en)) / (nr - 1)
-    hb <- sapply(seq_len(nr), function(n) {
-      y1 <- y[-n, ]
-      env1 <- env[-n]
-      exneigh <- geodist[n, -n] >= neighbour
-      y2 <- y1[exneigh, ]
-      keepcols <- colSums(y2) > 0
-      mod <- do.call(
-        "fun",
-        c(list(y = y2[, keepcols], x = env1[exneigh]), dots)
-      )
-      predict(mod, y[n, keepcols, drop = FALSE])$fit
-    })
-    if (is.null(dim(hb))) {
-      hbr <- cor(hb, env)^2
-    } else {
-      hbr <- apply(hb, 1, cor, env)^2
+
+    # cross validate
+    mod_space_cv <- crossval(mod,
+      cv.method = "h-block",
+      h.cutoff = neighbour,
+      h.dist = geodist
+    )
+    mod_space_r2 <- performance(mod_space_cv)$crossval[, "R2"]
+
+    # extract only required k for MAT models
+    if (identical(fun, MAT)) {
+      # pick max k
+      k <- mod$k
+      mod_space_r2 <- mod_space_r2[c(k, k * 2)]
     }
 
+
     # delete by environmental distance
-    eb <- sapply(seq_len(nr), function(n) {
-      y1 <- y[-n, ]
-      env1 <- env[-n]
-      neigh <- which(
-        rank(-abs(env1 - env[n]), ties.method = "random") <= (en[n])
-      )
-      y2 <- y1[neigh, ]
-      keepcols <- colSums(y2) != 0
-      mod <- do.call(
-        "fun",
-        c(list(y = y2[, keepcols], x = env1[neigh]), dots)
-      )
-      predict(mod, y[n, keepcols, drop = FALSE])$fit
+    # make pseudo distance matrix  - 1 to include in model, 0 to exclude
+
+    edist <- as.matrix(dist(env))
+    edist <- lapply(seq_len(nr), function(n) {
+      e <- edist[n, ]
+      # set actual to -1 so never matched
+      e[n] <- -1
+      as.numeric(rank(-e, ties.method = "random") <= (en[n]))
     })
-    if (is.null(dim(eb))) {
-      ebr <- cor(eb, env)^2
-    } else {
-      ebr <- apply(eb, 1, cor, env)^2
+    edist <- do.call(what = "rbind", args = edist)
+
+    # cross validate
+    mod_environment_cv <- crossval(mod,
+      cv.method = "h-block",
+      h.cutoff = 0.5,
+      h.dist = edist
+    )
+    mod_environment_r2 <- performance(mod_environment_cv)$crossval[, "R2"]
+
+    # extract only required k for MAT models
+    if (identical(fun, MAT)) {
+      # pick max k
+      k <- mod$k
+      mod_environment_r2 <- mod_environment_r2[c(k, k * 2)]
     }
 
     list(
       neighbour = neighbour,
       effn = effn,
-      hb.r2 = hbr,
-      eb.r2 = ebr
+      hb.r2 = mod_space_r2,
+      eb.r2 = mod_environment_r2
     )
   })
 
