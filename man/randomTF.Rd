@@ -137,6 +137,11 @@ This can be done with \code{make_models = TRUE} and then running
 \code{randomTF} again giving the resultant models to the \code{models}
 argument.
 \code{make_models} does not work with MAT.
+
+For some transfer function methods, including \code{WA}, the code can be made
+somewhat faster by coercing the modern and fossil species data to matrices
+(\code{spp <- as.matrix(spp)}), otherwise \code{WA} has to do this repeatedly.
+With \code{MAT}, this should not be done as it might cause an error.
 }
 \section{Functions}{
 \itemize{
