@@ -39,8 +39,8 @@
 #' data(arctic.env)
 #' data(arctic.pollen)
 #'
-#' # using just the first 20 sites so that code runs in an reasonable time
-#' v
+#' # using just the first 100 sites so that code runs quickly (about 15 seconds for all 828 sites)
+#' 
 #' # convert environmental data into an sf object
 #' arctic.env <- st_as_sf(
 #'   x = arctic.env,
@@ -49,13 +49,13 @@
 #' )
 #'
 #' # find great circle distances and remove units
-#' arctic.dist <- geodist <- st_distance(N_Atlantic_meta[1:20, ]) |>
+#' arctic.dist <- geodist <- st_distance(arctic.env[1:100, ]) |>
 #'   units::set_units("km") |>
 #'   units::set_units(NULL)
 #'
 #' # rne
 #' arctic.rne <- rne(
-#'   y = arctic.pollen, env = arctic.env$tjul[1:20],
+#'   y = arctic.pollen[1:100, ], env = arctic.env$tjul[1:100],
 #'   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
 #'   subsets = c(1, .5), k = 5
 #' )
