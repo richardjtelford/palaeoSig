@@ -28,8 +28,8 @@
 #' coverage_plot(spp = SWAP$spec, fos = RLGH$spec, n2_rare = 5, label = 0)
 #'
 #' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join
-#' summarise_all
-#' @importFrom tidyr spread gather replace_na
+#' summarise
+#' @importFrom tidyr pivot_longer pivot_wider replace_na
 #' @importFrom tibble enframe
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
@@ -55,10 +55,10 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
 
   # find max and join to N2
   max_n2 <- mod_fos %>%
-    group_by(data) %>%
-    summarise_all(max) %>%
-    gather(key = "Taxon", value = "max", -.data$data) %>%
-    spread(key = .data$data, value = .data$max) %>%
+    pivot_longer(-data, names_to = "Taxon", values_to = "value") %>%
+    group_by(data, Taxon) %>%
+    summarise(max = max(value)) %>%
+    pivot_wider(names_from = .data$data, values_from = .data$max) %>%
     replace_na(list(spp = 0, fos = 0)) %>%
     inner_join(n2, by = "Taxon") %>%
     mutate(
