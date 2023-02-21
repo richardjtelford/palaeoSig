@@ -18,8 +18,13 @@
 #' @param   ... Arguments passed to fun
 
 #' @details Finds the leave-one-out transfer function performance if sites are
-#'  deleted at random (repeated 10 times to reduce variance in results), from a
-#'   neighbourhood zone, or by deleting environmentally close sites.
+#' deleted at random, from a
+#' neighbourhood zone, or by deleting environmentally close sites.
+#'
+#' Prior to version 2.1, this function would repeat the random removal 10 times
+#' to reduce variance in results.
+#' This is no longer done as the variance is small for large training sets,
+#' it took a long time, and treats one treatment of the data differently.
 
 #' @return
 #' Returns an RNE object, list with two components
@@ -40,7 +45,7 @@
 #' data(arctic.pollen)
 #'
 #' # using just the first 100 sites so that code runs quickly (about 15 seconds for all 828 sites)
-#' 
+#'
 #' # convert environmental data into an sf object
 #' arctic.env <- st_as_sf(
 #'   x = arctic.env,
@@ -65,6 +70,7 @@
 #' @keywords multivariate
 
 #' @importFrom stats cor predict
+#' @importFrom rioja crossval performance
 #' @export
 
 rne <- function(y, env, geodist, fun, neighbours,

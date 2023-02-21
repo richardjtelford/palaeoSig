@@ -56,8 +56,13 @@ autocorrelation on the transfer function model.
 }
 \details{
 Finds the leave-one-out transfer function performance if sites are
-deleted at random (repeated 10 times to reduce variance in results), from a
+deleted at random, from a
 neighbourhood zone, or by deleting environmentally close sites.
+
+Prior to version 2.1, this function would repeat the random removal 10 times
+to reduce variance in results.
+This is no longer done as the variance is small for large training sets,
+it took a long time, and treats one treatment of the data differently.
 }
 \section{Functions}{
 \itemize{
@@ -69,23 +74,23 @@ require(rioja)
 data(arctic.env)
 data(arctic.pollen)
 
-# using just the first 20 sites so that code runs in an reasonable time
-v 
+# using just the first 100 sites so that code runs quickly (about 15 seconds for all 828 sites)
+
 # convert environmental data into an sf object
 arctic.env <- st_as_sf(
   x = arctic.env,
   coords = c("Longitude", "Latitude"),
   crs = 4326
-  )
-  
- # find great circle distances and remove units
-arctic.dist <- geodist <- st_distance(N_Atlantic_meta[1:20, ]) |>
+)
+
+# find great circle distances and remove units
+arctic.dist <- geodist <- st_distance(arctic.env[1:100, ]) |>
   units::set_units("km") |>
   units::set_units(NULL)
-  
+
 # rne
 arctic.rne <- rne(
-  y = arctic.pollen, env = arctic.env$tjul[1:20],
+  y = arctic.pollen[1:100, ], env = arctic.env$tjul[1:100],
   geodist = arctic.dist, fun = MAT, neighbours = c(0, 200),
   subsets = c(1, .5), k = 5
 )
