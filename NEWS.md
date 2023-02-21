@@ -1,3 +1,26 @@
+# palaeoSig 2.1
+
+## Vignettes
+
+New vignette showing how to use a red-noise null model for `randomTF()`.
+
+Changed h-block cross-validation to use `sf` package for geographic data (rather than `sp`).
+
+## Rewrites
+
+`rne()` is now several orders of magnitude faster.
+
+## bug fixes
+
+In `randomTF()`, species and fossil data were automatically transformed to matrices so this was done once, not in every iteration.
+This sometimes failed with MAT. 
+Now this step is recommended in the help file.
+
+Sometimes great-circle distances from a point to itself, calculated with `fields::rdist.earth()`, are non-zero due to rounding errors. 
+This lead to them not being excluded in the h-block resampling in `rne()` when the threshold distance was zero. 
+Now the diagonal of the distance matrix is set to zero, removing this problem.
+
+
 # palaeoSig 2.0-8
 
 ## Bug fix
