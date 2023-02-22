@@ -56,8 +56,8 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
   # find max and join to N2
   max_n2 <- mod_fos %>%
     pivot_longer(-data, names_to = "Taxon", values_to = "value") %>%
-    group_by(data, Taxon) %>%
-    summarise(max = max(value)) %>%
+    group_by(.data$data, .data$Taxon) %>%
+    summarise(max = max(.data$value)) %>%
     pivot_wider(names_from = .data$data, values_from = .data$max) %>%
     replace_na(list(spp = 0, fos = 0)) %>%
     inner_join(n2, by = "Taxon") %>%
