@@ -71,6 +71,7 @@ it took a long time, and treats one treatment of the data differently.
 }}
 \examples{
 require(rioja)
+require(sf)
 data(arctic.env)
 data(arctic.pollen)
 
@@ -84,7 +85,7 @@ arctic.env <- st_as_sf(
 )
 
 # find great circle distances and remove units
-arctic.dist <- geodist <- st_distance(arctic.env[1:100, ]) |>
+arctic.dist <- st_distance(arctic.env[1:100, ]) |>
   units::set_units("km") |>
   units::set_units(NULL)
 
