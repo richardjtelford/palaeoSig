@@ -2,9 +2,6 @@
 
 There were no ERRORs or WARNINGs or NOTEs
 
-This release fixed the problems that caused the CRAN check error
-
-New email address: was Richard.Telford@bio.uib.no, now Richard.Telford@uib.no
 
 
 ## Downstream dependencies
