@@ -1,14 +1,22 @@
-if(!exists("meta") || is.null(meta)) meta <- packageDescription("palaeoSig")
-
 citHeader("To cite package 'palaeoSig' in publications use:")
 
-citEntry(entry="Manual",
-  title ="palaeoSig: Significance Tests of Quantitative Palaeoenvironmental Reconstructions",
-	author = personList(as.person("Richard Telford"), as.person("Mathias Trachsel")),
+bibentry(
+  bibtype = "Manual",
+  title = "palaeoSig: Significance Tests of Quantitative Palaeoenvironmental Reconstructions",
+	author = c(
+	  person(
+	    given = c("Richard", "James"),
+	    family = "Telford",
+	    email = "Richard.Telford@uib.no", 
+	    role = c("aut", "cre")
+	  ), 
+	  person(
+	    given = "Mathias",
+	    family = "Trachsel",
+	    role = "aut"
+	  )
+	),
 	year = 2023,
-	note = paste("R package version", meta$Version),
-	url = "https://cran.r-project.org/package=palaeoSig",
-	textVersion =	paste("Telford, R.J. and Trachsel, M. (2023) ", 
-  "palaeoSig: Significance Tests of Quantitative Palaeoenvironmental Reconstructions, R package version (",
-	meta$Version, ")."," (http://cran.r-project.org/package=palaeoSig).", sep="")
+	note = paste("R package version", packageDescription("palaeoSig")$Version),
+	url = "https://cran.r-project.org/package=palaeoSig"
 )
