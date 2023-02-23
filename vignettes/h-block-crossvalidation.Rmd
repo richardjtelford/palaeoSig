@@ -109,7 +109,7 @@ res_h <- map(threshs, function(h) {
 
 First, we estimate the performance of the North Atlantic (NA) foraminifera training set when applied to the spatially independent data set from the South Atlantic (SA), which in our case contains the samples used by Kucera et al. (2005) that are situated south of 3°S.
 
-```{r, warning = FALSE, results = 'hide', tidy = TRUE}
+```{r, warning = FALSE, results = 'hide'}
 # Leave-one-out cross-validated RMSEP using MAT with k = 5
 round(res_h[1, "RMSE"], 2)
 # Predicting the South Atlantic test set

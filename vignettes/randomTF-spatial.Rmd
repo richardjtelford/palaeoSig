@@ -23,8 +23,11 @@ If can also bias reconstruction significance tests, but I suspect the bias is no
 
 This vignette show how to use the `autosim` argument to `randomTF()` to use an autocorrelated simulated environmental variables, instead of the default uniformly distributed independent environmental variables, to make the reference distribution.
 
-```{r, message=FALSE}
+```{r}
+#| label: load-packages
+#| message: false
 library(palaeoSig)
+library(rioja)
 library(sf)
 library(gstat)
 library(dplyr)
