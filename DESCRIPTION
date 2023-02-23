@@ -18,7 +18,8 @@ Suggests:
     rmarkdown,
     gstat,
     sf,
-    analogue
+    analogue,
+    testthat (>= 3.0.0)
 Imports: TeachingDemos, rioja, mgcv, MASS,
     tibble,
     dplyr,
@@ -47,3 +48,4 @@ Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Encoding: UTF-8
 Language: en-GB
+Config/testthat/edition: 3
