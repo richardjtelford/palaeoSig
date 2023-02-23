@@ -1,4 +1,4 @@
-# palaeoSig 2.1
+# palaeoSig 2.1-0
 
 ## Vignettes
 
