@@ -23,7 +23,7 @@ functions trained on random data."><!-- mathjax --><script src="https://cdnjs.cl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">palaeoSig</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1-0</span>
       </span>
     </div>
 
@@ -39,6 +39,9 @@ functions trained on random data."><!-- mathjax --><script src="https://cdnjs.cl
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/h-block-crossvalidation.html">H-block cross-validation</a>
+    </li>
+    <li>
+      <a href="../articles/randomTF-spatial.html">randomTF on spatially structured environments</a>
     </li>
   </ul></li>
 <li>
@@ -126,7 +129,7 @@ Additional arguments to <code>fun</code> can be passed with <code>...</code></p>
 <dt>col</dt>
 <dd><p>Some transfer functions return more than one column of results,
 for example with different <code><a href="https://rdrr.io/pkg/rioja/man/WAPLS.html" class="external-link">WAPLS</a></code> components.
-<code>col</code> selects which column to use.
+<code>col</code> selects which column of the reconstructions to use.
 See the relevant transfer function method help file.</p></dd>
 
 
@@ -239,6 +242,10 @@ This can be done with <code>make_models = TRUE</code> and then running
 <code>randomTF</code> again giving the resultant models to the <code>models</code>
 argument.
 <code>make_models</code> does not work with MAT.</p>
+<p>For some transfer function methods, including <code>WA</code>, the code can be made
+somewhat faster by coercing the modern and fossil species data to matrices
+(<code>spp &lt;- as.matrix(spp)</code>), otherwise <code>WA</code> has to do this repeatedly.
+With <code>MAT</code>, this should not be done as it might cause an error.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
@@ -279,7 +286,7 @@ inferred from biotic assemblages. <em>Quaternary Science Reviews</em>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RLGH</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rlghr</span> <span class="op">&lt;-</span> <span class="fu">randomTF</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  spp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">SWAP</span><span class="op">$</span><span class="va">spec</span><span class="op">)</span>, env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>pH <span class="op">=</span> <span class="va">SWAP</span><span class="op">$</span><span class="va">pH</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  fos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">RLGH</span><span class="op">$</span><span class="va">spec</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">49</span>, fun <span class="op">=</span> <span class="va">WA</span>, col <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  fos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">RLGH</span><span class="op">$</span><span class="va">spec</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">49</span>, fun <span class="op">=</span> <span class="va">WA</span>, col <span class="op">=</span> <span class="st">"WA.inv"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rlghr</span><span class="op">$</span><span class="va">sig</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   pH </span>
@@ -304,7 +311,7 @@ inferred from biotic assemblages. <em>Quaternary Science Reviews</em>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

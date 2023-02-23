@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">palaeoSig</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1-0</span>
       </span>
     </div>
 
@@ -33,6 +33,9 @@
   </a>
   <ul class="dropdown-menu" role="menu"><li>
       <a href="../articles/h-block-crossvalidation.html">H-block cross-validation</a>
+    </li>
+    <li>
+      <a href="../articles/randomTF-spatial.html">randomTF on spatially structured environments</a>
     </li>
   </ul></li>
 <li>
@@ -58,7 +61,31 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.0-7" id="palaeosig-20-7">palaeoSig 2.0-7<a class="anchor" aria-label="anchor" href="#palaeosig-20-7"></a></h2>
+<h2 class="page-header" data-toc-text="2.1" id="palaeosig-21">palaeoSig 2.1<a class="anchor" aria-label="anchor" href="#palaeosig-21"></a></h2>
+<div class="section level3">
+<h3 id="vignettes-2-1">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes-2-1"></a></h3>
+<p>New vignette showing how to use a red-noise null model for <code><a href="../reference/randomTF.html">randomTF()</a></code>.</p>
+<p>Changed h-block cross-validation to use <code>sf</code> package for geographic data (rather than <code>sp</code>).</p>
+</div>
+<div class="section level3">
+<h3 id="rewrites-2-1">Rewrites<a class="anchor" aria-label="anchor" href="#rewrites-2-1"></a></h3>
+<p><code><a href="../reference/rne.html">rne()</a></code> is now several orders of magnitude faster.</p>
+</div>
+<div class="section level3">
+<h3 id="bug-fixes-2-1">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1"></a></h3>
+<p>In <code><a href="../reference/randomTF.html">randomTF()</a></code>, species and fossil data were automatically transformed to matrices so this was done once, not in every iteration. This sometimes failed with MAT. Now this step is recommended in the help file.</p>
+<p>Sometimes great-circle distances from a point to itself, calculated with <code><a href="https://rdrr.io/pkg/fields/man/rdist.earth.html" class="external-link">fields::rdist.earth()</a></code>, are non-zero due to rounding errors. This lead to them not being excluded in the h-block resampling in <code><a href="../reference/rne.html">rne()</a></code> when the threshold distance was zero. Now the diagonal of the distance matrix is set to zero, removing this problem.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0-8" id="palaeosig-20-8">palaeoSig 2.0-8<a class="anchor" aria-label="anchor" href="#palaeosig-20-8"></a></h2>
+<div class="section level3">
+<h3 id="bug-fix-2-0-8">Bug fix<a class="anchor" aria-label="anchor" href="#bug-fix-2-0-8"></a></h3>
+<p>In randomTF(), if argument <code>col</code> was missing, all columns of the reconstruction would be used, because lazy evaluation was not done before use in a formula. Code now check <code>col</code> is set when needed.</p>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0-7" id="palaeosig-20-7">palaeoSig 2.0-7<small>2023-01-26</small><a class="anchor" aria-label="anchor" href="#palaeosig-20-7"></a></h2>
 <p>Maintenance release to fix CRAN check error.</p>
 </div>
     <div class="section level2">
@@ -239,7 +266,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

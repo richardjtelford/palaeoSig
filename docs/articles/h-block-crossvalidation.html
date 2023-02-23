@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">palaeoSig</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0-7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1-0</span>
       </span>
     </div>
 
@@ -51,6 +51,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/h-block-crossvalidation.html">H-block cross-validation</a>
+    </li>
+    <li>
+      <a href="../articles/randomTF-spatial.html">randomTF on spatially structured environments</a>
     </li>
   </ul>
 </li>
@@ -82,7 +85,7 @@
                         <h4 data-toc-skip class="author">Mathias
 Trachsel and Richard J Telford</h4>
             
-            <h4 data-toc-skip class="date">2023-01-25</h4>
+            <h4 data-toc-skip class="date">2023-02-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/richardjtelford/palaeoSig/blob/HEAD/vignettes/h-block-crossvalidation.Rmd" class="external-link"><code>vignettes/h-block-crossvalidation.Rmd</code></a></small>
       <div class="hidden name"><code>h-block-crossvalidation.Rmd</code></div>
@@ -112,13 +115,14 @@ simulated data and the environmental data of influence.</li>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/richardjtelford/palaeoSig" class="external-link">palaeoSig</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.staff.ncl.ac.uk/stephen.juggins/" class="external-link">rioja</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/" class="external-link">sp</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/gstat/" class="external-link">gstat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># suppress warnings from MAT about duplicate samples</span></span>
 <span><span class="co"># (presumably 100% N. pachyderma)</span></span>
@@ -139,35 +143,43 @@ spatially independent test set.</p>
 <span><span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Core"</span>, <span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>, <span class="st">"summ50"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># N Atlantic</span></span>
-<span><span class="va">N_Atlantic</span> <span class="op">&lt;-</span> <span class="va">Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">N_Atlantic</span> <span class="op">&lt;-</span> <span class="va">Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Latitude</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">N_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="va">N_Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">N_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="va">N_Atlantic</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># to keep rdist.earth happy</span></span>
-<span><span class="va">N_Atlantic</span> <span class="op">&lt;-</span> <span class="va">N_Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">N_Atlantic</span> <span class="op">&lt;-</span> <span class="va">N_Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S Atlantic</span></span>
-<span><span class="va">S_Atlantic</span> <span class="op">&lt;-</span> <span class="va">Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">S_Atlantic</span> <span class="op">&lt;-</span> <span class="va">Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Latitude</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">S_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="va">S_Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">S_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="va">S_Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">S_Atlantic</span> <span class="op">&lt;-</span> <span class="va">S_Atlantic</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">S_Atlantic</span> <span class="op">&lt;-</span> <span class="va">S_Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## convert N_Atlatic_meta to an sf object</span></span>
+<span></span>
+<span><span class="va">N_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="va">N_Atlantic_meta</span>,</span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Longitude"</span>, <span class="st">"Latitude"</span><span class="op">)</span>,</span>
+<span>  crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># calculating distances among the sampled points in the</span></span>
 <span><span class="co"># North Atlantic foraminifera data set</span></span>
-<span><span class="va">geodist</span> <span class="op">&lt;-</span> <span class="fu">fields</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/fields/man/rdist.earth.html" class="external-link">rdist.earth</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">N_Atlantic_meta</span>, <span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span>,</span>
-<span>  miles <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">geodist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">st_distance</a></span><span class="op">(</span><span class="va">N_Atlantic_meta</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="st">"km"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">units</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/units/man/units.html" class="external-link">set_units</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># values of h for which h-block cross-validation is calculated</span></span>
 <span><span class="va">threshs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">400</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span>, <span class="fl">1500</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># h-block cross-validation of the NA foraminifera dataset for</span></span>
 <span><span class="co"># different values of h</span></span>
-<span><span class="va">res_h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dfr</a></span><span class="op">(</span><span class="va">threshs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">res_h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">threshs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rioja/man/MAT.html" class="external-link">MAT</a></span><span class="op">(</span><span class="va">N_Atlantic</span>, <span class="va">N_Atlantic_meta</span><span class="op">$</span><span class="va">summ50</span>, k <span class="op">=</span> <span class="fl">5</span>, lean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rioja/man/PTF.html" class="external-link">crossval</a></span><span class="op">(</span><span class="va">mod</span>, cv.method <span class="op">=</span> <span class="st">"h-block"</span>, h.dist <span class="op">=</span> <span class="va">geodist</span>, h.cutoff <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span>
 <span></span>
@@ -176,7 +188,8 @@ spatially independent test set.</p>
 <span>    RMSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rioja/man/PTF.html" class="external-link">performance</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">crossval</span><span class="op">[</span><span class="st">"N05"</span>, <span class="st">"RMSE"</span><span class="op">]</span>,</span>
 <span>    R2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rioja/man/PTF.html" class="external-link">performance</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">crossval</span><span class="op">[</span><span class="st">"N05"</span>, <span class="st">"R2"</span><span class="op">]</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/list_c.html" class="external-link">list_rbind</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>First, we estimate the performance of the North Atlantic (NA)
 foraminifera training set when applied to the spatially independent data
 set from the South Atlantic (SA), which in our case contains the samples
@@ -203,7 +216,7 @@ removal distance h. Dashed horizontal line indicates RMSEP found on a
 spatially independent test set.
 </p>
 </div>
-<p>Using linear interpolation, an <em>h</em>-block distance of 736.31 km
+<p>Using linear interpolation, an <em>h</em>-block distance of 736.24 km
 gives a cross-validated RMSEP equivalent to the the RMSEP of a spatially
 independent test set.</p>
 </div>
@@ -222,12 +235,9 @@ range of the variogram as <em>h</em>.</p>
 <span><span class="va">detrended_resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/loess.html" class="external-link">loess</a></span><span class="op">(</span><span class="va">wa_resid</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">~</span> <span class="va">N_Atlantic_meta</span><span class="op">$</span><span class="va">summ50</span>,</span>
 <span>  span <span class="op">=</span> <span class="fl">0.1</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># copy meta data and add coordinate system</span></span>
-<span><span class="va">N_Atlantic_meta_c</span> <span class="op">&lt;-</span> <span class="va">N_Atlantic_meta</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/sp/man/coordinates.html" class="external-link">coordinates</a></span><span class="op">(</span><span class="va">N_Atlantic_meta_c</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/sp/man/is.projected.html" class="external-link">proj4string</a></span><span class="op">(</span><span class="va">N_Atlantic_meta_c</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sp/man/CRS-class.html" class="external-link">CRS</a></span><span class="op">(</span><span class="st">"+proj=longlat +datum=WGS84"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># variogram of the detrended residuals of the WA model</span></span>
-<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/variogram.html" class="external-link">variogram</a></span><span class="op">(</span><span class="va">detrended_resid</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">N_Atlantic_meta_c</span><span class="op">)</span></span>
+<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/variogram.html" class="external-link">variogram</a></span><span class="op">(</span><span class="va">detrended_resid</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">N_Atlantic_meta</span><span class="op">)</span></span>
 <span><span class="co"># Fitting a spherical variogram (partial sill, range and nugget are</span></span>
 <span><span class="co"># approximately estimated from the empirical variogram)</span></span>
 <span><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/fit.variogram.html" class="external-link">fit.variogram</a></span><span class="op">(</span><span class="va">v</span>, <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/vgm.html" class="external-link">vgm</a></span><span class="op">(</span>psill <span class="op">=</span> <span class="fl">2</span>, <span class="st">"Sph"</span>, range <span class="op">=</span> <span class="fl">1500</span>, nugget <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
@@ -257,7 +267,7 @@ with the variogram to simulate environmental variables with same spatial
 structure as the observed variable.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Estimate the variogram model for the environmental variable of interest</span></span>
-<span><span class="va">ve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/variogram.html" class="external-link">variogram</a></span><span class="op">(</span><span class="va">summ50</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">N_Atlantic_meta_c</span><span class="op">)</span></span>
+<span><span class="va">ve</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/variogram.html" class="external-link">variogram</a></span><span class="op">(</span><span class="va">summ50</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">N_Atlantic_meta</span><span class="op">)</span></span>
 <span><span class="va">vem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/fit.variogram.html" class="external-link">fit.variogram</a></span><span class="op">(</span><span class="va">ve</span>, <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/vgm.html" class="external-link">vgm</a></span><span class="op">(</span><span class="fl">40</span>, <span class="st">"Mat"</span>, <span class="fl">5000</span>, <span class="fl">.1</span>, kappa <span class="op">=</span> <span class="fl">1.8</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ve</span>, <span class="va">vem</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
@@ -270,32 +280,31 @@ Atlantic summer sea temperature at 50 m depth.
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Simulating environmental variables</span></span>
 <span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/krige.html" class="external-link">krige</a></span><span class="op">(</span><span class="va">sim</span> <span class="op">~</span> <span class="fl">1</span>,</span>
-<span>  locations <span class="op">=</span> <span class="va">N_Atlantic_meta_c</span>,</span>
+<span>  locations <span class="op">=</span> <span class="va">N_Atlantic_meta</span>,</span>
 <span>  dummy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  nsim <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">N_Atlantic_meta</span><span class="op">[</span>, <span class="st">"summ50"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">N_Atlantic_meta</span><span class="op">$</span><span class="va">summ50</span><span class="op">)</span>,</span>
 <span>  model <span class="op">=</span> <span class="va">vem</span>,</span>
-<span>  newdata <span class="op">=</span> <span class="va">N_Atlantic_meta_c</span></span>
+<span>  newdata <span class="op">=</span> <span class="va">N_Atlantic_meta</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [using unconditional Gaussian simulation]</span></span>
 <span></span>
-<span><span class="co"># convert spatialpointsdataframe back to a regular data.frame</span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">sim</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">Longitude</span>, <span class="op">-</span><span class="va">Latitude</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># convert back to a regular data.frame</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">sim</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Running a MAT models for each simulation at each value of <em>h</em>
 would be very slow, but since the same analogues would be chosen for any
 environmental variable, we can make a much faster version of MAT.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Function for h-block cross-validating several simulations at a time</span></span>
+<code class="sourceCode R"><span><span class="co"># Function for h-block cross-validating several simulations at a time</span></span>
 <span><span class="va">mat_h1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span>, <span class="va">noanalogues</span>, <span class="va">geodist</span>, <span class="va">thresh</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">y</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="co"># squared chord distance</span></span>
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">Inf</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">Inf</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">geodist</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">geodist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">geodist</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
@@ -304,7 +313,7 @@ environmental variable, we can make a much faster version of MAT.</p>
 <span>    <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">exneigh</span>, <span class="op">]</span></span>
 <span>    <span class="va">y2</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">n</span>, <span class="op">]</span><span class="op">[</span><span class="va">exneigh</span><span class="op">]</span></span>
 <span>    <span class="va">analogues</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a></span><span class="op">(</span><span class="va">y2</span>, ties.method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="va">noanalogues</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/rowSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">x2</span><span class="op">[</span><span class="va">analogues</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">x2</span><span class="op">[</span><span class="va">analogues</span>, <span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -312,7 +321,7 @@ environmental variable, we can make a much faster version of MAT.</p>
 <span><span class="co"># h-block cross-validation of the simulated variables</span></span>
 <span><span class="va">simhr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">threshs</span>, <span class="kw">function</span><span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">hn</span> <span class="op">&lt;-</span> <span class="fu">mat_h1</span><span class="op">(</span><span class="va">N_Atlantic</span>, <span class="va">sim</span>, noanalogues <span class="op">=</span> <span class="fl">5</span>, geodist <span class="op">=</span> <span class="va">geodist</span>, thresh <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://www.math.uzh.ch/pages/spam/reference/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">hn</span><span class="op">)</span>, <span class="va">sim</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">hn</span><span class="op">)</span>, <span class="va">sim</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Estimating squared correlation between environmental variable of interest and</span></span>
@@ -323,13 +332,12 @@ environmental variable, we can make a much faster version of MAT.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">sim_obs_r2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">simhr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">threshs</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sim_obs_r2 <span class="op">=</span> <span class="va">sim_obs_r2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="op">-</span><span class="va">sim_obs_r2</span>, names_to <span class="op">=</span> <span class="st">"h"</span>, values_to <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">h</span>, levels <span class="op">=</span> <span class="va">threshs</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">simhr</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/set_names.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">threshs</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sim_obs_r2 <span class="op">=</span> <span class="va">sim_obs_r2</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="op">-</span><span class="va">sim_obs_r2</span>, names_to <span class="op">=</span> <span class="st">"h"</span>, values_to <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">h</span>, levels <span class="op">=</span> <span class="va">threshs</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sim_obs_r2</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -343,7 +351,7 @@ transfer function r<sup>2</sup>.
 </p>
 </div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">threshs</span>, <span class="va">so_squares</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">threshs</span>, <span class="va">so_squares</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">threshs</span>, y <span class="op">=</span> <span class="va">so_squares</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"h km"</span>, y <span class="op">=</span> <span class="st">"Sum of squares"</span><span class="op">)</span></span></code></pre></div>
@@ -397,7 +405,7 @@ environments. submitted to: <em>Climate of the Past</em> 12, 1215-1223
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
