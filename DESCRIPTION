@@ -25,13 +25,13 @@ Imports: TeachingDemos, rioja, mgcv, MASS,
     dplyr,
     magrittr,
     ggplot2,
-    forcats,
+    forcats (>= 1.0.0),
     assertr,
     vegan,
     rlang,
     ggrepel, 
     tidyr,
-    purrr
+    purrr (>= 1.0.0)
 Description: Several tests of quantitative palaeoenvironmental reconstructions 
   from microfossil assemblages, including the null model tests of the 
   statistically significant of reconstructions developed by Telford and Birks
