@@ -17,6 +17,6 @@ bibentry(
 	  )
 	),
 	year = 2023,
-	note = paste("R package version", packageDescription("palaeoSig")$Version),
+	note = "R package version 2.1-1",
 	url = "https://cran.r-project.org/package=palaeoSig"
 )
