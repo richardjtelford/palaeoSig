@@ -55,7 +55,7 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
 
 
 autoplot.palaeoSig <- function(object, variable_names,
-                               nbins = 20, top = 0.7, p_val = 0.05) {
+                               nbins = 20, top = 0.7, p_val = 0.05, ...) {
   if (missing(variable_names)) {
     variable_names <- names(object$EX)
   }

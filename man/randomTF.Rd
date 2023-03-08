@@ -25,7 +25,7 @@ randomTF(
 
 \method{plot}{palaeoSig}(x, variable_names, top = 0.7, adj = c(0, 0.5), p_val = 0.05, ...)
 
-\method{autoplot}{palaeoSig}(object, variable_names, nbins = 20, top = 0.7, p_val = 0.05)
+\method{autoplot}{palaeoSig}(object, variable_names, nbins = 20, top = 0.7, p_val = 0.05, ...)
 }
 \arguments{
 \item{spp}{Data frame of modern training set species data, transformed as
