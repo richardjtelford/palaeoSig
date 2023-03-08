@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">palaeoSig</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1-0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1-2</span>
       </span>
     </div>
 
@@ -61,18 +61,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.1" id="palaeosig-21">palaeoSig 2.1<a class="anchor" aria-label="anchor" href="#palaeosig-21"></a></h2>
+<h2 class="page-header" data-toc-text="2.1.2" id="palaeosig-212">palaeoSig 2.1.2<a class="anchor" aria-label="anchor" href="#palaeosig-212"></a></h2>
+<p>Arguments to autoplot() functions have changed so first is now <code>object</code> rather than <code>x</code> to meet CRAN rules. This probably does not effect anybody unless they had named the first argument.</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.1-1" id="palaeosig-21-1">palaeoSig 2.1-1<a class="anchor" aria-label="anchor" href="#palaeosig-21-1"></a></h2>
+<p>CRAN compliance version re CITATION</p>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.1-0" id="palaeosig-21-0">palaeoSig 2.1-0<a class="anchor" aria-label="anchor" href="#palaeosig-21-0"></a></h2>
 <div class="section level3">
-<h3 id="vignettes-2-1">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes-2-1"></a></h3>
+<h3 id="vignettes-2-1-0">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes-2-1-0"></a></h3>
 <p>New vignette showing how to use a red-noise null model for <code><a href="../reference/randomTF.html">randomTF()</a></code>.</p>
 <p>Changed h-block cross-validation to use <code>sf</code> package for geographic data (rather than <code>sp</code>).</p>
 </div>
 <div class="section level3">
-<h3 id="rewrites-2-1">Rewrites<a class="anchor" aria-label="anchor" href="#rewrites-2-1"></a></h3>
+<h3 id="rewrites-2-1-0">Rewrites<a class="anchor" aria-label="anchor" href="#rewrites-2-1-0"></a></h3>
 <p><code><a href="../reference/rne.html">rne()</a></code> is now several orders of magnitude faster.</p>
 </div>
 <div class="section level3">
-<h3 id="bug-fixes-2-1">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1"></a></h3>
+<h3 id="bug-fixes-2-1-0">bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1-0"></a></h3>
 <p>In <code><a href="../reference/randomTF.html">randomTF()</a></code>, species and fossil data were automatically transformed to matrices so this was done once, not in every iteration. This sometimes failed with MAT. Now this step is recommended in the help file.</p>
 <p>Sometimes great-circle distances from a point to itself, calculated with <code><a href="https://rdrr.io/pkg/fields/man/rdist.earth.html" class="external-link">fields::rdist.earth()</a></code>, are non-zero due to rounding errors. This lead to them not being excluded in the h-block resampling in <code><a href="../reference/rne.html">rne()</a></code> when the threshold distance was zero. Now the diagonal of the distance matrix is set to zero, removing this problem.</p>
 </div>
