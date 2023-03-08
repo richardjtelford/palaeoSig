@@ -87,6 +87,7 @@ identify.obscor <- function(x, labels, ...) {
 
 
 #' @describeIn obs.cor autoplot for obscor object
+#' @param object  An obscor object.
 #' @param top Proportion of the figure below the environmental name labels.
 #' @param nbins integer giving number of bins for the histogram
 #' @importFrom ggplot2 autoplot ggplot geom_point scale_size_area
@@ -97,7 +98,7 @@ identify.obscor <- function(x, labels, ...) {
 #' @method autoplot obscor
 #' @export
 
-autoplot.obscor <- function(x, which = 1, variable_names = "env",
+autoplot.obscor <- function(object, which = 1, variable_names = "env",
                             abun = "abun.calib", p_val = 0.05,
                             nbins = 20, top = 0.7, ...) {
   weightings <- c(
@@ -111,7 +112,7 @@ autoplot.obscor <- function(x, which = 1, variable_names = "env",
   abun <- weightings[w]
 
   if (which == 1) {
-    x$ob$x %>%
+    object$ob$x %>%
       mutate(unweighted = 1) %>%
       ggplot(aes(x = .data$Optima, y = .data$RDA1, size = .data[[abun]])) +
       geom_point(alpha = 0.3) +
@@ -121,12 +122,12 @@ autoplot.obscor <- function(x, which = 1, variable_names = "env",
     xlab <- ifelse(w == "unweighted", "Correlation", "Weighted correlation")
 
     x_fort <- fortify_palaeosig(
-      sim = x$sim[, abun],
+      sim = object$sim[, abun],
       variable_names = variable_names,
       p_val = p_val,
       nbins = nbins,
       top = top,
-      EX = x$ob$res[abun]
+      EX = object$ob$res[abun]
     )
 
     autoplot_sig(x_fort, xlab = xlab, xmin = NA_real_)

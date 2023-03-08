@@ -34,7 +34,7 @@ obs.cor(
 \method{identify}{obscor}(x, labels, ...)
 
 \method{autoplot}{obscor}(
-  x,
+  object,
   which = 1,
   variable_names = "env",
   abun = "abun.calib",
@@ -101,6 +101,8 @@ the label on the observed correlation with which = 2}
 
 \item{labels}{Labels for the points in identify. By default, the species
 names from intersection of colnames(spp) and colnames(fos) are used.}
+
+\item{object}{An obscor object.}
 
 \item{nbins}{integer giving number of bins for the histogram}
 

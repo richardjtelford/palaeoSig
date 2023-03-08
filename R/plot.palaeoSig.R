@@ -42,6 +42,7 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
 }
 
 #' @describeIn randomTF autoplot function for palaeoSig object
+#' @param object Output from randomTF
 #' @param nbins integer giving number of bins for the histogram
 #' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text
 #' scale_colour_identity scale_linetype_identity labs
@@ -53,20 +54,20 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
 #' @export
 
 
-autoplot.palaeoSig <- function(x, variable_names,
+autoplot.palaeoSig <- function(object, variable_names,
                                nbins = 20, top = 0.7, p_val = 0.05) {
   if (missing(variable_names)) {
-    variable_names <- names(x$EX)
+    variable_names <- names(object$EX)
   }
 
   x_fort <- fortify_palaeosig(
-    sim = x$sim,
+    sim = object$sim,
     variable_names = variable_names,
     p_val = p_val,
     nbins = nbins,
     top = top,
-    PC1 = x$MAX,
-    EX = x$EX
+    PC1 = object$MAX,
+    EX = object$EX
   )
 
   autoplot_sig(x_fort, xlab = "Proportion variance explained", xmin = 0)

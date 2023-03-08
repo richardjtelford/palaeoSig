@@ -1,6 +1,10 @@
+# palaeoSig 2.1.2
+
+Arguments to autoplot() functions have changed so first is now `object` rather than `x` to meet CRAN rules. This probably does not effect anybody unless they had named the first argument.
+
 # palaeoSig 2.1-1
 
-CRAN complience version
+CRAN compliance version re CITATION
 
 # palaeoSig 2.1-0
 
