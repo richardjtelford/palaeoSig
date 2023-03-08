@@ -2,6 +2,7 @@
 
 There were no ERRORs or WARNINGs or NOTEs
 
+fixes note on generics
 
 win-builder reports
 
@@ -11,7 +12,7 @@ Found the following (possibly) invalid URLs:
     Status: 403
     Message: Forbidden
 
-The URL is valid, looks like win-buider has been blocked.
+The URL is valid, looks like win-builder has been blocked.
 
 
 ## Downstream dependencies
