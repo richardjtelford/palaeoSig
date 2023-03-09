@@ -2,7 +2,7 @@
 
 There were no ERRORs or WARNINGs or NOTEs
 
-fixes note on generics
+vignettes now render faster
 
 win-builder reports
 

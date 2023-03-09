@@ -1,4 +1,8 @@
-# palaeoSig 2.1.2
+# palaeoSig 2.1-3
+
+Vignettes work on a subset of data for speed.
+
+# palaeoSig 2.1-2
 
 Arguments to autoplot() functions have changed so first is now `object` rather than `x` to meet CRAN rules. This probably does not effect anybody unless they had named the first argument.
 

@@ -40,11 +40,7 @@ library(purrr)
 library(ggplot2)
 theme_set(theme_bw())
 
-# suppress warnings from MAT about duplicate samples
-# (presumably 100% N. pachyderma)
-MAT <- function(...) {
-  suppressWarnings(rioja::MAT(...))
-}
+set.seed(42) # for reproducibility 
 ```
 
 
@@ -59,7 +55,8 @@ meta <- c("Core", "Latitude", "Longitude", "summ50")
 
 # N Atlantic
 N_Atlantic <- Atlantic |>
-  filter(Latitude > 3)
+  filter(Latitude > 3) |> 
+  slice_sample(n = 300) # subsample for speed
 N_Atlantic_meta <- N_Atlantic |>
   select(one_of(meta)) |>
   as.data.frame() # to keep rdist.earth happy
@@ -90,7 +87,7 @@ geodist <- st_distance(N_Atlantic_meta) |>
   units::set_units(NULL)
 
 # values of h for which h-block cross-validation is calculated
-threshs <- c(0.01, 100, 200, 400, 600, 800, 1000, 1500)
+threshs <- c(0.01, 300, 600, 900, 1200)
 
 # h-block cross-validation of the NA foraminifera dataset for
 # different values of h
@@ -142,7 +139,7 @@ ggplot(res_h, aes(x = h, y = RMSE)) +
   labs(x = "h [km]", y = "RMSEP [°C]")
 ```
 
-Using linear interpolation, an *h*-block distance of `r round(est_h, 2)` km gives a cross-validated RMSEP equivalent to the the RMSEP of a spatially independent test set.
+Using linear interpolation, an *h*-block distance of `r round(est_h)` km gives a cross-validated RMSEP equivalent to the the RMSEP of a spatially independent test set.
 
 ## 2. Variogram range
 

@@ -35,6 +35,7 @@ library(tibble)
 library(tidyr)
 library(purrr)
 library(ggplot2)
+set.seed(42) # for reproducibility 
 ```
 
 
@@ -52,11 +53,12 @@ Atlantic <- as.data.frame(Atlantic) # prevents rowname warnings
 # pseudocore as no fossil foram data in palaeoSig
 fosn <- Atlantic |>
   filter(between(summ50, 5, 10)) |>
-  sample_n(size = 20)
+  slice_sample(n = 20)
 
 # remaining samples as training set
 Atlantic <- Atlantic |>
-  anti_join(fosn, by = "Core")
+  anti_join(fosn, by = "Core") |> 
+  slice_sample(n = 300) # random subset to speed analysis up
 
 Atlantic_meta <- Atlantic |>
   select(one_of(meta)) # to keep rdist.earth happy
