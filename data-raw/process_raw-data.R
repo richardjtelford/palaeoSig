@@ -172,9 +172,12 @@ usethis::use_data(STOR, overwrite = TRUE)
 
 
 #### arctic pollen ####
-arctic <- read_excel("data-raw/pollen-climate data.xls", sheet = "POLLEN+CLIMATE+AVHRR", skip = 14)
+arctic <- read_excel(
+  path = "data-raw/pollen-climate data.xls",
+  sheet = "POLLEN+CLIMATE+AVHRR", skip = 14
+)
 
-# remove dupicate sites (pers comm)
+# remove duplicate sites (pers comm)
 # ID2 3893 is identical to ID2 3930
 # ID2 330 is identical to ID2 3984
 # ID2 213 is identical to ID2 4124

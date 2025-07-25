@@ -230,5 +230,5 @@ obs.cor <- function(spp, env, fos, ord = rda, n = 99, min.occur = 1,
 
   res <- list(ob = res_obs, sim = res_sim, sigs = sigs)
   class(res) <- "obscor"
-  return(res)
+  res
 }

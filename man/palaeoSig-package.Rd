@@ -14,12 +14,17 @@ Functions from the \pkg{autocorTF} package are now included in
 \details{
 This package includes:
 \itemize{
-\item significance tests for quantitative palaeoenvironmental reconstructions (\code{\link{randomTF}}, \code{\link{obs.cor}})
-\item graphical methods to show autocorrelation in transfer functions (\code{\link{rne}})
-\item null model test of transfer functions performance in a spatially autocorrelated environment - see vignette.
+\item significance tests for quantitative palaeoenvironmental reconstructions
+(\code{\link{randomTF}}, \code{\link{obs.cor}})
+\item graphical methods to show autocorrelation in transfer functions
+(\code{\link{rne}})
+\item null model test of transfer functions performance in a spatially
+autocorrelated environment - see vignette.
 }
 
-Several functions have from \pkg{autocorTF} version 1.0 and \pkg{palaeoSig} version 1.0 have been rewritten or replaced with more flexible or user friendly functions. See \code{news(package="palaeoSig")} for details.
+Several functions have from \pkg{autocorTF} version 1.0 and \pkg{palaeoSig}
+version 1.0 have been rewritten or replaced with more flexible or user
+friendly functions. See \code{news(package="palaeoSig")} for details.
 
 See also my blog at
 \url{https://quantpalaeo.wordpress.com/}

@@ -34,9 +34,11 @@
 #' @source The data are unpublished and provided by H. John B. Birks
 #' <john.birks@bio.uib.no> and Sylvia M. Peglar
 #' @usage data(STOR)
-#' @references  Heegaard, E., Birks, HJB. & Telford, RJ. 2005. Relationships
+#' @references
+#' Heegaard, E., Birks, HJB. & Telford, RJ. 2005. Relationships
 #' between calibrated ages and depth in stratigraphical sequences: an estimation
-#' procedure by mixed-effect regression. The Holocene 15: 612-618 \doi{10.1191/0959683605hl836rr}
+#' procedure by mixed-effect regression. The Holocene 15: 612-618
+#' \doi{10.1191/0959683605hl836rr}
 #' @keywords datasets
 "STOR"
 

@@ -62,5 +62,5 @@ centipede_plot <- function(x, spp, minN2 = 1, mult = 1) {
     geom_point() +
     coord_flip()
 
-  return(g)
+  g
 }

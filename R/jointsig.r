@@ -101,5 +101,5 @@ jointsig <- function(spp, fos, var1, var2,
   res$v1 <- v1
   res$v2 <- v2
   class(res) <- "js"
-  return(res)
+  res
 }

@@ -98,7 +98,7 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
     filter(!is.na(.data$value))
 
   result <- lst(sim_bin, lines_to_add, width)
-  return(result)
+  result
 }
 
 #' @importFrom ggplot2 xlim
@@ -127,5 +127,5 @@ autoplot_sig <- function(x, xlab, xmin) {
     xlim(xmin, NA_real_) +
     labs(x = xlab, y = "Frequency")
 
-  return(g)
+  g
 }

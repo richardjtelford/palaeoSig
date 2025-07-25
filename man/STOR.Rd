@@ -34,6 +34,7 @@ The borders represent mean calibrated age +/- 1 SD of calibrated age.
 \references{
 Heegaard, E., Birks, HJB. & Telford, RJ. 2005. Relationships
 between calibrated ages and depth in stratigraphical sequences: an estimation
-procedure by mixed-effect regression. The Holocene 15: 612-618 \doi{10.1191/0959683605hl836rr}
+procedure by mixed-effect regression. The Holocene 15: 612-618
+\doi{10.1191/0959683605hl836rr}
 }
 \keyword{datasets}

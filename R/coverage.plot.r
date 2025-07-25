@@ -93,5 +93,5 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
       )
   }
 
-  return(g)
+  g
 }

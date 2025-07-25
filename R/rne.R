@@ -44,7 +44,8 @@
 #' data(arctic.env)
 #' data(arctic.pollen)
 #'
-#' # using just the first 100 sites so that code runs quickly (about 15 seconds for all 828 sites)
+#' # using just the first 100 sites so that code runs quickly
+#' # (about 15 seconds for all 828 sites)
 #'
 #' # convert environmental data into an sf object
 #' arctic.env <- st_as_sf(
@@ -185,5 +186,5 @@ rne <- function(y, env, geodist, fun, neighbours,
   })
 
   class(rne) <- "RNE"
-  return(rne)
+  rne
 }
