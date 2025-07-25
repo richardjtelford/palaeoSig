@@ -31,7 +31,7 @@
 #'  \item{random }{Performance with random deletion.}
 #'  \item{neighbour }{Performance with deletion by neighbourhood,
 #'  or environment}
-#'  
+#'
 #' @references Telford, R. J. and Birks, H. J. B. (2009) Evaluation of transfer
 #' functions in spatially structured environments.
 #' \emph{Quaternary Science Reviews} \bold{28}: 1309--1316.

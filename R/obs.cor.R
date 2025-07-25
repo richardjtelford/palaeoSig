@@ -31,7 +31,7 @@
 #' @details  Obs.cor calculates the (weighted) correlation between the species
 #' WA optima in the calibration set and their ordination axis one scores in the
 #' fossil data. Seven different weights for the species are implemented.
-#' 
+#'
 #'  - "abun.fos" - weight by the mean abundance in the fossil data.
 #'  - "abun.calib" - weight by the mean abundance in the calibration data
 #'  - "abun.joint" - weight by the product of the mean abundance in the
@@ -43,16 +43,16 @@
 #'  - "n2.joint" - weight by the product of n2.calib and n2.fos
 #'  - "unweighted" - all species receive same weight.
 #'    This is unlikely to be the best option but is included for completeness.
-#'    
+#'
 #' It is unclear which of these weights is likely to be best:
 #' research is in progress.
 #' A square root transformation of the species data is often useful.
-#' `n = 99` is too small in practice to give a smooth 
+#' `n = 99` is too small in practice to give a smooth
 #' histogram of the null model. `n = 999` is better.
 
 #' @returns
 #' obs.cor returns an obscor object, which is a list
-#' 
+#'
 #'   \item{ob}{ Observed correlation. Data.frame with columns Optima, RDA1 and
 #'    abun containing the species optima, ordination axis 1 scores, and
 #'    abundance used to weight the species respectively and a vector containing
@@ -64,7 +64,7 @@
 #'   environmental variable.}
 #'   \item{sigs}{ p-value for the observed correlation between species weighted
 #'   average optima and ordination scores for each of the weights.}
-#'  
+#'
 
 
 #' @references Telford, R. J. and Birks, H. J. B. (2011) A novel method for

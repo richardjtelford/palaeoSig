@@ -35,7 +35,7 @@ library(tibble)
 library(tidyr)
 library(purrr)
 library(ggplot2)
-set.seed(42) # for reproducibility 
+set.seed(42) # for reproducibility
 ```
 
 
@@ -57,7 +57,7 @@ fosn <- Atlantic |>
 
 # remaining samples as training set
 Atlantic <- Atlantic |>
-  anti_join(fosn, by = "Core") |> 
+  anti_join(fosn, by = "Core") |>
   slice_sample(n = 300) # random subset to speed analysis up
 
 Atlantic_meta <- Atlantic |>

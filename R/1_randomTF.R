@@ -84,7 +84,7 @@
 #'    \item{sim.ex}{ The proportion of variance explained by each of the random
 #'     environmental variables.}
 #'    \item{sig}{ The p-value of each reconstruction.}
-#' 
+#'
 #' If \code{make_models = TRUE}, a list of transfer function models is returned.
 #'
 #'    \code{autoplot.palaeoSig} returns a \code{ggplot2} object

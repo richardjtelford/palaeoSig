@@ -40,7 +40,7 @@ library(purrr)
 library(ggplot2)
 theme_set(theme_bw())
 
-set.seed(42) # for reproducibility 
+set.seed(42) # for reproducibility
 ```
 
 
@@ -55,7 +55,7 @@ meta <- c("Core", "Latitude", "Longitude", "summ50")
 
 # N Atlantic
 N_Atlantic <- Atlantic |>
-  filter(Latitude > 3) |> 
+  filter(Latitude > 3) |>
   slice_sample(n = 300) # subsample for speed
 N_Atlantic_meta <- N_Atlantic |>
   select(one_of(meta)) |>
