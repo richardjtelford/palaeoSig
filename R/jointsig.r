@@ -36,7 +36,7 @@
 #'
 #' @returns
 #'  A list with components
-#' \itemize{
+#'
 #'  \item{PCA}{ The unconstrained ordination of the fossil data.}
 #'  \item{preds}{ A list of the containing the reconstructions for each
 #'  environmental variable.}
@@ -48,7 +48,7 @@
 #'  \item{sim.ex}{ The proportion of variance explained by each of the random
 #'  environmental variables.}
 #'  \item{sig}{ The p-value of each reconstruction.}
-#' }
+#' 
 #'
 #' @references Unpublished method - use with caution. Can give spurious results
 #' with weighted averaging.

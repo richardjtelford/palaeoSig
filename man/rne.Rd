@@ -42,11 +42,9 @@ component is calculated}
 }
 \value{
 Returns an RNE object, list with two components
-\itemize{
 \item{random }{Performance with random deletion.}
 \item{neighbour }{Performance with deletion by neighbourhood,
 or environment}
-}
 }
 \description{
 Calculates effect of deleting sites from training set at random,

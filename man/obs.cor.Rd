@@ -110,7 +110,7 @@ names from intersection of colnames(spp) and colnames(fos) are used.}
 }
 \value{
 obs.cor returns an obscor object, which is a list
-\itemize{
+
 \item{ob}{ Observed correlation. Data.frame with columns Optima, RDA1 and
 abun containing the species optima, ordination axis 1 scores, and
 abundance used to weight the species respectively and a vector containing
@@ -123,7 +123,6 @@ environmental variable.}
 \item{sigs}{ p-value for the observed correlation between species weighted
 average optima and ordination scores for each of the weights.}
 }
-}
 \description{
 obs.cor calculates the weighted correlation between the species
 weighted average optima and the axis one species scores of an ordination
@@ -134,23 +133,24 @@ Obs.cor calculates the (weighted) correlation between the species
 WA optima in the calibration set and their ordination axis one scores in the
 fossil data. Seven different weights for the species are implemented.
 \itemize{
-\item{"abun.fos" - weight by the mean abundance in the fossil data.}
-\item{"abun.calib" - weight by the mean abundance in the calibration data}
-\item{"abun.joint" - weight by the product of the mean abundance in the
-fossil and calibration data}
-\item{"n2.fos" - weight by the effective number of occurrences
-(Hill's N2) of each species in the fossil data}
-\item{"n2.calib" - weight by the effective number of occurrences
-(Hill's N2) of each species in the calibration data}
-\item{"n2.joint" - weight by the product of n2.calib and n2.fos}
-\item{"unweighted" - all species receive same weight.
-This is unlikely to be the best option but is included for completeness.}
+\item "abun.fos" - weight by the mean abundance in the fossil data.
+\item "abun.calib" - weight by the mean abundance in the calibration data
+\item "abun.joint" - weight by the product of the mean abundance in the
+fossil and calibration data
+\item "n2.fos" - weight by the effective number of occurrences
+(Hill's N2) of each species in the fossil data
+\item "n2.calib" - weight by the effective number of occurrences
+(Hill's N2) of each species in the calibration data
+\item "n2.joint" - weight by the product of n2.calib and n2.fos
+\item "unweighted" - all species receive same weight.
+This is unlikely to be the best option but is included for completeness.
 }
+
 It is unclear which of these weights is likely to be best:
 research is in progress.
-A square root transformation of the species data is often useful. n = 99
-is too small in practice to give a smooth histogram of the null model.
-n = 999 is better.
+A square root transformation of the species data is often useful.
+\code{n = 99} is too small in practice to give a smooth
+histogram of the null model. \code{n = 999} is better.
 }
 \section{Functions}{
 \itemize{
