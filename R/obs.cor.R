@@ -50,7 +50,7 @@
 #'     is too small in practice to give a smooth histogram of the null model.
 #'     n = 999 is better.
 
-#' @return
+#' @returns
 #' obs.cor returns an obscor object, which is a list
 #' \itemize{
 #'   \item{ob}{ Observed correlation. Data.frame with columns Optima, RDA1 and

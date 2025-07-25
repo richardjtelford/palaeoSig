@@ -14,7 +14,7 @@
 #'  prevent very small tolerances in rare taxa.
 #' This function is very similar to the \code{\link[analogue]{caterpillar}}
 #'  plot, but produces a ggplot
-#' @return A \code{\link[ggplot2]{ggplot}} object.
+#' @returns A \code{\link[ggplot2]{ggplot}} object.
 #'
 #' @examples
 #' library(rioja)

@@ -34,7 +34,7 @@
 #' variables and the species first axis scores.
 #' This option has some pathological behaviour and should probably be avoided.
 #'
-#' @return
+#' @returns
 #'  A list with components
 #' \itemize{
 #'  \item{PCA}{ The unconstrained ordination of the fossil data.}

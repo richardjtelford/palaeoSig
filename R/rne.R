@@ -26,7 +26,7 @@
 #' This is no longer done as the variance is small for large training sets,
 #' it took a long time, and treats one treatment of the data differently.
 
-#' @return
+#' @returns
 #' Returns an RNE object, list with two components
 #' \itemize{
 #'  \item{random }{Performance with random deletion.}

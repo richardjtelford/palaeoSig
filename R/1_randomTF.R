@@ -69,7 +69,7 @@
 #' (`spp <- as.matrix(spp)`), otherwise `WA` has to do this repeatedly.
 #' With `MAT`, this should not be done as it might cause an error.
 #'
-#' @return
+#' @returns
 #' A list with components
 #' \itemize{
 #'    \item{PCA}{ The unconstrained ordination of the fossil data.}

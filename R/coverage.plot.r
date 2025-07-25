@@ -20,7 +20,7 @@
 #' low N2 in the calibration set,
 #' reconstructions should be interpreted with caution.
 #'
-#' @return A \code{\link[ggplot2]{ggplot}} object.
+#' @returns A \code{\link[ggplot2]{ggplot}} object.
 #'
 #' @examples
 #' data("SWAP", package = "rioja")
