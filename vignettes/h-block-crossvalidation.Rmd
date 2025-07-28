@@ -71,7 +71,7 @@ S_Atlantic_meta <- S_Atlantic |>
 S_Atlantic <- S_Atlantic |>
   select(-one_of(meta))
 
-## convert N_Atlatic_meta to an sf object
+# convert N_Atlatic_meta to an sf object
 
 N_Atlantic_meta <- st_as_sf(
   x = N_Atlantic_meta,
@@ -117,7 +117,7 @@ rmse_mat <- sqrt(mean((pred_SA[, 1] - S_Atlantic_meta$summ50)^2))
 # RMSEP of the SA test set using MAT with k = 5
 round(rmse_mat, 2)
 ```
-The RMSEP of the NA training set is `r round(res_h[1,'RMSE'], 2)` while the RMSEP of the spatially independent SA data set is somewhat larger: `r round(rmse_mat,2)`. 
+The RMSEP of the NA training set is `r round(res_h[1,'RMSE'], 2)` while the RMSEP of the spatially independent SA data set is somewhat larger: `r round(rmse_mat, 2)`. 
 This is indicative of spatial autocorrelation. 
 We have to find the the removal distance *h* at which the *h*-block cross-validated RMSEP and the RMSEP of the SA test set are similar.
 
@@ -227,6 +227,7 @@ simhr <- sapply(threshs, function(h) {
 # Estimating squared correlation between environmental variable of interest and
 # simulated variables
 sim_obs_r2 <- sapply(sim, cor, N_Atlantic_meta$summ50)^2
+
 # Calculating sum of squares between the two squared correlations
 so_squares <- apply(simhr, 2, function(x) {
   sum((x - sim_obs_r2)^2)
@@ -255,11 +256,12 @@ tibble(threshs, so_squares) |>
   labs(x = "h km", y = "Sum of squares")
 ```
 
-Following the rule described in Trachsel and Telford the value of *h* is estimated as *h* = `r res_h[min(which(so_squares < (min(so_squares) + 0.1 * range(so_squares)))), 'h']` km.
+Following the rule described in Trachsel and Telford (shortest _h_ with a sum of squares lower than the minimum sum of squares plus 10 % of the difference between the maximum and minimum sum of squares) the value of *h* is estimated as *h* = `r res_h[min(which(so_squares < (min(so_squares) + 0.1 * diff(range(so_squares))))), 'h']` km.
 
-Hence the three methods proposed result in similar values of *h*: *h* = `r round(est_h)` km for the spatially independent test set, *h* =   `r  round(vm$range[2])` km for the variogram range method and *h* = `r res_h[min(which(so_squares < (min(so_squares) + 0.1 * range(so_squares)))),'h']` km for the variance explained method.
+Hence the three methods proposed result in similar values of *h*: *h* = `r round(est_h)` km for the spatially independent test set, *h* =   `r  round(vm$range[2])` km for the variogram range method and *h* = `r res_h[min(which(so_squares < (min(so_squares) + 0.1 * diff(range(so_squares))))),'h']` km for the variance explained method.
 
 ## References
+
 Kucera, M., Weinelt, M., Kiefer, T., Pflaumann, U., Hayes, A., Weinelt, M., Chen, M.-T., Mix, A.C., Barrows, T.T., Cortijo, E., Duprat, J., Juggins, S., Waelbroeck, C. 2005. Reconstruction of the glacial Atlantic and Pacific sea-surface temperatures from assemblages of planktonic foraminifera: multi-technique approach based on geographically constrained calibration datasets. *Quaternary Science Reviews* 24, 951-998 [doi:10.1016/j.quascirev.2004.07.014](https://doi.org/10.1016/j.quascirev.2004.07.014).
 
 Telford, R.J., Birks, H.J.B. 2009. Evaluation of transfer functions in spatially structured environments. *Quaternary Science Reviews* 28, 1309-1316 [doi:10.1016/j.quascirev.2008.12.020](https://doi.org/10.1016/j.quascirev.2008.12.020).  

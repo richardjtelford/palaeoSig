@@ -131,7 +131,7 @@ spatially independent test set.</p>
 <span><span class="va">S_Atlantic</span> <span class="op">&lt;-</span> <span class="va">S_Atlantic</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html" class="external-link">one_of</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## convert N_Atlatic_meta to an sf object</span></span>
+<span><span class="co"># convert N_Atlatic_meta to an sf object</span></span>
 <span></span>
 <span><span class="va">N_Atlantic_meta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="va">N_Atlantic_meta</span>,</span>
@@ -299,6 +299,7 @@ environmental variable, we can make a much faster version of MAT.</p>
 <span><span class="co"># Estimating squared correlation between environmental variable of interest and</span></span>
 <span><span class="co"># simulated variables</span></span>
 <span><span class="va">sim_obs_r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">sim</span>, <span class="va">cor</span>, <span class="va">N_Atlantic_meta</span><span class="op">$</span><span class="va">summ50</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span>
+<span></span>
 <span><span class="co"># Calculating sum of squares between the two squared correlations</span></span>
 <span><span class="va">so_squares</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">simhr</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">sim_obs_r2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
@@ -333,11 +334,14 @@ Figure 6: Relationship between the sum of squares between the two
 r<sup>2</sup> as function of distance <em>h</em>.
 </p>
 </div>
-<p>Following the rule described in Trachsel and Telford the value of
-<em>h</em> is estimated as <em>h</em> = 900 km.</p>
+<p>Following the rule described in Trachsel and Telford (shortest
+<em>h</em> with a sum of squares lower than the minimum sum of squares
+plus 10 % of the difference between the maximum and minimum sum of
+squares) the value of <em>h</em> is estimated as <em>h</em> = 600
+km.</p>
 <p>Hence the three methods proposed result in similar values of
 <em>h</em>: <em>h</em> = 761 km for the spatially independent test set,
-<em>h</em> = 794 km for the variogram range method and <em>h</em> = 900
+<em>h</em> = 794 km for the variogram range method and <em>h</em> = 600
 km for the variance explained method.</p>
 </div>
 <div class="section level2">
