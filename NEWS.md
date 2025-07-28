@@ -1,3 +1,7 @@
+# palaeoSig 2.1-4
+
+Fixing some documentation formatting issues for CRAN
+
 # palaeoSig 2.1-3
 
 Vignettes work on a subset of data for speed.
