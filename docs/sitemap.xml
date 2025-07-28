@@ -1,90 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/h-block-crossvalidation.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/randomTF-spatial.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Atlantic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Hill.N2.core.html</loc>
-  </url>
-  <url>
-    <loc>/reference/STOR.html</loc>
-  </url>
-  <url>
-    <loc>/reference/abundances.html</loc>
-  </url>
-  <url>
-    <loc>/reference/anamorph.html</loc>
-  </url>
-  <url>
-    <loc>/reference/arctic.pollen.html</loc>
-  </url>
-  <url>
-    <loc>/reference/centipede_plot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cor.mat.fun.html</loc>
-  </url>
-  <url>
-    <loc>/reference/coverage_plot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/jointsig.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make.env.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make.set.html</loc>
-  </url>
-  <url>
-    <loc>/reference/multi.mat.html</loc>
-  </url>
-  <url>
-    <loc>/reference/obs.cor.html</loc>
-  </url>
-  <url>
-    <loc>/reference/palaeoSig-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.fittedAgelme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/predict.agelme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/randomTF.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rne.html</loc>
-  </url>
-  <url>
-    <loc>/reference/species.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://richardjtelford.github.io/palaeoSig/404.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/LICENSE-text.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/articles/h-block-crossvalidation.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/articles/index.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/articles/randomTF-spatial.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/authors.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/index.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/news/index.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/Atlantic.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/Hill.N2.core.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/STOR.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/abundances.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/agelme.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/anamorph.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/arctic.pollen.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/centipede_plot.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/cor.mat.fun.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/coverage_plot.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/index.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/jointsig.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/make.env.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/make.set.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/multi.mat.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/obs.cor.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/palaeoSig-package.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/plot.fittedAgelme.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/predict.agelme.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/randomTF.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/rne.html</loc></url>
+<url><loc>https://richardjtelford.github.io/palaeoSig/reference/species.html</loc></url>
 </urlset>
+

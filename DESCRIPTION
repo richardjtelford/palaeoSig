@@ -9,7 +9,7 @@ Authors@R:
              email = "Richard.Telford@uib.no"),
       person(given = "Mathias",
             family = "Trachsel", role = c("ctb")))
-URL: https://github.com/richardjtelford/palaeoSig
+URL: https://richardjtelford.github.io/palaeoSig/
 BugReports: https://github.com/richardjtelford/palaeoSig/issues
 Depends: R (>= 4.1)
 Suggests: 
