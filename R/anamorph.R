@@ -1,3 +1,31 @@
+#' @title Anamorph
+#' @description
+#' Creates functions that transform arbitrary distributions into
+#' Gaussian distributions, and vice versa.
+
+#' @param x vector of data to transform
+#' @param k number of Hermite polynomials to use
+#' @param plot logical; plot the transformation?
+#' @details Increasing k can give a better fit.
+#'
+#' @returns  Returns two function in a list
+#' \item{xtog }{Function to transform arbitrary variable x into a
+#' Gaussian distribution}
+#' \item{gtox }{The back transformation}
+#' @references
+#' Wackernagel, H. (2003) \emph{Multivariate Geostatistics.} 3rd edition, Springer-Verlag, Berlin. \doi{10.1007/978-3-662-05294-5}
+#' @author Richard Telford \email{Richard.Telford@bio.uib.no}
+#' @examples
+#' set.seed(42)
+#' x <- c(rnorm(50, 0, 1), rnorm(50, 6, 1))
+#' hist(x)
+#' ana.fun <- anamorph(x, 30, plot = TRUE)
+#' xg <- ana.fun$xtog(x)
+#' qqnorm(xg)
+#' qqline(xg)
+#' all.equal(x, ana.fun$gtox(xg))
+
+#' @keywords manip
 #' @importFrom stats predict lm qnorm approxfun
 #' @importFrom graphics plot lines points
 #' @export
