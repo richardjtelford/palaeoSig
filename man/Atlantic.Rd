@@ -9,8 +9,10 @@ A data frame with 1093 rows and 33 variables.
 summ50 is 50m water temperature of the warmest season
 }
 \source{
-\doi{10.1594/PANGAEA.227322}
-\url{https://www.nodc.noaa.gov/cgi-bin/OC5/woa13/woa13.pl?parameter=t}
+\itemize{
+\item Foraminifera data \doi{10.1594/PANGAEA.227322}
+\item Sea surface temperature data from WOA13 \url{http://data.nodc.noaa.gov/woa/WOA13/DATAv2/temperature/csv/decav/1.00/} file 'woa13_decav_t13mn01v2.csv.gz'
+}
 }
 \usage{
 data(Atlantic)
