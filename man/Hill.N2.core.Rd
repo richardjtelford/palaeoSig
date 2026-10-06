@@ -16,7 +16,7 @@ Minimum, first quartile and median effective number of species
 Gives a measure of the species diversity in the fossil data.
 }
 \details{
-Uses \code{\link[rioja:utils]{rioja::Hill.N2()}} from the rioja package.
+Uses \code{\link[rioja:Hill.N2]{rioja::Hill.N2()}} from the rioja package.
 }
 \note{
 If the effective number of species is small, WA based reconstructions are
@@ -33,7 +33,7 @@ Hill, M. O. (1973) Diversity and evenness: a unifying notation and its
 consequences. \emph{Ecology} \bold{54}: 427--432.
 }
 \seealso{
-\code{\link[rioja:utils]{rioja::Hill.N2()}}
+\code{\link[rioja:Hill.N2]{rioja::Hill.N2()}}
 }
 \author{
 Richard Telford

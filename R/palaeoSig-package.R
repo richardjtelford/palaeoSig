@@ -1,5 +1,4 @@
-#' @keywords internal
-#' Significance Tests of Quantitative Palaeoenvironmental Reconstructions
+#' @keywords internal Significance Tests of Quantitative Palaeoenvironmental Reconstructions
 #' @description
 #' Significance tests for quantitative palaeoenvironmental reconstructions
 #' derived from transfer functions.

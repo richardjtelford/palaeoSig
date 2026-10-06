@@ -43,9 +43,9 @@ Description: Several tests of quantitative palaeoenvironmental reconstructions
   <doi:10.1191/0959683605hl836rr> are also included.
 License: GPL-3
 LazyLoad: yes
-RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Encoding: UTF-8
 Language: en-GB
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

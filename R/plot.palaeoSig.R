@@ -45,7 +45,7 @@ plot.palaeoSig <- function(x, variable_names, top = 0.7,
 #' @param object Output from randomTF
 #' @param nbins integer giving number of bins for the histogram
 #' @importFrom   ggplot2 autoplot ggplot aes geom_col geom_linerange geom_text
-#' scale_colour_identity scale_linetype_identity labs
+#'   scale_colour_identity scale_linetype_identity labs
 #' @importFrom tibble tibble
 #' @importFrom rlang .data
 #' @importFrom stats quantile

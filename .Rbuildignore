@@ -8,3 +8,6 @@
 ^docs/.*
 ^CRAN-SUBMISSION$
 ^_pkgdown\.yml$
+^palaeoSig\.Rproj$
+^\.positai$
+^\.claude$

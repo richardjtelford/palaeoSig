@@ -75,7 +75,7 @@ plot.obscor <- function(x, xlab, ylab, f = 5, which = 1,
 #' names from intersection of colnames(spp) and colnames(fos) are used.
 #' @param \dots Other arguments to plot or identify
 #' @importFrom graphics identify
-#'
+#' @export
 identify.obscor <- function(x, labels, ...) {
   if (missing(labels)) {
     labels <- rownames(x$ob$x)

@@ -2,6 +2,7 @@
 
 S3method(autoplot,obscor)
 S3method(autoplot,palaeoSig)
+S3method(identify,obscor)
 S3method(plot,RNE)
 S3method(plot,fittedAgelme)
 S3method(plot,js)
@@ -24,87 +25,111 @@ export(randomTF)
 export(rne)
 export(species)
 importFrom(MASS,mvrnorm)
-importFrom(assertr,has_all_names)
-importFrom(assertr,verify)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,if_else)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
-importFrom(dplyr,summarise)
-importFrom(forcats,fct_na_value_to_level)
-importFrom(forcats,fct_relevel)
-importFrom(forcats,fct_reorder)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,autoplot)
-importFrom(ggplot2,coord_flip)
-importFrom(ggplot2,geom_abline)
-importFrom(ggplot2,geom_col)
-importFrom(ggplot2,geom_errorbar)
-importFrom(ggplot2,geom_linerange)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,geom_text)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_colour_brewer)
-importFrom(ggplot2,scale_colour_identity)
-importFrom(ggplot2,scale_linetype_identity)
-importFrom(ggplot2,scale_size_area)
-importFrom(ggplot2,xlim)
+importFrom(assertr,
+  has_all_names,
+  verify
+)
+importFrom(dplyr,
+  bind_rows,
+  filter,
+  group_by,
+  if_else,
+  inner_join,
+  mutate,
+  select,
+  summarise
+)
+importFrom(forcats,
+  fct_na_value_to_level,
+  fct_relevel,
+  fct_reorder
+)
+importFrom(ggplot2,
+  aes,
+  autoplot,
+  coord_flip,
+  geom_abline,
+  geom_col,
+  geom_errorbar,
+  geom_linerange,
+  geom_point,
+  geom_text,
+  ggplot,
+  labs,
+  scale_colour_brewer,
+  scale_colour_identity,
+  scale_linetype_identity,
+  scale_size_area,
+  xlim
+)
 importFrom(ggrepel,geom_text_repel)
-importFrom(graphics,abline)
-importFrom(graphics,arrows)
-importFrom(graphics,box)
-importFrom(graphics,hist)
-importFrom(graphics,identify)
-importFrom(graphics,lines)
-importFrom(graphics,matlines)
-importFrom(graphics,matpoints)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,polygon)
-importFrom(graphics,strwidth)
-importFrom(graphics,text)
-importFrom(graphics,title)
+importFrom(graphics,
+  abline,
+  arrows,
+  box,
+  hist,
+  identify,
+  lines,
+  matlines,
+  matpoints,
+  par,
+  plot,
+  points,
+  polygon,
+  strwidth,
+  text,
+  title
+)
 importFrom(magrittr,"%>%")
-importFrom(mgcv,gam)
-importFrom(mgcv,s)
-importFrom(purrr,map)
-importFrom(purrr,map_dbl)
-importFrom(rioja,Hill.N2)
-importFrom(rioja,MAT)
-importFrom(rioja,WA)
-importFrom(rioja,crossval)
-importFrom(rioja,performance)
+importFrom(mgcv,
+  gam,
+  s
+)
+importFrom(purrr,
+  map,
+  map_dbl
+)
+importFrom(rioja,
+  Hill.N2,
+  MAT,
+  WA,
+  crossval,
+  performance
+)
 importFrom(rlang,.data)
-importFrom(stats,approx)
-importFrom(stats,approxfun)
-importFrom(stats,coef)
-importFrom(stats,cor)
-importFrom(stats,cov.wt)
-importFrom(stats,dist)
-importFrom(stats,dnorm)
-importFrom(stats,formula)
-importFrom(stats,lm)
-importFrom(stats,loess.smooth)
-importFrom(stats,pnorm)
-importFrom(stats,predict)
-importFrom(stats,qnorm)
-importFrom(stats,qqline)
-importFrom(stats,qqnorm)
-importFrom(stats,quantile)
-importFrom(stats,quasi)
-importFrom(stats,runif)
-importFrom(tibble,as_tibble)
-importFrom(tibble,enframe)
-importFrom(tibble,lst)
-importFrom(tibble,tibble)
-importFrom(tidyr,pivot_longer)
-importFrom(tidyr,pivot_wider)
-importFrom(tidyr,replace_na)
+importFrom(stats,
+  approx,
+  approxfun,
+  coef,
+  cor,
+  cov.wt,
+  dist,
+  dnorm,
+  formula,
+  lm,
+  loess.smooth,
+  pnorm,
+  predict,
+  qnorm,
+  qqline,
+  qqnorm,
+  quantile,
+  quasi,
+  runif
+)
+importFrom(tibble,
+  as_tibble,
+  enframe,
+  lst,
+  tibble
+)
+importFrom(tidyr,
+  pivot_longer,
+  pivot_wider,
+  replace_na
+)
 importFrom(utils,data)
-importFrom(vegan,rda)
-importFrom(vegan,scores)
+importFrom(vegan,
+  rda,
+  scores
+)

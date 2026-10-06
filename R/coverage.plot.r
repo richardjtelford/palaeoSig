@@ -28,13 +28,13 @@
 #' coverage_plot(spp = SWAP$spec, fos = RLGH$spec, n2_rare = 5, label = 0)
 #'
 #' @importFrom dplyr bind_rows filter select mutate if_else group_by inner_join
-#' summarise
+#'   summarise
 #' @importFrom tidyr pivot_longer pivot_wider replace_na
 #' @importFrom tibble enframe
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes geom_point geom_abline labs
-#' scale_colour_brewer
+#'   scale_colour_brewer
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom forcats fct_na_value_to_level fct_relevel
 #' @importFrom utils data
