@@ -44,6 +44,7 @@ assemblages. \emph{Quaternary Science Reviews} \bold{30}: 1272--1278.
 Useful links:
 \itemize{
   \item \url{https://richardjtelford.github.io/palaeoSig/}
+  \item \url{https://github.com/richardjtelford/palaeoSig}
   \item Report bugs at \url{https://github.com/richardjtelford/palaeoSig/issues}
 }
 
