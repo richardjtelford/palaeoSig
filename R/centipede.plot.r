@@ -25,7 +25,6 @@
 #' @importFrom ggplot2 ggplot geom_point geom_errorbar aes coord_flip
 #' @importFrom dplyr filter inner_join mutate
 #' @importFrom tibble as_tibble enframe
-#' @importFrom magrittr %>%
 #' @importFrom forcats fct_reorder
 #' @importFrom assertr verify has_all_names
 #' @importFrom rioja Hill.N2
@@ -37,15 +36,15 @@ centipede_plot <- function(x, spp, minN2 = 1, mult = 1) {
   stopifnot(inherits(x, "WA"))
 
   # calculate N2
-  n2 <- Hill.N2(spp) %>%
+  n2 <- Hill.N2(spp) |>
     enframe(name = "Taxon", value = "n2")
 
   # extract optima & tolerance
-  opt_tol <- coef(x) %>%
-    as_tibble(rownames = "Taxon") %>%
-    verify(has_all_names("Optima", "Tolerances")) %>%
-    inner_join(n2, by = "Taxon") %>%
-    filter(.data$n2 >= minN2) %>%
+  opt_tol <- coef(x) |>
+    as_tibble(rownames = "Taxon") |>
+    verify(has_all_names("Optima", "Tolerances")) |>
+    inner_join(n2, by = "Taxon") |>
+    filter(.data$n2 >= minN2) |>
     mutate(
       Taxon = factor(.data$Taxon),
       Taxon = fct_reorder(.data$Taxon, .data$Optima),

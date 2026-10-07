@@ -31,7 +31,6 @@
 #'   summarise
 #' @importFrom tidyr pivot_longer pivot_wider replace_na
 #' @importFrom tibble enframe
-#' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot aes geom_point geom_abline labs
 #'   scale_colour_brewer
@@ -45,22 +44,22 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
   mod_fos <- bind_rows(spp = spp, fos = fos, .id = "data")
 
   # calculate N2
-  n2 <- mod_fos %>%
-    filter(.data$data == "spp") %>%
-    select(-.data$data) %>%
-    Hill.N2() %>%
-    enframe(name = "Taxon", value = "n2") %>%
+  n2 <- mod_fos |>
+    filter(.data$data == "spp") |>
+    select(-.data$data) |>
+    Hill.N2() |>
+    enframe(name = "Taxon", value = "n2") |>
     # missing spp get n2 = Inf. replace with NA
     mutate(n2 = if_else(is.infinite(.data$n2), NA_real_, .data$n2))
 
   # find max and join to N2
-  max_n2 <- mod_fos %>%
-    pivot_longer(-data, names_to = "Taxon", values_to = "value") %>%
-    group_by(.data$data, .data$Taxon) %>%
-    summarise(max = max(.data$value)) %>%
-    pivot_wider(names_from = .data$data, values_from = .data$max) %>%
-    replace_na(list(spp = 0, fos = 0)) %>%
-    inner_join(n2, by = "Taxon") %>%
+  max_n2 <- mod_fos |>
+    pivot_longer(-data, names_to = "Taxon", values_to = "value") |>
+    group_by(.data$data, .data$Taxon) |>
+    summarise(max = max(.data$value)) |>
+    pivot_wider(names_from = .data$data, values_from = .data$max) |>
+    replace_na(list(spp = 0, fos = 0)) |>
+    inner_join(n2, by = "Taxon") |>
     mutate(
       n2_cut = cut(.data$n2,
         breaks = c(0, n2_rare, Inf),
@@ -82,7 +81,7 @@ coverage_plot <- function(spp, fos, n2_rare = 5, label = NULL) {
     labs(x = "Maximum modern %", y = "Maximum fossil %", colour = "N2")
 
   if (!is.null(label)) {
-    to_label <- max_n2 %>%
+    to_label <- max_n2 |>
       filter(.data$fos - .data$spp > label)
     g <- g +
       geom_text_repel(

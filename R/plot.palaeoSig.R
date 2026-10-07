@@ -94,7 +94,7 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
     max = max(sim_bin$n) * top,
     linetype = c("dashed", "dotted", rep("solid", length(variable_names))),
     colour = c("black", "red", rep("black", length(variable_names)))
-  ) %>%
+  ) |>
     filter(!is.na(.data$value))
 
   result <- lst(sim_bin, lines_to_add, width)

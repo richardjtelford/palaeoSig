@@ -80,7 +80,6 @@ importFrom(graphics,
   text,
   title
 )
-importFrom(magrittr,"%>%")
 importFrom(mgcv,
   gam,
   s

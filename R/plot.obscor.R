@@ -93,7 +93,6 @@ identify.obscor <- function(x, labels, ...) {
 #' @importFrom ggplot2 autoplot ggplot geom_point scale_size_area
 #' @importFrom stats quantile
 #' @importFrom rlang .data
-#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #' @method autoplot obscor
 #' @export
@@ -112,8 +111,8 @@ autoplot.obscor <- function(object, which = 1, variable_names = "env",
   abun <- weightings[w]
 
   if (which == 1) {
-    object$ob$x %>%
-      mutate(unweighted = 1) %>%
+    object$ob$x |>
+      mutate(unweighted = 1) |>
       ggplot(aes(x = .data$Optima, y = .data$RDA1, size = .data[[abun]])) +
       geom_point(alpha = 0.3) +
       scale_size_area() +

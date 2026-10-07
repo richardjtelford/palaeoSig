@@ -23,7 +23,6 @@ Suggests:
 Imports: TeachingDemos, rioja, mgcv, MASS,
     tibble,
     dplyr,
-    magrittr,
     ggplot2,
     forcats (>= 1.0.0),
     assertr,
