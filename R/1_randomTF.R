@@ -311,5 +311,5 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     sig = map_dbl(EX, function(e) mean(e <= c(e, sim_ex)))
   )
   class(res) <- "palaeoSig"
-  return(res)
+  res
 }
