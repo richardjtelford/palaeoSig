@@ -9,11 +9,11 @@
 #' @usage data(Atlantic)
 #' @source
 #' - Foraminifera data \doi{10.1594/PANGAEA.227322}
-#' - Sea surface temperature data from WOA13 \url{http://data.nodc.noaa.gov/woa/WOA13/DATAv2/temperature/csv/decav/1.00/} file 'woa13_decav_t13mn01v2.csv.gz'
+#' - Sea surface temperature data from WOA13
+#' \url{http://data.nodc.noaa.gov/woa/WOA13/DATAv2/temperature/csv/decav/1.00/}
+#' file 'woa13_decav_t13mn01v2.csv.gz'
 #' @keywords datasets
 "Atlantic"
-
-
 
 
 #' @title Storsandsvatnet
