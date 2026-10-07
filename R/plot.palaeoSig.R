@@ -73,7 +73,6 @@ autoplot.palaeoSig <- function(object, variable_names,
   autoplot_sig(x_fort, xlab = "Proportion variance explained", xmin = 0)
 }
 
-#' @importFrom tibble tibble lst
 #' @importFrom rlang .data
 
 fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
@@ -97,7 +96,7 @@ fortify_palaeosig <- function(sim, variable_names, p_val, nbins,
   ) |>
     filter(!is.na(.data$value))
 
-  result <- lst(sim_bin, lines_to_add, width)
+  result <- list(sim_bin = sim_bin, lines_to_add = lines_to_add, width = width)
   result
 }
 

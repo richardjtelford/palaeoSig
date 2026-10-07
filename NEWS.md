@@ -1,3 +1,7 @@
+# palaeoSig 2.1-5
+
+Removed tibble::lst to avoid problems with R version 4.7
+
 # palaeoSig 2.1-4
 
 Fixing some documentation formatting issues for CRAN

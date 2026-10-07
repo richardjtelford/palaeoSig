@@ -119,7 +119,6 @@ importFrom(stats,
 importFrom(tibble,
   as_tibble,
   enframe,
-  lst,
   tibble
 )
 importFrom(tidyr,

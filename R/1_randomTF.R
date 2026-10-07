@@ -120,7 +120,6 @@
 
 #' @importFrom rioja MAT
 #' @importFrom purrr map map_dbl
-#' @importFrom tibble lst
 #' @importFrom vegan rda
 #' @importFrom stats formula predict runif
 #' @export
@@ -298,14 +297,18 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
     })
   }
 
-  res <- lst(
+  # extract proportion of inertia explained
+  EX <- map_dbl(obs, "EX")
+  
+  # compile results
+  res <- list(
     PCA = PC,
     preds = map(obs, "pred"),
     MAX = MAX,
-    EX = map_dbl(obs, "EX"),
+    EX = EX,
     eig1 = map_dbl(obs, "EIG1"),
     sim.ex = sim_ex,
-    sig = map_dbl(.data$EX, function(e) mean(e <= c(e, sim_ex)))
+    sig = map_dbl(EX, function(e) mean(e <= c(e, sim_ex)))
   )
   class(res) <- "palaeoSig"
   return(res)
