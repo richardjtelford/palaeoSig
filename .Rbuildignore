@@ -11,3 +11,5 @@
 ^palaeoSig\.Rproj$
 ^\.positai$
 ^\.claude$
+^doc$
+^Meta$
