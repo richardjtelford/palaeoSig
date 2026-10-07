@@ -84,8 +84,6 @@ identify.obscor <- function(x, labels, ...) {
 }
 
 
-
-
 #' @describeIn obs.cor autoplot for obscor object
 #' @param object  An obscor object.
 #' @param top Proportion of the figure below the environmental name labels.

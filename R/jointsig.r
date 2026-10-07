@@ -73,7 +73,6 @@
 #' @keywords multivariate htest hplot
 
 
-
 #' @export
 
 jointsig <- function(spp, fos, var1, var2,

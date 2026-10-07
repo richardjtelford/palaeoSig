@@ -25,7 +25,6 @@
 }
 
 
-
 #' @title Generates species response parameters for n dimensions
 #' @description
 #' Generates species response parameters to n environmental variables following
@@ -213,10 +212,6 @@ species <- function(nspp = 30, Amax, fun, xpar, srange, alpha = 4, gamma = 4,
   spp[, apply(spp, 2, sum) > 0]
 }
 #-------------------------------------------------------------------------------
-
-
-
-
 
 
 #-------------------------------------------------------------------------------

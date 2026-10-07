@@ -299,7 +299,7 @@ randomTF <- function(spp, env, fos, n = 99, fun, col,
 
   # extract proportion of inertia explained
   EX <- map_dbl(obs, "EX")
-  
+
   # compile results
   res <- list(
     PCA = PC,

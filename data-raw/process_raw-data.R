@@ -52,7 +52,6 @@ Atlantic <- bind_rows(
   distinct(Latitude, Longitude, .keep_all = TRUE) # remove dupllicate samples
 
 
-
 # remove rare taxa
 Atlantic <- Atlantic |>
   gather(key = taxon, value = percent, -(Core:Longitude)) |>
@@ -88,8 +87,6 @@ if (!file.exists("data-raw/woa13_decav_t16mn01v2.csv.gz")) {
     destfile = "data-raw/woa13_decav_t16mn01v2.csv.gz"
   )
 }
-
-
 
 
 woa13 <- read_csv("data-raw/woa13_decav_t13mn01v2.csv.gz", skip = 1) |>
