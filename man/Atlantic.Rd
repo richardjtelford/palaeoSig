@@ -12,7 +12,7 @@ summ50 is 50m water temperature of the warmest season
 \itemize{
 \item Foraminifera data \doi{10.1594/PANGAEA.227322}
 \item Sea surface temperature data from WOA13
-\url{http://data.nodc.noaa.gov/woa/WOA13/DATAv2/temperature/csv/decav/1.00/}
+\url{https://www.ncei.noaa.gov/data/oceans/woa/WOA13/DATAv2/temperature/csv/decav/1.00/}
 file 'woa13_decav_t13mn01v2.csv.gz'
 }
 }
